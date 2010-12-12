@@ -23,9 +23,7 @@ public class LevelPanel extends JComponent{
 
     {
         try {
-            font = Font.createFont(Font.TRUETYPE_FONT,
-                    LevelPanel.class.getResourceAsStream("Anonymous.ttf"));
-            font = font.deriveFont(16f);
+            font = new Font("Monospaced", Font.PLAIN, 24);
         } catch (Exception ex) {
             LOG.error(ex.getMessage(), ex);
         }
@@ -45,7 +43,7 @@ public class LevelPanel extends JComponent{
 
         for(int y = 0; y < this.getHeight(); y+= size){
             for(int x=0; x < this.getWidth(); x+= width){
-                g.drawChars("r".toCharArray(), 0, 1, x, y);
+                g.drawChars("G".toCharArray(), 0, 1, x, y);
             }
         }
 //        System.out.println("c width:" + g.getFontMetrics().charWidth('c'));
