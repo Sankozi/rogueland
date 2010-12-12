@@ -1,1 +1,3 @@
 /target/
+/*.directory
+/nb-configuration.xml
