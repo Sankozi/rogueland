@@ -9,6 +9,7 @@ import com.google.inject.name.Named;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import org.apache.log4j.BasicConfigurator;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 import org.sankozi.rogueland.gui.MainFrame;
@@ -49,6 +50,7 @@ public class RoguelandApplication extends SingleFrameApplication {
      * Main method launching the application.
      */
     public static void main(String[] args) {
+        BasicConfigurator.configure();
         launch(RoguelandApplication.class, args);
     }
 
