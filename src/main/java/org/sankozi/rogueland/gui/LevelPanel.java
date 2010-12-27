@@ -1,13 +1,17 @@
 package org.sankozi.rogueland.gui;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 import javax.swing.JComponent;
 import org.apache.log4j.Logger;
+import org.sankozi.rogueland.model.Controls;
 import org.sankozi.rogueland.model.Level;
+import org.sankozi.rogueland.model.Move;
 
 /**
  *
@@ -16,35 +20,65 @@ import org.sankozi.rogueland.model.Level;
 public class LevelPanel extends JComponent{
     private final static Logger LOG = Logger.getLogger(LevelPanel.class);
 
-    
-
     Level level = new Level();
     TilePainter tilePainter = new FontPainter();
     Rectangle levelSize = new Rectangle(0, 0, Level.WIDTH, Level.HEIGHT);
 
-    
+    GuiControls gc = new GuiControls();
+
+    {
+        this.setFocusable(true);
+        this.addKeyListener(gc);
+        //TODO usunąć
+        level.setControls(gc);
+    }
+
+    public KeyListener getKeyListener(){
+        return gc;
+    }
 
     @Override
     public void paint(Graphics g) {
         tilePainter.paint(levelSize, level.getTiles(), g);
+    }
 
-//        g.setFont(font);
-//        metrics = g.getFontMetrics();
-//        int size = metrics.getAscent() + metrics.getDescent();
-////        System.out.println("FONT:" + font.getName());
-//        int width = metrics.charWidth('8') + 2;
-//
-//        g.setColor(Color.CYAN);
-//        g.fillRect(0, 0, this.getWidth(), this.getHeight());
-//        g.setColor(Color.BLACK);
-//
-//        for(int y = 0; y < this.getHeight(); y+= size){
-//            for(int x=0; x < this.getWidth(); x+= width){
-//                g.drawChars("G".toCharArray(), 0, 1, x, y);
-//            }
-//        }
-//        System.out.println("c width:" + g.getFontMetrics().charWidth('c'));
-//        System.out.println("c ascend:" + g.getFontMetrics().getAscent());
-//        System.out.println("c descend:" + g.getFontMetrics().getDescent());
+    private class GuiControls implements Controls, KeyListener {
+
+        BlockingQueue<Integer> keysPressed = new ArrayBlockingQueue<Integer>(5);
+
+        @Override
+        public Move waitForMove() {
+            int key = keysPressed.poll();
+            switch(key){
+                case KeyEvent.VK_UP:
+                    return Move.Go.NORTH;
+                case KeyEvent.VK_LEFT:
+                    return Move.Go.EAST;
+                case KeyEvent.VK_DOWN:
+                    return Move.Go.SOUTH;
+                case KeyEvent.VK_RIGHT:
+                    return Move.Go.EAST;
+            }
+            return null;
+        }
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            try {
+                LOG.info("keyPressed : " + e.getKeyCode());
+                LevelPanel.this.repaint();
+                keysPressed.offer(e.getKeyCode(), 1, TimeUnit.SECONDS);
+            } catch (InterruptedException ex) {
+                LOG.error(ex.getMessage(), ex);
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+        }
     }
 }
