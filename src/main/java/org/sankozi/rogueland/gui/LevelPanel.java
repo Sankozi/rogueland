@@ -9,6 +9,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JComponent;
 import org.apache.log4j.Logger;
+import org.sankozi.rogueland.control.Game;
 import org.sankozi.rogueland.model.Controls;
 import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.Move;
@@ -20,7 +21,7 @@ import org.sankozi.rogueland.model.Move;
 public class LevelPanel extends JComponent{
     private final static Logger LOG = Logger.getLogger(LevelPanel.class);
 
-    Level level = new Level();
+    Game game = new Game();
     TilePainter tilePainter = new FontPainter();
     Rectangle levelSize = new Rectangle(0, 0, Level.WIDTH, Level.HEIGHT);
 
@@ -30,7 +31,7 @@ public class LevelPanel extends JComponent{
         this.setFocusable(true);
         this.addKeyListener(gc);
         //TODO usunąć
-        level.setControls(gc);
+        game.setControls(gc);
     }
 
     public KeyListener getKeyListener(){
@@ -39,7 +40,7 @@ public class LevelPanel extends JComponent{
 
     @Override
     public void paint(Graphics g) {
-        tilePainter.paint(levelSize, level.getTiles(), g);
+        tilePainter.paint(levelSize, game.getLevel().getTiles(), g);
     }
 
     private class GuiControls implements Controls, KeyListener {

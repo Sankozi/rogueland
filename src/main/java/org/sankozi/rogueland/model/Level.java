@@ -11,7 +11,6 @@ public class Level {
 
     Tile[][] tiles;
 
-    Controls controls;
 
     {
         tiles = new Tile[WIDTH][];
@@ -28,9 +27,6 @@ public class Level {
         return tiles;
     }
 
-    //TODO usunąć i zrobić poprawnie
-    public void setControls(Controls controls){
-        this.controls = controls;
-    }
+    
 
 }
