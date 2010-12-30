@@ -7,6 +7,7 @@ import org.sankozi.rogueland.model.Controls;
 import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.Move;
 import org.sankozi.rogueland.model.Player;
+import org.sankozi.rogueland.model.Tile;
 import org.sankozi.rogueland.model.Tile.Type;
 
 /**
@@ -38,9 +39,11 @@ public class Game {
     private class GameRunnable implements Runnable {
         @Override
         public void run() {
+            Point old;
             Move m = null;
             do {
                 m = player.act(level);
+                old = playerLocation.getLocation();
                 level.getTiles()[playerLocation.x][playerLocation.y].player = false;
                 LOG.info("move : " + m);
                 if(m == Move.Go.EAST){
@@ -52,10 +55,25 @@ public class Game {
                 } else if(m == Move.Go.SOUTH) {
                     playerLocation.y++;
                 }
+                if(!validLocation(playerLocation, level.getTiles())){
+                    playerLocation = old;
+                }
                 level.getTiles()[playerLocation.x][playerLocation.y].player = true;
+
 //                level.getTiles()[playerLocation.x][playerLocation.y].type = Type.GRASS;
                 LOG.info("player location:" + playerLocation);
             } while (m != null);
+        }
+    }
+
+    private static boolean validLocation(Point playerLocation, Tile[][] tiles) {
+        if(playerLocation.x < 0 || playerLocation.y < 0
+                || playerLocation.x >= tiles.length
+                || playerLocation.y >= tiles[0].length
+                || tiles[playerLocation.x][playerLocation.y].type == Type.WALL){
+            return false;
+        } else {
+            return true;
         }
     }
 
