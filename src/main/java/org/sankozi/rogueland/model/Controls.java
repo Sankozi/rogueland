@@ -6,6 +6,6 @@ package org.sankozi.rogueland.model;
  */
 public interface Controls {
 
-    Move waitForMove();
+    Move waitForMove() throws InterruptedException;
 
 }

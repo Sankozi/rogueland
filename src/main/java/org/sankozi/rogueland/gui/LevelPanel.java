@@ -32,6 +32,7 @@ public class LevelPanel extends JComponent{
         this.addKeyListener(gc);
         //TODO usunąć
         game.setControls(gc);
+        game.start();
     }
 
     public KeyListener getKeyListener(){
@@ -48,13 +49,13 @@ public class LevelPanel extends JComponent{
         BlockingQueue<Integer> keysPressed = new ArrayBlockingQueue<Integer>(5);
 
         @Override
-        public Move waitForMove() {
-            int key = keysPressed.poll();
+        public Move waitForMove() throws InterruptedException {
+            int key = keysPressed.take();
             switch(key){
                 case KeyEvent.VK_UP:
                     return Move.Go.NORTH;
                 case KeyEvent.VK_LEFT:
-                    return Move.Go.EAST;
+                    return Move.Go.WEST;
                 case KeyEvent.VK_DOWN:
                     return Move.Go.SOUTH;
                 case KeyEvent.VK_RIGHT:

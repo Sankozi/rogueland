@@ -7,6 +7,7 @@ import org.sankozi.rogueland.model.Controls;
 import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.Move;
 import org.sankozi.rogueland.model.Player;
+import org.sankozi.rogueland.model.Tile.Type;
 
 /**
  * Object responsible for single game instance
@@ -37,12 +38,28 @@ public class Game {
     private class GameRunnable implements Runnable {
         @Override
         public void run() {
-            Move m = player.act(level);
-            if(m == Move.Go.EAST){
-                playerLocation.x++;
-            } else if(m == Move.Go.NORTH) {
-                playerLocation.y--;
-            }
+            Move m = null;
+            do {
+                m = player.act(level);
+                level.getTiles()[playerLocation.x][playerLocation.y].player = false;
+                LOG.info("move : " + m);
+                if(m == Move.Go.EAST){
+                    playerLocation.x++;
+                } else if(m == Move.Go.NORTH) {
+                    playerLocation.y--;
+                } else if(m == Move.Go.WEST) {
+                    playerLocation.x--;
+                } else if(m == Move.Go.SOUTH) {
+                    playerLocation.y++;
+                }
+                level.getTiles()[playerLocation.x][playerLocation.y].player = true;
+//                level.getTiles()[playerLocation.x][playerLocation.y].type = Type.GRASS;
+                LOG.info("player location:" + playerLocation);
+            } while (m != null);
         }
+    }
+
+    public Point getPlayerLocation() {
+        return playerLocation;
     }
 }

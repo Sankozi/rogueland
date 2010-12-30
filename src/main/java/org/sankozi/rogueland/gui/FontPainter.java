@@ -28,7 +28,7 @@ public class FontPainter implements TilePainter{
 
     @Override
     public void paint(Rectangle rect, Tile[][] tiles, Graphics g) {
-        LOG.info("font painter!");
+        LOG.trace("font painter!");
         metrics = g.getFontMetrics(font);
         g.setFont(font);
         int dy = metrics.getHeight() - 3;
@@ -38,19 +38,25 @@ public class FontPainter implements TilePainter{
         for(int iy = rect.y; iy < rect.height; ++iy){
             int x = rect.x * dx;
             for(int ix = rect.x; ix < rect.width; ++ix){
-                switch(tiles[ix][iy].type){
-                    case FLOOR:
-                        g.setColor(Color.GRAY);
-                        g.drawString(".", x, y);
-                        break;
-                    case GRASS:
-                        g.setColor(Color.GREEN);
-                        g.drawString("\"", x, y);
-                        break;
-                    case WALL:
-                        g.setColor(Color.GRAY);
-                        g.drawString("#", x, y);
-                        break;
+                if(tiles[ix][iy].player){
+                    LOG.info("tile = " + tiles[ix][iy].player);
+                    g.setColor(Color.BLACK);
+                    g.drawString("@", x, y);
+                } else {
+                    switch(tiles[ix][iy].type){
+                        case FLOOR:
+                            g.setColor(Color.GRAY);
+                            g.drawString(".", x, y);
+                            break;
+                        case GRASS:
+                            g.setColor(Color.GREEN);
+                            g.drawString("\"", x, y);
+                            break;
+                        case WALL:
+                            g.setColor(Color.GRAY);
+                            g.drawString("#", x, y);
+                            break;
+                    }
                 }
                 x += dx;
             }
