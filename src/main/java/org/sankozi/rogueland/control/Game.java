@@ -1,13 +1,12 @@
 package org.sankozi.rogueland.control;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.inject.internal.Preconditions;
 import java.awt.Point;
 import java.util.List;
-import java.util.Map;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.model.Actor;
+import org.sankozi.rogueland.model.AiActor;
 import org.sankozi.rogueland.model.Controls;
 import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.Move;
@@ -36,6 +35,9 @@ public class Game {
         this.player = new Player(controls);
         player.setLocation(new Point(5,5));
         actors.add(player);
+        Actor ai = new AiActor();
+        ai.setLocation(new Point(10,10));
+        actors.add(ai);
     }
 
     public Level getLevel() {
@@ -57,7 +59,7 @@ public class Game {
             Point playerLocation = actor.getLocation();
             do {
                 level.getTiles()[playerLocation.x][playerLocation.y].actor = actor;
-                m = player.act(level);
+                m = actor.act(level);
                 newLocation = playerLocation.getLocation();
                 processMove(m, newLocation);
                 level.getTiles()[playerLocation.x][playerLocation.y].actor = null;
