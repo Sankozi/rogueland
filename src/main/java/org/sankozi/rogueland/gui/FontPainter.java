@@ -13,7 +13,7 @@ import org.sankozi.rogueland.model.Tile;
  * @author sankozi
  */
 public class FontPainter implements TilePainter{
-    private final static Logger LOG = Logger.getLogger(LevelPanel.class);
+    private final static Logger LOG = Logger.getLogger(FontPainter.class);
     
     Font font;
     FontMetrics metrics;
@@ -39,7 +39,7 @@ public class FontPainter implements TilePainter{
             int x = rect.x * dx;
             for(int ix = rect.x; ix < rect.width; ++ix){
                 if(tiles[ix][iy].player){
-                    LOG.info("tile = " + tiles[ix][iy].player);
+//                    LOG.info("tile = " + tiles[ix][iy].player);
                     g.setColor(Color.BLACK);
                     g.drawString("@", x, y);
                 } else {

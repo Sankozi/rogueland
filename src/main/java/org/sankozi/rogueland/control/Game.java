@@ -39,30 +39,34 @@ public class Game {
     private class GameRunnable implements Runnable {
         @Override
         public void run() {
-            Point old;
+            Point newLocation;
             Move m = null;
             do {
-                m = player.act(level);
-                old = playerLocation.getLocation();
-                level.getTiles()[playerLocation.x][playerLocation.y].player = false;
-                LOG.info("move : " + m);
-                if(m == Move.Go.EAST){
-                    playerLocation.x++;
-                } else if(m == Move.Go.NORTH) {
-                    playerLocation.y--;
-                } else if(m == Move.Go.WEST) {
-                    playerLocation.x--;
-                } else if(m == Move.Go.SOUTH) {
-                    playerLocation.y++;
-                }
-                if(!validLocation(playerLocation, level.getTiles())){
-                    playerLocation = old;
-                }
+                do {
+                    level.getTiles()[playerLocation.x][playerLocation.y].player = true;
+                    m = player.act(level);
+                    newLocation = playerLocation.getLocation();
+                    LOG.info("move : " + m);
+                    processMove(m, newLocation);
+                    level.getTiles()[playerLocation.x][playerLocation.y].player = false;
+                } while (!validLocation(newLocation, level.getTiles()));
+                playerLocation = newLocation;
                 level.getTiles()[playerLocation.x][playerLocation.y].player = true;
 
-//                level.getTiles()[playerLocation.x][playerLocation.y].type = Type.GRASS;
-                LOG.info("player location:" + playerLocation);
+//                LOG.info("player location:" + playerLocation);
             } while (m != null);
+        }
+    }
+
+    private static void processMove(Move m, Point newLocation) {
+        if (m == Move.Go.EAST) {
+            newLocation.x++;
+        } else if (m == Move.Go.NORTH) {
+            newLocation.y--;
+        } else if (m == Move.Go.WEST) {
+            newLocation.x--;
+        } else if (m == Move.Go.SOUTH) {
+            newLocation.y++;
         }
     }
 
@@ -71,6 +75,7 @@ public class Game {
                 || playerLocation.x >= tiles.length
                 || playerLocation.y >= tiles[0].length
                 || tiles[playerLocation.x][playerLocation.y].type == Type.WALL){
+//            LOG.info("invalid location : " + playerLocation);
             return false;
         } else {
             return true;
