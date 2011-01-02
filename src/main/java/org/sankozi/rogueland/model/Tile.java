@@ -12,10 +12,10 @@ public class Tile {
         GRASS
     }
     public Type type;
-    public boolean player;
+    public Actor actor;
 
     @Override
     public String toString() {
-        return "Tile[" + "type=" + type + ",player=" + player + ']';
+        return "Tile[" + "type=" + type + ",actor=" + actor + ']';
     }
 }

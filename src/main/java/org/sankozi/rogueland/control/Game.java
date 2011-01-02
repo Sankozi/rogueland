@@ -1,8 +1,13 @@
 package org.sankozi.rogueland.control;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.inject.internal.Preconditions;
 import java.awt.Point;
+import java.util.List;
+import java.util.Map;
 import org.apache.log4j.Logger;
+import org.sankozi.rogueland.model.Actor;
 import org.sankozi.rogueland.model.Controls;
 import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.Move;
@@ -18,9 +23,9 @@ public class Game {
     private final static Logger LOG = Logger.getLogger(Game.class);
 
     Level level = new Level();
-    Point playerLocation = null;
     Player player = null;
     Thread gameThread = new Thread(new GameRunnable());
+    List<Actor> actors = Lists.newArrayList();
 
     public void start(){
         Preconditions.checkState(!gameThread.isAlive(), "game has already started");
@@ -29,7 +34,8 @@ public class Game {
 
     public void setControls(Controls controls){
         this.player = new Player(controls);
-        playerLocation = new Point(5,5);
+        player.setLocation(new Point(5,5));
+        actors.add(player);
     }
 
     public Level getLevel() {
@@ -39,22 +45,32 @@ public class Game {
     private class GameRunnable implements Runnable {
         @Override
         public void run() {
-            Point newLocation;
-            Move m = null;
             do {
-                do {
-                    level.getTiles()[playerLocation.x][playerLocation.y].player = true;
-                    m = player.act(level);
-                    newLocation = playerLocation.getLocation();
-                    LOG.info("move : " + m);
-                    processMove(m, newLocation);
-                    level.getTiles()[playerLocation.x][playerLocation.y].player = false;
-                } while (!validLocation(newLocation, level.getTiles()));
-                playerLocation = newLocation;
-                level.getTiles()[playerLocation.x][playerLocation.y].player = true;
-
+                processActors();
 //                LOG.info("player location:" + playerLocation);
-            } while (m != null);
+            } while (true);
+        }
+
+        private void processActor(Actor actor) {
+            Move m;
+            Point newLocation;
+            Point playerLocation = actor.getLocation();
+            do {
+                level.getTiles()[playerLocation.x][playerLocation.y].actor = actor;
+                m = player.act(level);
+                newLocation = playerLocation.getLocation();
+                processMove(m, newLocation);
+                level.getTiles()[playerLocation.x][playerLocation.y].actor = null;
+            } while (!validLocation(newLocation, level.getTiles()));
+            playerLocation = newLocation;
+            level.getTiles()[playerLocation.x][playerLocation.y].actor = actor;
+            actor.setLocation(newLocation);
+        }
+
+        private void processActors() {
+            for(Actor actor:actors){
+                processActor(actor);
+            }
         }
     }
 
@@ -80,9 +96,5 @@ public class Game {
         } else {
             return true;
         }
-    }
-
-    public Point getPlayerLocation() {
-        return playerLocation;
     }
 }

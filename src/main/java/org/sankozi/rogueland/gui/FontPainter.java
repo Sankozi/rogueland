@@ -38,7 +38,7 @@ public class FontPainter implements TilePainter{
         for(int iy = rect.y; iy < rect.height; ++iy){
             int x = rect.x * dx;
             for(int ix = rect.x; ix < rect.width; ++ix){
-                if(tiles[ix][iy].player){
+                if(tiles[ix][iy].actor != null){
 //                    LOG.info("tile = " + tiles[ix][iy].player);
                     g.setColor(Color.BLACK);
                     g.drawString("@", x, y);
