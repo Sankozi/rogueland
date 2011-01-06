@@ -56,17 +56,18 @@ public class Game {
         private void processActor(Actor actor) {
             Move m;
             Point newLocation;
-            Point playerLocation = actor.getLocation();
+            Point actorLocation = actor.getLocation();
             do {
-                level.getTiles()[playerLocation.x][playerLocation.y].actor = actor;
+                level.getTiles()[actorLocation.x][actorLocation.y].actor = actor;
                 m = actor.act(level);
-                newLocation = playerLocation.getLocation();
+                newLocation = actorLocation.getLocation();
                 processMove(m, newLocation);
-                level.getTiles()[playerLocation.x][playerLocation.y].actor = null;
+                LOG.info("actor : " + actor + " move : " + newLocation);
+                level.getTiles()[actorLocation.x][actorLocation.y].actor = null;
             } while (!validLocation(newLocation, level.getTiles()));
-            playerLocation = newLocation;
-            level.getTiles()[playerLocation.x][playerLocation.y].actor = actor;
-            actor.setLocation(newLocation);
+            actorLocation = newLocation;
+            level.getTiles()[actorLocation.x][actorLocation.y].actor = actor;
+            actor.setLocation(actorLocation);
         }
 
         private void processActors() {
@@ -91,12 +92,13 @@ public class Game {
     private static boolean validLocation(Point playerLocation, Tile[][] tiles) {
         if(playerLocation.x < 0 || playerLocation.y < 0
                 || playerLocation.x >= tiles.length
-                || playerLocation.y >= tiles[0].length
-                || tiles[playerLocation.x][playerLocation.y].type == Type.WALL){
-//            LOG.info("invalid location : " + playerLocation);
+                || playerLocation.y >= tiles[0].length) {
             return false;
         } else {
-            return true;
+            Tile tile = tiles[playerLocation.x][playerLocation.y];
+//            LOG.info("invalid location : " + playerLocation);
+            return tile.type != Tile.Type.WALL
+                  && tile.actor == null;
         }
     }
 }

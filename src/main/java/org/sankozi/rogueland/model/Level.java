@@ -18,7 +18,7 @@ public class Level {
             tiles[x] = new Tile[HEIGHT];
             for(int y = 0; y < HEIGHT; ++ y){
                 tiles[x][y] = new Tile();
-                tiles[x][y].type = Tile.Type.values()[(y + x) % 3];
+                tiles[x][y].type = Tile.Type.GRASS;
             }
         }
     }
