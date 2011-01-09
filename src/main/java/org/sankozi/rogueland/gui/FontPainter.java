@@ -63,10 +63,9 @@ public class FontPainter implements TilePainter{
         int dx = metrics.charWidth('#') - 3;
         g.setColor(Color.BLACK);
 
-        int y = rect.y * dy;
+        g.fillRect(rect.x * dx, rect.y * dy, rect.width * dx,  rect.height * dy);
 
-        g.fillRect(rect.x * dx, y, rect.width * dx,  rect.height * dy);
-
+        int y = rect.y * dy + metrics.getAscent();
         for(int iy = rect.y; iy < rect.height; ++iy){
             int x = rect.x * dx;
             for(int ix = rect.x; ix < rect.width; ++ix){
