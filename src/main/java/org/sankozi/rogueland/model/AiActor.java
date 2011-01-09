@@ -26,4 +26,9 @@ public class AiActor implements Actor{
     public void setLocation(Point point) {
         this.location = point;
     }
+
+    @Override
+    public String getName() {
+        return "actor/ai";
+    }
 }

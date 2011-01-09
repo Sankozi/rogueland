@@ -62,7 +62,7 @@ public class Game {
                 m = actor.act(level);
                 newLocation = actorLocation.getLocation();
                 processMove(m, newLocation);
-                LOG.info("actor : " + actor + " move : " + newLocation);
+//                LOG.info("actor : " + actor + " move : " + newLocation);
                 level.getTiles()[actorLocation.x][actorLocation.y].actor = null;
             } while (!validLocation(newLocation, level.getTiles()));
             actorLocation = newLocation;

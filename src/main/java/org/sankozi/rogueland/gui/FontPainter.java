@@ -5,7 +5,11 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import org.apache.log4j.Logger;
+import org.sankozi.rogueland.model.Actor;
 import org.sankozi.rogueland.model.Tile;
 
 /**
@@ -15,8 +19,10 @@ import org.sankozi.rogueland.model.Tile;
 public class FontPainter implements TilePainter{
     private final static Logger LOG = Logger.getLogger(FontPainter.class);
     
-    Font font;
-    FontMetrics metrics;
+    private Font font;
+    private FontMetrics metrics;
+
+    private final ConcurrentMap<String,PainterOptions> optionsCache = new ConcurrentHashMap<String, PainterOptions>();
 
     {
         try {
@@ -24,6 +30,28 @@ public class FontPainter implements TilePainter{
         } catch (Exception ex) {
             LOG.error(ex.getMessage(), ex);
         }
+    }
+
+    private static class PainterOptions{
+        String character;
+        Color color;
+    }
+
+    private void drawActor(Graphics g, Actor actor, int x, int y){
+        PainterOptions po = optionsCache.get(actor.getName());
+        if(po == null){
+            po = new PainterOptions();
+            if(actor.getName().contains("player")){
+                po.character = "@";
+                po.color = Color.BLACK;
+            } else {
+                po.character = "@";
+                po.color = Color.RED;
+            }
+            optionsCache.put(actor.getName(), po);
+        }
+        g.setColor(po.color);
+        g.drawString(po.character, x, y);
     }
 
     @Override
@@ -38,10 +66,10 @@ public class FontPainter implements TilePainter{
         for(int iy = rect.y; iy < rect.height; ++iy){
             int x = rect.x * dx;
             for(int ix = rect.x; ix < rect.width; ++ix){
-                if(tiles[ix][iy].actor != null){
+                Actor actor = tiles[ix][iy].actor;
+                if(actor != null){
 //                    LOG.info("tile = " + tiles[ix][iy].player);
-                    g.setColor(Color.BLACK);
-                    g.drawString("@", x, y);
+                    drawActor(g, actor,x,y);
                 } else {
                     switch(tiles[ix][iy].type){
                         case FLOOR:

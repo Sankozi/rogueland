@@ -6,7 +6,7 @@ import java.awt.Point;
  *
  * @author sankozi
  */
-public interface Actor {
+public interface Actor extends GameObject{
     Move act(Level input);
 
     Point getLocation();

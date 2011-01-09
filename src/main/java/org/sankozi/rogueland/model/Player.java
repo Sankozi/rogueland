@@ -37,5 +37,8 @@ public class Player implements Actor {
         this.location = point;
     }
 
-
+    @Override
+    public String getName() {
+        return "actor/player";
+    }
 }
