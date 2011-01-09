@@ -43,7 +43,7 @@ public class FontPainter implements TilePainter{
             po = new PainterOptions();
             if(actor.getName().contains("player")){
                 po.character = "@";
-                po.color = Color.BLACK;
+                po.color = Color.WHITE;
             } else {
                 po.character = "@";
                 po.color = Color.RED;
@@ -61,8 +61,12 @@ public class FontPainter implements TilePainter{
         g.setFont(font);
         int dy = metrics.getHeight() - 3;
         int dx = metrics.charWidth('#') - 3;
+        g.setColor(Color.BLACK);
 
         int y = rect.y * dy;
+
+        g.fillRect(rect.x * dx, y, rect.width * dx,  rect.height * dy);
+
         for(int iy = rect.y; iy < rect.height; ++iy){
             int x = rect.x * dx;
             for(int ix = rect.x; ix < rect.width; ++ix){
