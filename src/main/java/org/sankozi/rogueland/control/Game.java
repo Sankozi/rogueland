@@ -78,14 +78,41 @@ public class Game {
     }
 
     private static void processMove(Move m, Point newLocation) {
-        if (m == Move.Go.EAST) {
-            newLocation.x++;
-        } else if (m == Move.Go.NORTH) {
-            newLocation.y--;
-        } else if (m == Move.Go.WEST) {
-            newLocation.x--;
-        } else if (m == Move.Go.SOUTH) {
-            newLocation.y++;
+        if(m instanceof Move.Go){
+            switch ((Move.Go) m) {
+                case EAST:
+                    newLocation.x++;
+                    break;
+                case NORTH:
+                    newLocation.y--;
+                    break;
+                case WEST:
+                    newLocation.x--;
+                    break;
+                case SOUTH:
+                    newLocation.y++;
+                    break;
+                case NORTHEAST:
+                    newLocation.y--;
+                    newLocation.x++;
+                    break;
+                case NORTHWEST:
+                    newLocation.y--;
+                    newLocation.x--;
+                    break;
+                case SOUTHEAST:
+                    newLocation.y++;
+                    newLocation.x++;
+                    break;
+                case SOUTHWEST:
+                    newLocation.y++;
+                    newLocation.x--;
+                    break;
+                default:
+                    LOG.error("unhandled move : " + m);
+            }
+        } else {
+            LOG.error("unhandled move : " + m);
         }
     }
 

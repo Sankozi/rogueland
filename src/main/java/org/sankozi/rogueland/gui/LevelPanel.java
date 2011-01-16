@@ -41,7 +41,7 @@ public class LevelPanel extends JComponent{
 
     @Override
     public void paint(Graphics g) {
-        LOG.info("painting level");
+//        LOG.info("painting level");
         tilePainter.paint(levelSize, game.getLevel().getTiles(), g);
     }
 
@@ -51,7 +51,9 @@ public class LevelPanel extends JComponent{
 
         @Override
         public Move waitForMove() throws InterruptedException {
+            LevelPanel.this.repaint();
             int key = keysPressed.take();
+//            LOG.info("key read");
             switch(key){
                 case KeyEvent.VK_UP:
                     return Move.Go.NORTH;
@@ -73,7 +75,6 @@ public class LevelPanel extends JComponent{
         public void keyPressed(KeyEvent e) {
             try {
 //                LOG.info("keyPressed : " + e.getKeyCode());
-                LevelPanel.this.repaint();
                 keysPressed.offer(e.getKeyCode(), 1, TimeUnit.SECONDS);
             } catch (InterruptedException ex) {
                 LOG.error(ex.getMessage(), ex);

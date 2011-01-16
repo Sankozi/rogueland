@@ -79,7 +79,6 @@ public class FontPainter implements TilePainter{
             }
             y += dy;
         }
-        
     }
 
     private void drawField(Graphics g, Tile tile, int x, int y) {
@@ -98,5 +97,4 @@ public class FontPainter implements TilePainter{
                 break;
         }
     }
-
 }

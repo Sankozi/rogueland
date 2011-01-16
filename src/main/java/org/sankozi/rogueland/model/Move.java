@@ -10,7 +10,11 @@ public interface Move {
         EAST,
         NORTH,
         WEST,
-        SOUTH
+        SOUTH,
+        NORTHEAST,
+        NORTHWEST,
+        SOUTHEAST,
+        SOUTHWEST;
     }
 
 }
