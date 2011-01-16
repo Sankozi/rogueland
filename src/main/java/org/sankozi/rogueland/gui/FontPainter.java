@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import org.apache.log4j.Logger;
@@ -74,26 +73,30 @@ public class FontPainter implements TilePainter{
 //                    LOG.info("tile = " + tiles[ix][iy].player);
                     drawActor(g, actor,x,y);
                 } else {
-                    switch(tiles[ix][iy].type){
-                        case FLOOR:
-                            g.setColor(Color.GRAY);
-                            g.drawString(".", x, y);
-                            break;
-                        case GRASS:
-                            g.setColor(Color.GREEN);
-                            g.drawString("\"", x, y);
-                            break;
-                        case WALL:
-                            g.setColor(Color.GRAY);
-                            g.drawString("#", x, y);
-                            break;
-                    }
+                    drawField(g,tiles[ix][iy], x, y);
                 }
                 x += dx;
             }
             y += dy;
         }
         
+    }
+
+    private void drawField(Graphics g, Tile tile, int x, int y) {
+        switch (tile.type) {
+            case FLOOR:
+                g.setColor(Color.GRAY);
+                g.drawString(".", x, y);
+                break;
+            case GRASS:
+                g.setColor(Color.GREEN);
+                g.drawString("\"", x, y);
+                break;
+            case WALL:
+                g.setColor(Color.GRAY);
+                g.drawString("#", x, y);
+                break;
+        }
     }
 
 }
