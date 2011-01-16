@@ -12,7 +12,6 @@ import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.Move;
 import org.sankozi.rogueland.model.Player;
 import org.sankozi.rogueland.model.Tile;
-import org.sankozi.rogueland.model.Tile.Type;
 
 /**
  * Object responsible for single game instance
@@ -57,16 +56,23 @@ public class Game {
             Move m;
             Point newLocation;
             Point actorLocation = actor.getLocation();
+            final Tile[][] tiles = level.getTiles();
             do {
-                level.getTiles()[actorLocation.x][actorLocation.y].actor = actor;
+                tiles[actorLocation.x][actorLocation.y].actor = actor;
                 m = actor.act(level);
                 newLocation = actorLocation.getLocation();
                 processMove(m, newLocation);
 //                LOG.info("actor : " + actor + " move : " + newLocation);
-                level.getTiles()[actorLocation.x][actorLocation.y].actor = null;
-            } while (!validLocation(newLocation, level.getTiles()));
-            actorLocation = newLocation;
-            level.getTiles()[actorLocation.x][actorLocation.y].actor = actor;
+                tiles[actorLocation.x][actorLocation.y].actor = null;
+            } while (!validLocation(newLocation, tiles));
+
+            Tile tile = tiles[newLocation.x][newLocation.y];
+            if(tile.actor != null){
+                interact(actor, tile.actor);
+            } else {
+                actorLocation = newLocation;
+            }
+            tiles[actorLocation.x][actorLocation.y].actor = actor;
             actor.setLocation(actorLocation);
         }
 
@@ -74,6 +80,10 @@ public class Game {
             for(Actor actor:actors){
                 processActor(actor);
             }
+        }
+
+        private void interact(Actor actor, Actor target) {
+            LOG.info("interact " + actor + " with " + target);
         }
     }
 
@@ -117,15 +127,15 @@ public class Game {
     }
 
     private static boolean validLocation(Point playerLocation, Tile[][] tiles) {
+        //location outside level
         if(playerLocation.x < 0 || playerLocation.y < 0
                 || playerLocation.x >= tiles.length
                 || playerLocation.y >= tiles[0].length) {
             return false;
         } else {
+            //location inaccessible and that cannot be intercarted with
             Tile tile = tiles[playerLocation.x][playerLocation.y];
-//            LOG.info("invalid location : " + playerLocation);
-            return tile.type != Tile.Type.WALL
-                  && tile.actor == null;
+            return tile.type != Tile.Type.WALL;
         }
     }
 }
