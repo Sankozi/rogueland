@@ -7,10 +7,14 @@ import java.util.Random;
  *
  * @author sankozi
  */
-public class AiActor implements Actor{
+public class AiActor extends AbstractActor{
 
     Point location;
     Random rand = new Random();
+
+    public AiActor() {
+        super(10);
+    }
 
     @Override
     public Move act(Level input) {
