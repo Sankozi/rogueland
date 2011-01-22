@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Logging mechanism for Game events
  * @author sankozi
  */
 public class GameLog {

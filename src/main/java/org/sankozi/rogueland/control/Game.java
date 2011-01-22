@@ -26,11 +26,19 @@ public class Game {
     Thread gameThread = new Thread(new GameRunnable());
     List<Actor> actors = Lists.newArrayList();
 
+    /**
+     * Starts the game in different Thread, this method can be called only once for each Game created
+     * @throws IllegalStateException if game has already started
+     */
     public void start(){
         Preconditions.checkState(!gameThread.isAlive(), "game has already started");
         gameThread.start();
     }
 
+    /**
+     * Sets controls for Player character
+     * @param controls
+     */
     public void setControls(Controls controls){
         this.player = new Player(controls);
         player.setLocation(new Point(5,5));

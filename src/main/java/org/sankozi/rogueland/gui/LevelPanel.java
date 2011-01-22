@@ -15,7 +15,7 @@ import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.Move;
 
 /**
- *
+ * Panel that renders current level state
  * @author sankozi
  */
 public class LevelPanel extends JComponent{
