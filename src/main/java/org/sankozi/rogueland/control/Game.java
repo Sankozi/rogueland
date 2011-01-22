@@ -21,6 +21,7 @@ public class Game {
     private final static Logger LOG = Logger.getLogger(Game.class);
 
     Level level = new Level();
+    GameLog log = new GameLog();
     Player player = null;
     Thread gameThread = new Thread(new GameRunnable());
     List<Actor> actors = Lists.newArrayList();
