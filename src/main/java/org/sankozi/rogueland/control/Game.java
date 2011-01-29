@@ -3,6 +3,7 @@ package org.sankozi.rogueland.control;
 import com.google.common.collect.Lists;
 import com.google.inject.internal.Preconditions;
 import java.awt.Point;
+import java.util.Collection;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.model.Actor;
@@ -26,6 +27,8 @@ public class Game {
     Thread gameThread = new Thread(new GameRunnable());
     List<Actor> actors = Lists.newArrayList();
 
+    Collection<LogListener> logListeners = Lists.newArrayList();
+
     /**
      * Starts the game in different Thread, this method can be called only once for each Game created
      * @throws IllegalStateException if game has already started
@@ -48,6 +51,10 @@ public class Game {
         actors.add(ai);
     }
 
+    public void addLogListener(LogListener logListener){
+        logListeners.add(logListener);
+    }
+
     public Level getLevel() {
         return level;
     }
@@ -55,9 +62,10 @@ public class Game {
     private class GameRunnable implements Runnable {
         @Override
         public void run() {
+            GameLog.initLog(logListeners);
+            GameLog.info("Game has started");
             do {
                 processActors();
-//                LOG.info("player location:" + playerLocation);
             } while (true);
         }
 
@@ -92,7 +100,7 @@ public class Game {
         }
 
         private void interact(Actor actor, Actor target) {
-            LOG.info("interact " + actor + " with " + target);
+            GameLog.info(actor.getName() + " attacked " + target.getName());
         }
     }
 

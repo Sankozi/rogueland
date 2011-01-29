@@ -1,5 +1,6 @@
 package org.sankozi.rogueland.gui;
 
+import com.google.inject.Inject;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
@@ -21,7 +22,7 @@ import org.sankozi.rogueland.model.Move;
 public class LevelPanel extends JComponent{
     private final static Logger LOG = Logger.getLogger(LevelPanel.class);
 
-    Game game = new Game();
+    Game game;
     TilePainter tilePainter = new FontPainter();
     Rectangle levelSize = new Rectangle(0, 0, Level.WIDTH, Level.HEIGHT);
 
@@ -31,8 +32,7 @@ public class LevelPanel extends JComponent{
         this.setFocusable(true);
         this.addKeyListener(gc);
         //TODO usunąć
-        game.setControls(gc);
-        game.start();
+        
     }
 
     public KeyListener getKeyListener(){
@@ -41,8 +41,14 @@ public class LevelPanel extends JComponent{
 
     @Override
     public void paint(Graphics g) {
-//        LOG.info("painting level");
         tilePainter.paint(levelSize, game.getLevel().getTiles(), g);
+    }
+
+    @Inject
+    public void setGame(Game game){
+        this.game = game;
+        game.setControls(gc);
+        game.start();
     }
 
     private class GuiControls implements Controls, KeyListener {
