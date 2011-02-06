@@ -2,8 +2,8 @@ package org.sankozi.rogueland;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
-import javax.swing.JComponent;
 import javax.swing.JMenuBar;
+import org.sankozi.rogueland.gui.JListLogPanel;
 import org.sankozi.rogueland.gui.LevelPanel;
 import org.sankozi.rogueland.gui.LogPanel;
 import org.sankozi.rogueland.gui.MainMenuProvider;
@@ -24,8 +24,7 @@ public class RoguelandModule extends AbstractModule {
                 .annotatedWith(Names.named("level-panel"))
                 .to(LevelPanel.class);
 
-        bind(JComponent.class)
-                .annotatedWith(Names.named("log-panel"))
-                .to(LogPanel.class);
+        bind(LogPanel.class)
+                .to(JListLogPanel.class);
     }
 }

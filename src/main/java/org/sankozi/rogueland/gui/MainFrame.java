@@ -19,7 +19,7 @@ public class MainFrame extends FrameView {
     private final static Logger LOG = Logger.getLogger(MainFrame.class);
 
     JPanel contentPane = new JPanel();
-    JComponent logPanel;
+    LogPanel logPanel;
     LevelPanel levelPanel;
 
     @Inject
@@ -36,14 +36,17 @@ public class MainFrame extends FrameView {
     public void setLevelPanel(@Named("level-panel") LevelPanel levelPanel){
         this.levelPanel = levelPanel;
         contentPane.add(levelPanel ,BorderLayout.CENTER);
+        if(logPanel != null){
+            levelPanel.addLogListener((LogListener) logPanel);
+        }
     }
 
     @Inject
-    public void setLogPanel(@Named("log-panel") JComponent logPanel){
+    public void setLogPanel(LogPanel logPanel){
         LOG.info("injecting log-panel " + logPanel);
         this.logPanel = logPanel;
         contentPane.add(logPanel, BorderLayout.EAST);
-        if(logPanel instanceof LogListener){
+        if(levelPanel != null){
             levelPanel.addLogListener((LogListener) logPanel);
         }
     }
