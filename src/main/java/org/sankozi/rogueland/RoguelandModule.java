@@ -4,8 +4,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
 import javax.swing.JComponent;
 import javax.swing.JMenuBar;
-import javax.swing.JPanel;
 import org.sankozi.rogueland.gui.LevelPanel;
+import org.sankozi.rogueland.gui.LogPanel;
 import org.sankozi.rogueland.gui.MainMenuProvider;
 
 /**
@@ -20,12 +20,12 @@ public class RoguelandModule extends AbstractModule {
                 .annotatedWith(Names.named("main-menu"))
                 .toProvider(MainMenuProvider.class);
 
-        bind(JComponent.class)
+        bind(LevelPanel.class)
                 .annotatedWith(Names.named("level-panel"))
                 .to(LevelPanel.class);
 
         bind(JComponent.class)
                 .annotatedWith(Names.named("log-panel"))
-                .to(JPanel.class);
+                .to(LogPanel.class);
     }
 }

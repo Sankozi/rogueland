@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JComponent;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.control.Game;
+import org.sankozi.rogueland.control.LogListener;
 import org.sankozi.rogueland.model.Controls;
 import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.Move;
@@ -49,6 +50,10 @@ public class LevelPanel extends JComponent{
         this.game = game;
         game.setControls(gc);
         game.start();
+    }
+
+    public void addLogListener(LogListener logListener){
+        game.addLogListener(logListener);
     }
 
     private class GuiControls implements Controls, KeyListener {

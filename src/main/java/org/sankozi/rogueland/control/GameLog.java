@@ -1,5 +1,6 @@
 package org.sankozi.rogueland.control;
 
+import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,24 +22,22 @@ public class GameLog {
     }
 
     public void addListener(LogListener listener) {
+        LOG.info("adding listener");
         if(!listeners.contains(listener)){
             listeners.add(listener);
         }
     }
 
     public void log(String message, MessageType type){
-        LOG.info(type + " : " + message);
+//        LOG.info(type + " : " + message);
         for(LogListener listener: listeners){
             listener.onMessage(message, type);
         }
     }
 
-    static void initLog(Collection<LogListener> lls){
-        LOG.info("game logger initialized");
-        GameLog log = new GameLog();
+    static void initThreadLog(GameLog log){
+        Preconditions.checkNotNull(log, "game log cannot be null");
         threadLog.set(log);
-        for(LogListener ll : lls){
-            log.addListener(ll);
-        }
+        LOG.info("game logger initialized");
     }
 }

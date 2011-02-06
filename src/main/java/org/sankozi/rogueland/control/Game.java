@@ -1,6 +1,7 @@
 package org.sankozi.rogueland.control;
 
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import com.google.inject.internal.Preconditions;
 import java.awt.Point;
 import java.util.Collection;
@@ -22,12 +23,10 @@ public class Game {
     private final static Logger LOG = Logger.getLogger(Game.class);
 
     Level level = new Level();
-    GameLog log = new GameLog();
+    private GameLog log = new GameLog();
     Player player = null;
     Thread gameThread = new Thread(new GameRunnable());
     List<Actor> actors = Lists.newArrayList();
-
-    Collection<LogListener> logListeners = Lists.newArrayList();
 
     /**
      * Starts the game in different Thread, this method can be called only once for each Game created
@@ -52,17 +51,21 @@ public class Game {
     }
 
     public void addLogListener(LogListener logListener){
-        logListeners.add(logListener);
+        log.addListener(logListener);
     }
 
     public Level getLevel() {
         return level;
     }
 
+    public GameLog getLog() {
+        return log;
+    }
+
     private class GameRunnable implements Runnable {
         @Override
         public void run() {
-            GameLog.initLog(logListeners);
+            GameLog.initThreadLog(log);
             GameLog.info("Game has started");
             do {
                 processActors();
