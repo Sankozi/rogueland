@@ -1,11 +1,12 @@
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.sankozi</groupId>
-  <artifactId>rogueland</artifactId>
-  <packaging>jar</packaging>
-  <version>0.1-SNAPSHOT</version>
-  <name>Rogueland</name>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.sankozi</groupId>
+    <artifactId>rogueland</artifactId>
+    <packaging>jar</packaging>
+    <version>0.1-SNAPSHOT</version>
+    <name>Rogueland</name>
     <build>
         <plugins>
             <plugin>
@@ -19,37 +20,42 @@
             </plugin>
         </plugins>
     </build>
+    <repositories>
+        <repository>
+            <id>neo4j-public-repository</id>
+            <name>Publically available Maven 2 repository for Neo4j</name>
+            <url>http://m2.neo4j.org</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
     <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.8.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>net.java.dev.appframework</groupId>
-      <artifactId>appframework</artifactId>
-      <version>1.03</version>
-    </dependency>
-    <dependency>
-      <groupId>org.swinglabs</groupId>
-      <artifactId>swing-worker</artifactId>
-      <version>1.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.swinglabs</groupId>
-      <artifactId>swing-layout</artifactId>
-      <version>1.0.3</version>
-    </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.appframework</groupId>
+            <artifactId>appframework</artifactId>
+            <version>1.03</version>
+        </dependency>
+        <dependency>
+            <groupId>org.swinglabs</groupId>
+            <artifactId>swing-worker</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.swinglabs</groupId>
+            <artifactId>swing-layout</artifactId>
+            <version>1.0.3</version>
+        </dependency>
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
             <version>2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb-j5</artifactId>
-            <version>2.0.0</version>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
@@ -60,6 +66,11 @@
             <groupId>com.google.collections</groupId>
             <artifactId>google-collections</artifactId>
             <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j</artifactId>
+            <version>1.2</version>
         </dependency>
     </dependencies>
 </project>
