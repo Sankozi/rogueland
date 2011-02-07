@@ -3,7 +3,6 @@ package org.sankozi.rogueland.gui;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import java.awt.BorderLayout;
-import javax.swing.JComponent;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import org.apache.log4j.Logger;
