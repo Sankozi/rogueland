@@ -12,4 +12,6 @@ public interface Actor extends Destroyable{
     Point getLocation();
     void setLocation(Point point);
 
+    Damage getPower();
+
 }

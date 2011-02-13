@@ -8,6 +8,7 @@ import java.util.Random;
  * @author sankozi
  */
 public class AiActor extends AbstractActor{
+    private final static Damage damage = new Damage(Damage.Type.BLUNT, 5);
 
     Point location;
     Random rand = new Random();
@@ -34,5 +35,10 @@ public class AiActor extends AbstractActor{
     @Override
     public String getName() {
         return "actor/ai";
+    }
+
+    @Override
+    public Damage getPower() {
+        return damage;
     }
 }

@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.sankozi.rogueland.model.Actor;
 import org.sankozi.rogueland.model.AiActor;
 import org.sankozi.rogueland.model.Controls;
+import org.sankozi.rogueland.model.Damage;
 import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.Move;
 import org.sankozi.rogueland.model.Player;
@@ -109,7 +110,16 @@ public class Game {
      * @param target
      */
     private void interact(Actor actor, Actor target) {
-//        GameLog.info(actor.getName() + " attacked " + target.getName());
+        Damage dam = actor.getPower();
+        int res = target.getResistance(dam.type);
+        
+        if(res < dam.value){
+            GameLog.info(actor.getName() + " attacked " + target.getName() + " for " + dam + "[" + res + " resisted]");
+            target.damage(dam.value - res);
+            if(target.isDestroyed()){
+                GameLog.info(target.getName() + " is destroyed!");
+            }
+        }
     }
 
     private static void processMove(Move m, Point newLocation) {
