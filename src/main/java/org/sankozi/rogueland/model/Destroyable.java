@@ -8,6 +8,8 @@ public interface Destroyable extends GameObject{
 
     void damage(int power);
 
+    int getResistance(Damage.Type type);
+
     boolean isDestroyed();
 
 }

@@ -101,10 +101,15 @@ public class Game {
                 processActor(actor);
             }
         }
+    }
 
-        private void interact(Actor actor, Actor target) {
-            GameLog.info(actor.getName() + " attacked " + target.getName());
-        }
+    /**
+     * Default attack handle
+     * @param actor
+     * @param target
+     */
+    private void interact(Actor actor, Actor target) {
+//        GameLog.info(actor.getName() + " attacked " + target.getName());
     }
 
     private static void processMove(Move m, Point newLocation) {
