@@ -1,10 +1,8 @@
 package org.sankozi.rogueland.control;
 
 import com.google.common.collect.Lists;
-import com.google.inject.Inject;
 import com.google.inject.internal.Preconditions;
 import java.awt.Point;
-import java.util.Collection;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.model.Actor;
@@ -104,6 +102,11 @@ public class Game {
         }
     }
 
+    private void removeActor(Actor actor){
+        actors.remove(actor);
+        level.getTiles()[actor.getLocation().x][actor.getLocation().y ].actor = null;
+    }
+
     /**
      * Default attack handle
      * @param actor
@@ -118,6 +121,7 @@ public class Game {
             target.damage(dam.value - res);
             if(target.isDestroyed()){
                 GameLog.info(target.getName() + " is destroyed!");
+                removeActor(target);
             }
         }
     }
