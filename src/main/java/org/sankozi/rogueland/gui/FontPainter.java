@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -30,6 +31,15 @@ public class FontPainter implements TilePainter{
             LOG.error(ex.getMessage(), ex);
         }
     }
+    private int dy;
+    private int dx;
+
+    @Override
+    public Rectangle getPixelLocation(Rectangle rect, Point location) {
+        int x = location.x - rect.x;
+        int y = location.y - rect.y;
+        return new Rectangle(x * dx, y * dy, dx, dy);
+    }
 
     private static class PainterOptions{
         String character;
@@ -53,13 +63,18 @@ public class FontPainter implements TilePainter{
         g.drawString(po.character, x, y);
     }
 
+    private void initMetrics(Graphics g){
+        metrics = g.getFontMetrics(font);
+        dy = metrics.getHeight() - 3;
+        dx = metrics.charWidth('#') - 3;
+    }
+
     @Override
     public void paint(Rectangle rect, Tile[][] tiles, Graphics g) {
         LOG.trace("font painter!");
-        metrics = g.getFontMetrics(font);
+        initMetrics(g);
         g.setFont(font);
-        int dy = metrics.getHeight() - 3;
-        int dx = metrics.charWidth('#') - 3;
+        
         g.setColor(Color.BLACK);
 
         g.fillRect(rect.x * dx, rect.y * dy, rect.width * dx,  rect.height * dy);
