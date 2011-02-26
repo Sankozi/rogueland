@@ -103,38 +103,67 @@ public class LevelPanel extends JComponent{
     }
 
     private class MoveCursor implements MouseMotionListener {
+        final double first = Math.tan(Math.PI / 8.0);
+        final double second = Math.tan(Math.PI / 2.0  - Math.PI / 8.0);
+
+//        {
+//            LOG.info("first = " + first + " second = " + second);
+//        }
+
         @Override
         public void mouseDragged(MouseEvent e) {
         }
 
         @Override
         public void mouseMoved(MouseEvent e) {
-            //TODO improve
             int x = e.getX();
             int y = e.getY();
-            if(x < playerLocation.x){
-                if(y < playerLocation.y){
-                    setDirectionCursor(Direction.NW);
-                } else if(y > playerLocation.y + playerLocation.height){
-                    setDirectionCursor(Direction.SW);
-                } else {
-                    setDirectionCursor(Direction.W);
-                }
-            } else if(x > playerLocation.x + playerLocation.width){
-                if(y < playerLocation.y){
-                    setDirectionCursor(Direction.NE);
-                } else if(y > playerLocation.y + playerLocation.height){
-                    setDirectionCursor(Direction.SE);
-                } else {
-                    setDirectionCursor(Direction.E);
+            int px = playerLocation.x + playerLocation.width / 2;
+            int py = playerLocation.y + playerLocation.height / 2;
+            double dy = Math.abs(y-py);
+            double dx = Math.abs(x-px);
+//            LOG.info("x = " + x + " y = " + y + " px = " + px + " py = " + py + " dx = " + dx + " dy = " + dy);
+            if(dx + dy < 20){//cursor close to the player
+                setDirectionCursor(Direction.C);
+            } else if(x < px){
+                if(y < py) { //NW region
+                    double tan = dx / dy;
+                    if(tan < first){
+                        setDirectionCursor(Direction.N);
+                    } else if (tan < second) {
+                        setDirectionCursor(Direction.NW);
+                    } else {
+                        setDirectionCursor(Direction.W);
+                    }
+                } else { //SW region
+                    double tan = dy / dx;
+                    if(tan < first){
+                        setDirectionCursor(Direction.W);
+                    } else if (tan < second) {
+                        setDirectionCursor(Direction.SW);
+                    } else {
+                        setDirectionCursor(Direction.S);
+                    }
                 }
             } else {
-                if(y < playerLocation.y){
-                    setDirectionCursor(Direction.N);
-                } else if(y > playerLocation.y + playerLocation.height){
-                    setDirectionCursor(Direction.S);
-                } else {
-                    setDirectionCursor(Direction.C);
+                if(y < py) { //NE region
+                    double tan = dx / dy;
+                    if(tan < first){
+                        setDirectionCursor(Direction.N);
+                    } else if (tan < second) {
+                        setDirectionCursor(Direction.NE);
+                    } else {
+                        setDirectionCursor(Direction.E);
+                    }
+                } else { //SE region
+                    double tan = dy / dx;
+                    if(tan < first){
+                        setDirectionCursor(Direction.E);
+                    } else if (tan < second) {
+                        setDirectionCursor(Direction.SE);
+                    } else {
+                        setDirectionCursor(Direction.S);
+                    }
                 }
             }
         }
