@@ -61,6 +61,10 @@ public class Game {
         return log;
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
     private class GameRunnable implements Runnable {
         @Override
         public void run() {
