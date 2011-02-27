@@ -164,6 +164,8 @@ public class Game {
                 default:
                     LOG.error("unhandled move : " + m);
             }
+        } else if(m == Move.WAIT) {
+            GameLog.info("Waiting");
         } else {
             LOG.error("unhandled move : " + m);
         }
