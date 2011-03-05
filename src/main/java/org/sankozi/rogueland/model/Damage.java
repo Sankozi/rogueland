@@ -1,5 +1,8 @@
 package org.sankozi.rogueland.model;
 
+import org.sankozi.rogueland.model.Destroyable.Param;
+
+
 /**
  *
  * @author sankozi
@@ -7,9 +10,19 @@ package org.sankozi.rogueland.model;
 public final class Damage {
 
     public enum Type {
-        PIERCING,
-        SLASHING,
-        BLUNT
+        PIERCING(Param.PIERCING_PROT),
+        SLASHING(Param.SLASHING_PROT),
+        BLUNT(Param.BLUNT_PROT);
+
+        private final Param resistanceParam;
+
+        private Type(Param resistanceParam) {
+            this.resistanceParam = resistanceParam;
+        }
+
+        public Param getResistanceParam(){
+            return resistanceParam;
+        }
     }
 
     public final Type type;

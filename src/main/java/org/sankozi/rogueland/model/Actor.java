@@ -14,4 +14,14 @@ public interface Actor extends Destroyable{
 
     Damage getPower();
 
+    /** Returns value stored in int */
+    public int actorParam(Param param);
+
+    public enum Param {
+        DAMAGE_MIN,
+        DAMAGE_MAX,
+       
+        MANA_REGEN,
+
+    }
 }

@@ -12,4 +12,17 @@ public interface Destroyable extends GameObject{
 
     boolean isDestroyed();
 
+    int destroyableParam(Param param);
+
+    public enum Param {
+        MAX_HEALTH,
+        HEALTH_REGEN,
+
+        /* Protections */
+
+        PIERCING_PROT,
+        SLASHING_PROT,
+        BLUNT_PROT;
+    }
+
 }

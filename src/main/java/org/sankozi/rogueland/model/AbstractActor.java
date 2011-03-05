@@ -1,40 +1,24 @@
 package org.sankozi.rogueland.model;
 
 import java.util.EnumMap;
-import org.sankozi.rogueland.model.Damage.Type;
 
 /**
  * Base of implementation of Actor class
  * @author sankozi
  */
-public abstract class AbstractActor implements Actor{
-    private int durability;
-    private final EnumMap<Damage.Type, Integer> resistances = new EnumMap(Damage.Type.class);
+public abstract class AbstractActor extends AbstractDestroyable implements Actor{
+    private final EnumMap<Actor.Param, Integer> params = new EnumMap(Actor.Param.class);
 
     public AbstractActor(int durability) {
-        this.durability = durability;
+        super(durability);
     }
 
     @Override
-    public void damage(int power) {
-        durability -= power;
+    public int actorParam(Actor.Param param) {
+        return params.get(param);
     }
-
-    @Override
-    public boolean isDestroyed() {
-        return durability <= 0;
-    }
-
-    @Override
-    public int getResistance(Type type) {
-        if(resistances.containsKey(type)){
-            return resistances.get(type);
-        } else {
-            return 0;
-        }
-    }
-
-    protected void setResistance(Type type, int value){
-        resistances.put(type, value);
-    }
+//
+//    protected void setResistance(Type type, int value){
+//        params.put(type.getResistanceParam(), value);
+//    }
 }
