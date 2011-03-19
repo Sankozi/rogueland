@@ -9,6 +9,7 @@ import org.sankozi.rogueland.model.Actor;
 import org.sankozi.rogueland.model.AiActor;
 import org.sankozi.rogueland.model.Controls;
 import org.sankozi.rogueland.model.Damage;
+import org.sankozi.rogueland.model.Destroyable.Param;
 import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.Move;
 import org.sankozi.rogueland.model.Player;
@@ -101,6 +102,7 @@ public class Game {
 
         private void processActors() {
             for(Actor actor:actors){
+                actor.heal(actor.destroyableParam(Param.HEALTH_REGEN));
                 processActor(actor);
             }
         }

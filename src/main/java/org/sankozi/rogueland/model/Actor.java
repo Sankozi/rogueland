@@ -22,6 +22,5 @@ public interface Actor extends Destroyable{
         DAMAGE_MAX,
        
         MANA_REGEN,
-
     }
 }
