@@ -2,7 +2,6 @@ package org.sankozi.rogueland.control;
 
 import com.google.common.base.Preconditions;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import org.apache.log4j.Logger;
 
