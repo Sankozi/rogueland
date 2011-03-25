@@ -38,6 +38,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.clojure</groupId>
+            <artifactId>clojure</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <dependency>
             <groupId>net.java.dev.appframework</groupId>
             <artifactId>appframework</artifactId>
             <version>1.03</version>

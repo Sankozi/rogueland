@@ -51,7 +51,7 @@ public abstract class AbstractDestroyable implements Destroyable{
 
     @Override
     public void heal(int fraction){
-        LOG.info(this.getName() + " : healing +" + fraction);
+//        LOG.info(this.getName() + " : healing +" + fraction);
         durability += (fraction >> 10);
         durabilityFraction += fraction % 1024;
 
