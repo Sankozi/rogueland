@@ -73,10 +73,9 @@ public class FontPainter implements TilePainter{
     public void paint(Rectangle rect, Tile[][] tiles, Graphics g) {
         LOG.trace("font painter!");
         initMetrics(g);
-        g.setFont(font);
-        
-        g.setColor(Color.BLACK);
 
+        g.setFont(font);
+        g.setColor(Color.BLACK);
         g.fillRect(rect.x * dx, rect.y * dy, rect.width * dx,  rect.height * dy);
 
         int y = rect.y * dy + metrics.getAscent();
@@ -85,7 +84,6 @@ public class FontPainter implements TilePainter{
             for(int ix = rect.x; ix < rect.width; ++ix){
                 Actor actor = tiles[ix][iy].actor;
                 if(actor != null){
-//                    LOG.info("tile = " + tiles[ix][iy].player);
                     drawActor(g, actor,x,y);
                 } else {
                     drawField(g,tiles[ix][iy], x, y);
