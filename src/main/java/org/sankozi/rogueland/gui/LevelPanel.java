@@ -36,19 +36,15 @@ public class LevelPanel extends JComponent{
     Game game;
     GameSupport gameSupport;
     Rectangle levelSize = new Rectangle(0, 0, Level.WIDTH, Level.HEIGHT);
-//    BufferedImage bufferedImage = new BufferedImage(1,1, BufferedImage.TYPE_4BYTE_ABGR);
 
-    TilePainter tilePainter = new FontPainter();
     Rectangle playerLocation = new Rectangle(50, 50, 10, 10);
     Direction cursorDirection;
-
-//    private volatile boolean canReadGameState;
 
     GuiControls gc = new GuiControls();
 
     ComponentListener componentListener = new ComponentAdapter() {
-        @Override public void componentResized(ComponentEvent e) { onResize(); }
-        @Override public void componentShown  (ComponentEvent e) { onResize(); }
+        @Override public void componentResized(ComponentEvent e) { gameSupport.resize(getSize()); }
+        @Override public void componentShown  (ComponentEvent e) { gameSupport.resize(getSize()); }
     };
 
     {
@@ -65,30 +61,13 @@ public class LevelPanel extends JComponent{
 
     @Override
     public void paint(Graphics g) {
-//        tilePainter.paint(levelSize, game.getLevel().getTiles(), g);
         g.drawImage(gameSupport.getLevelImage(), 0, 0, this);
-    }
-
-    private void onResize() {
-        gameSupport.resize(getSize());
-//        LOG.info("component resized : new size : " + LevelPanel.this.getSize());
-//        BufferedImage newImage = new BufferedImage(LevelPanel.this.getWidth(), LevelPanel.this.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
-//        Graphics2D g = null;
-//        try {
-//            g = newImage.createGraphics();
-//            g.drawImage(bufferedImage, 0, 0, LevelPanel.this);
-//        } finally {
-//            g.dispose();
-//        }
-//        bufferedImage = newImage;
-//        this.refreshGameState();
     }
 
     @Inject
     public void setGame(Game game){
         this.game = game;
         this.gameSupport = new GameSupport(game, gc);
-//        game.setControls(gc);
         this.gameSupport.addListener(new GameListener(){
             @Override public void onEvent(GameEvent event) { refreshGameState(); }
         });
@@ -134,20 +113,7 @@ public class LevelPanel extends JComponent{
 
     /* must be called in game thread */
     private void refreshGameState(){
-//        if(!canReadGameState){
-//            LOG.warn("cannot draw now");
-//            return;
-//        }
         LOG.info("refreshGameState");
-//        Graphics2D g = null;
-//        try {
-//            g = bufferedImage.createGraphics();
-//            tilePainter.paint(levelSize, game.getLevel().getTiles(), g);
-//        } finally {
-//            if(g != null){
-//                g.dispose();
-//            }
-//        }
         repaint();//submits repaint event to EDT
         playerLocation = gameSupport.getPlayerLocation();
     }
@@ -225,12 +191,7 @@ public class LevelPanel extends JComponent{
 
         @Override
         public Move waitForMove() throws InterruptedException {
-//            canReadGameState = true;
-//            LevelPanel.this.refreshGameState();
             Move move = keysPressed.take();
-//            canReadGameState = false;
-//            LOG.info("key read");
-            
             return move;
         }
 
