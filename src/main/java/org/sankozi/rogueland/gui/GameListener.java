@@ -1,7 +1,7 @@
-package org.sankozi.rogueland.control;
+package org.sankozi.rogueland.gui;
 
 /**
- * Listener that is called inside Event Dispatch Thread. During execution, GameState isn't changed inside
+ * Listener that is called when GameState has changed and can be read. During execution, GameState isn't changed inside
  * Game thread
  * @author sankozi
  */
