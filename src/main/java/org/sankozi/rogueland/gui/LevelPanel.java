@@ -36,7 +36,7 @@ public class LevelPanel extends JComponent{
     Game game;
     GameSupport gameSupport;
     Rectangle levelSize = new Rectangle(0, 0, Level.WIDTH, Level.HEIGHT);
-    BufferedImage bufferedImage = new BufferedImage(1,1, BufferedImage.TYPE_4BYTE_ABGR);
+//    BufferedImage bufferedImage = new BufferedImage(1,1, BufferedImage.TYPE_4BYTE_ABGR);
 
     TilePainter tilePainter = new FontPainter();
     Rectangle playerLocation = new Rectangle(50, 50, 10, 10);
@@ -66,20 +66,21 @@ public class LevelPanel extends JComponent{
     @Override
     public void paint(Graphics g) {
 //        tilePainter.paint(levelSize, game.getLevel().getTiles(), g);
-        g.drawImage(bufferedImage, 0, 0, this);
+        g.drawImage(gameSupport.getLevelImage(), 0, 0, this);
     }
 
     private void onResize() {
-        LOG.info("component resized : new size : " + LevelPanel.this.getSize());
-        BufferedImage newImage = new BufferedImage(LevelPanel.this.getWidth(), LevelPanel.this.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
-        Graphics2D g = null;
-        try {
-            g = newImage.createGraphics();
-            g.drawImage(bufferedImage, 0, 0, LevelPanel.this);
-        } finally {
-            g.dispose();
-        }
-        bufferedImage = newImage;
+        gameSupport.resize(getSize());
+//        LOG.info("component resized : new size : " + LevelPanel.this.getSize());
+//        BufferedImage newImage = new BufferedImage(LevelPanel.this.getWidth(), LevelPanel.this.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+//        Graphics2D g = null;
+//        try {
+//            g = newImage.createGraphics();
+//            g.drawImage(bufferedImage, 0, 0, LevelPanel.this);
+//        } finally {
+//            g.dispose();
+//        }
+//        bufferedImage = newImage;
 //        this.refreshGameState();
     }
 
@@ -88,7 +89,7 @@ public class LevelPanel extends JComponent{
         this.game = game;
         this.gameSupport = new GameSupport(game, gc);
 //        game.setControls(gc);
-        this.gameSupport.add(new GameListener(){
+        this.gameSupport.addListener(new GameListener(){
             @Override public void onEvent(GameEvent event) { refreshGameState(); }
         });
         game.start();
@@ -138,17 +139,17 @@ public class LevelPanel extends JComponent{
 //            return;
 //        }
         LOG.info("refreshGameState");
-        Graphics2D g = null;
-        try {
-            g = bufferedImage.createGraphics();
-            tilePainter.paint(levelSize, game.getLevel().getTiles(), g);
-        } finally {
-            if(g != null){
-                g.dispose();
-            }
-        }
+//        Graphics2D g = null;
+//        try {
+//            g = bufferedImage.createGraphics();
+//            tilePainter.paint(levelSize, game.getLevel().getTiles(), g);
+//        } finally {
+//            if(g != null){
+//                g.dispose();
+//            }
+//        }
         repaint();//submits repaint event to EDT
-        playerLocation = tilePainter.getPixelLocation(levelSize, game.getPlayer().getLocation());
+        playerLocation = gameSupport.getPlayerLocation();
     }
 
     private class MoveCursor implements MouseMotionListener {
