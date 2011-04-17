@@ -13,7 +13,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -33,7 +32,6 @@ import org.sankozi.rogueland.model.Move;
 public class LevelPanel extends JComponent{
     private final static Logger LOG = Logger.getLogger(LevelPanel.class);
 
-    Game game;
     GameSupport gameSupport;
     Rectangle levelSize = new Rectangle(0, 0, Level.WIDTH, Level.HEIGHT);
 
@@ -66,7 +64,6 @@ public class LevelPanel extends JComponent{
 
     @Inject
     public void setGame(Game game){
-        this.game = game;
         this.gameSupport = new GameSupport(game, gc);
         this.gameSupport.addListener(new GameListener(){
             @Override public void onEvent(GameEvent event) { refreshGameState(); }
@@ -75,7 +72,7 @@ public class LevelPanel extends JComponent{
     }
 
     public void addLogListener(LogListener logListener){
-        game.addLogListener(logListener);
+        gameSupport.addLogListener(logListener);
     }
 
     private void setDirectionCursor(Direction dir){

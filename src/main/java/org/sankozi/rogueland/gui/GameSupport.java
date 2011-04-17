@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.control.Game;
+import org.sankozi.rogueland.control.LogListener;
 import org.sankozi.rogueland.model.Controls;
 import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.Move;
@@ -52,7 +53,6 @@ class GameSupport {
             g.dispose();
         }
         levelImage = newImage;
-//        this.refreshGameState();
     }
 
     public Image getLevelImage(){
@@ -79,6 +79,10 @@ class GameSupport {
         for(GameListener listener : listeners){
             listener.onEvent(ge);
         }
+    }
+
+    void addLogListener(LogListener logListener) {
+        game.addLogListener(logListener);
     }
 
     private class SynchronizedControls implements Controls {
