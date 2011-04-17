@@ -64,11 +64,12 @@ public class LevelPanel extends JComponent{
 
     @Inject
     public void setGame(Game game){
-        this.gameSupport = new GameSupport(game, gc);
-        this.gameSupport.addListener(new GameListener(){
+        LOG.info("set game");
+        gameSupport = new GameSupport(game, gc);
+        gameSupport.addListener(new GameListener(){
             @Override public void onEvent(GameEvent event) { refreshGameState(); }
         });
-        game.start();
+        gameSupport.gameStart();
     }
 
     public void addLogListener(LogListener logListener){
@@ -188,6 +189,7 @@ public class LevelPanel extends JComponent{
 
         @Override
         public Move waitForMove() throws InterruptedException {
+            LOG.info("waitForMove");
             Move move = keysPressed.take();
             return move;
         }

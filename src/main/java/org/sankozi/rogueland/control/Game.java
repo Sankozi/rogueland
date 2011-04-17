@@ -27,15 +27,24 @@ public class Game {
     private Player player = null;
     private List<Actor> actors = Lists.newArrayList();
 
-    private Thread gameThread = new Thread(new GameRunnable());
+    private GameRunnable runningGame;
 
-    /**
-     * Starts the game in different Thread, this method can be called only once for each Game created
-     * @throws IllegalStateException if game has already started
-     */
-    public void start(){
-        Preconditions.checkState(!gameThread.isAlive(), "game has already started");
-        gameThread.start();
+//    /**
+//     * Starts the game in different Thread, this method can be called only once for each Game created
+//     * @throws IllegalStateException if game has already started
+//     */
+//    public void start(){
+//        Preconditions.checkState(!gameThread.isAlive(), "game has already started");
+//        gameThread.start();
+//    }
+
+    public Runnable provideRunnable(){
+        if(runningGame == null){
+            runningGame = new GameRunnable();
+            return runningGame;
+        } else {
+            throw new IllegalArgumentException("game has already started");
+        }
     }
 
     /**
