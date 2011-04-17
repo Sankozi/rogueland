@@ -59,8 +59,13 @@ class GameSupport {
         Graphics2D g = null;
         try {
             g = newImage.createGraphics();
-
-            g.drawImage(levelImage, 0, 0, null);
+            if(readWriteLock.readLock().tryLock()){
+                try {
+                    painter.paint(levelSize, game.getLevel().getTiles(), g);
+                } finally {
+                    readWriteLock.readLock().unlock();
+                }
+            }
         } finally {
             g.dispose();
         }

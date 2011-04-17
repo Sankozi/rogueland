@@ -41,8 +41,8 @@ public class LevelPanel extends JComponent{
     GuiControls gc = new GuiControls();
 
     ComponentListener componentListener = new ComponentAdapter() {
-        @Override public void componentResized(ComponentEvent e) { gameSupport.resize(getSize()); }
-        @Override public void componentShown  (ComponentEvent e) { gameSupport.resize(getSize()); }
+        @Override public void componentResized(ComponentEvent e) { gameSupport.resize(getSize()); repaint();}
+        @Override public void componentShown  (ComponentEvent e) { gameSupport.resize(getSize()); repaint();}
     };
 
     {
