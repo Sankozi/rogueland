@@ -109,9 +109,8 @@ public class LevelPanel extends JComponent{
         }
     }
 
-    /* must be called in game thread */
     private void refreshGameState(){
-        LOG.info("refreshGameState");
+//        LOG.info("refreshGameState");
         repaint();//submits repaint event to EDT
         playerLocation = gameSupport.getPlayerLocation();
     }
@@ -189,7 +188,7 @@ public class LevelPanel extends JComponent{
 
         @Override
         public Move waitForMove() throws InterruptedException {
-            LOG.info("waitForMove");
+//            LOG.info("waitForMove");
             Move move = keysPressed.take();
             return move;
         }

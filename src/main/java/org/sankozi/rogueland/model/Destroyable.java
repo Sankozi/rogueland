@@ -7,11 +7,14 @@ package org.sankozi.rogueland.model;
 public interface Destroyable extends GameObject{
 
     void damage(int power);
+
+    int getDurability();
+
     /**
      * Increases durability by passed fraction
      * @param fraction amount to heal * 2^10
      */
-    void heal(int fraction);
+    void healFraction(int fraction);
 
     int protection(Damage.Type type);
 

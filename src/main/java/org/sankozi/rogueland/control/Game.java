@@ -112,7 +112,7 @@ public class Game {
 
         private void processActors() {
             for(Actor actor:actors){
-                actor.heal(actor.destroyableParam(Param.HEALTH_REGEN));
+                actor.healFraction(actor.destroyableParam(Param.HEALTH_REGEN));
                 processActor(actor);
             }
         }

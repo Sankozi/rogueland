@@ -18,12 +18,13 @@ public abstract class AbstractDestroyable implements Destroyable{
 
     /**
      * Abstract destroyable constructor, created object will have
-     * all resistances equal 0
+     * all resistances equal 0, MAX_HEALTH param eqal to passed durability
      * @param durability initial durability
      */
     public AbstractDestroyable(int durability) {
         this.durability = durability;
         this.durabilityFraction = 0;
+        this.setDestroyableParam(Param.MAX_HEALTH, durability);
         for(Type damage : Type.values()){
             params.put(damage.getResistanceParam(), 0);
         }
@@ -50,12 +51,12 @@ public abstract class AbstractDestroyable implements Destroyable{
     }
 
     @Override
-    public void heal(int fraction){
+    public void healFraction(int fraction){
 //        LOG.info(this.getName() + " : healing +" + fraction);
         durability += (fraction >> 10);
         durabilityFraction += fraction % 1024;
 
-        if(durabilityFraction > 1024){
+        if(durabilityFraction >= 1024){
             durability++;
             durabilityFraction -= 1024;
         }
@@ -71,4 +72,8 @@ public abstract class AbstractDestroyable implements Destroyable{
         return durability <= 0;
     }
 
+    @Override
+    public int getDurability() {
+        return durability;
+    }
 }
