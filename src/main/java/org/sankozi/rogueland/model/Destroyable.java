@@ -13,7 +13,7 @@ public interface Destroyable extends GameObject{
      */
     void heal(int fraction);
 
-    int getResistance(Damage.Type type);
+    int protection(Damage.Type type);
 
     boolean isDestroyed();
 

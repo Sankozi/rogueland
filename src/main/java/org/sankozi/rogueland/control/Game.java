@@ -130,7 +130,7 @@ public class Game {
      */
     private void interact(Actor actor, Actor target) {
         Damage dam = actor.getPower();
-        int res = target.getResistance(dam.type);
+        int res = target.protection(dam.type);
         
         if(res < dam.value){
             GameLog.info(actor.getName() + " attacked " + target.getName() + " for " + dam + "[" + res + " resisted]");

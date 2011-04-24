@@ -40,7 +40,7 @@ public abstract class AbstractDestroyable implements Destroyable{
     }
 
     @Override
-    public int getResistance(Type type) {
+    public int protection(Type type) {
         return params.get(type.getResistanceParam());
     }
 
