@@ -32,7 +32,8 @@ class GameSupport {
     /**
      * Lock that protects Game object during move processing
      *
-     * Write lock is locked before game is started and is released when player is moving
+     * Write lock is locked before game is started and is released when player is moving 
+	 * (i.e. game is waiting for human player move)
      */
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
