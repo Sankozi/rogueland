@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -24,6 +25,8 @@ import org.sankozi.rogueland.model.Controls;
 import org.sankozi.rogueland.model.Direction;
 import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.Move;
+import org.sankozi.rogueland.resources.Cursors;
+import org.sankozi.rogueland.resources.ResourceProvider;
 
 /**
  * Panel that renders current level state
@@ -31,6 +34,7 @@ import org.sankozi.rogueland.model.Move;
  */
 public class LevelPanel extends JComponent{
     private final static Logger LOG = Logger.getLogger(LevelPanel.class);
+	private final static long serialVersionUID = 1L;
 
     GameSupport gameSupport;
     Rectangle levelSize = new Rectangle(0, 0, Level.WIDTH, Level.HEIGHT);
@@ -80,31 +84,31 @@ public class LevelPanel extends JComponent{
         cursorDirection = dir;
         switch(dir){
             case NW:
-                LevelPanel.this.setCursor(Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR));
+                LevelPanel.this.setCursor(Cursors.ARROW_NW.get());
                 break;
             case N:
-                LevelPanel.this.setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR));
+                LevelPanel.this.setCursor(Cursors.ARROW_N.get());
                 break;
             case NE:
-                LevelPanel.this.setCursor(Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR));
+                LevelPanel.this.setCursor(Cursors.ARROW_NE.get());
                 break;
             case W:
-                LevelPanel.this.setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
+                LevelPanel.this.setCursor(Cursors.ARROW_W.get());
                 break;
             case C:
                 LevelPanel.this.setCursor(Cursor.getDefaultCursor());
                 break;
             case E:
-                LevelPanel.this.setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
+                LevelPanel.this.setCursor(Cursors.ARROW_E.get());
                 break;
             case SW:
-                LevelPanel.this.setCursor(Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR));
+                LevelPanel.this.setCursor(Cursors.ARROW_SW.get());
                 break;
             case S:
-                LevelPanel.this.setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
+                LevelPanel.this.setCursor(Cursors.ARROW_S.get());
                 break;
             case SE:
-                LevelPanel.this.setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
+                LevelPanel.this.setCursor(Cursors.ARROW_SE.get());
                 break;
         }
     }
