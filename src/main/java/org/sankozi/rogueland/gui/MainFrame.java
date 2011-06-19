@@ -25,16 +25,18 @@ public class MainFrame extends FrameView {
     public MainFrame(Application app,
             @Named("main-menu") JMenuBar menu,
 			@Named("level-panel") LevelPanel levelPanel,
-			LogPanel logPanel) {
+			LogPanel logPanel,
+			HealthBar bar) {
         super(app);
         this.levelPanel = levelPanel;
         this.logPanel = logPanel;
         this.setMenuBar(menu);
         this.setComponent(contentPane);
 
-        contentPane.setLayout(new MigLayout("","[grow][200!]","[grow]"));
-        contentPane.add(levelPanel, "grow");
-        contentPane.add(logPanel, "growy");
+        contentPane.setLayout(new MigLayout("","[grow][200!]","[grow][50!]"));
+        contentPane.add(levelPanel, "span 1 2, grow");
+        contentPane.add(logPanel, "growy, wrap");
+        contentPane.add(bar, "");
         LOG.info("created MainFrame");
     }
 }

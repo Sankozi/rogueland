@@ -3,6 +3,7 @@ package org.sankozi.rogueland.gui;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -22,6 +23,7 @@ import org.sankozi.rogueland.model.Move;
  * Class supporting interaction between GameState and GUI
  * @author sankozi
  */
+@Singleton
 class GameSupport {
     private final static Logger LOG = Logger.getLogger(GameSupport.class);
 
@@ -60,7 +62,7 @@ class GameSupport {
 	}
 
     public void resize(Dimension newDim) {
-        LOG.info("component resized : new size : " + newDim);
+//        LOG.info("component resized : new size : " + newDim);
         BufferedImage newImage = new BufferedImage(newDim.width, newDim.height, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g = null;
         try {
@@ -83,6 +85,7 @@ class GameSupport {
     }
 
     public void addListener(GameListener listener){
+//		LOG.info(this.toString() + " adding " + listener.getClass());
         listeners.add(listener);
     }
 
