@@ -17,7 +17,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JComponent;
 import org.apache.log4j.Logger;
-import org.sankozi.rogueland.control.LogListener;
 import org.sankozi.rogueland.model.Controls;
 import org.sankozi.rogueland.model.Direction;
 import org.sankozi.rogueland.model.Level;

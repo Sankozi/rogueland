@@ -5,6 +5,7 @@ import com.google.inject.name.Named;
 import java.awt.BorderLayout;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import net.miginfocom.swing.MigLayout;
 import org.apache.log4j.Logger;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.FrameView;
@@ -22,24 +23,18 @@ public class MainFrame extends FrameView {
 
     @Inject
     public MainFrame(Application app,
-            @Named("main-menu") JMenuBar menu) {
+            @Named("main-menu") JMenuBar menu,
+			@Named("level-panel") LevelPanel levelPanel,
+			LogPanel logPanel) {
         super(app);
-        contentPane.setLayout(new BorderLayout());
+        this.levelPanel = levelPanel;
+        this.logPanel = logPanel;
         this.setMenuBar(menu);
         this.setComponent(contentPane);
+
+        contentPane.setLayout(new MigLayout("","[grow][200!]","[grow]"));
+        contentPane.add(levelPanel, "grow");
+        contentPane.add(logPanel, "growy");
         LOG.info("created MainFrame");
-    }
-
-    @Inject
-    public void setLevelPanel(@Named("level-panel") LevelPanel levelPanel){
-        this.levelPanel = levelPanel;
-        contentPane.add(levelPanel ,BorderLayout.CENTER);
-    }
-
-    @Inject
-    public void setLogPanel(LogPanel logPanel){
-        LOG.info("injecting log-panel " + logPanel);
-        this.logPanel = logPanel;
-        contentPane.add(logPanel, BorderLayout.EAST);
     }
 }
