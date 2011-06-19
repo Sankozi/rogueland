@@ -12,6 +12,8 @@ import javax.swing.Action;
 import org.apache.log4j.PropertyConfigurator;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
+import org.sankozi.rogueland.control.Game;
+import org.sankozi.rogueland.gui.GuiModule;
 import org.sankozi.rogueland.gui.MainFrame;
 import org.sankozi.rogueland.resources.ResourceProvider;
 
@@ -20,14 +22,15 @@ import org.sankozi.rogueland.resources.ResourceProvider;
  */
 public class RoguelandApplication extends SingleFrameApplication {
 
-    Module module = new RoguelandModule();
-    Module actionModule = new ApplicationModule();
+    Module module = new RoguelandModule(new Game());
+    Module applicationModule = new ApplicationModule();
+	Module guiModule = new GuiModule();
 
     /**
      * At startup create and show the main frame of the application.
      */
     @Override protected void startup() {
-        Injector injector = Guice.createInjector(module, actionModule);
+        Injector injector = Guice.createInjector(module, applicationModule, guiModule);
         show(injector.getInstance(MainFrame.class));
     }
 

@@ -3,8 +3,6 @@ package org.sankozi.rogueland.gui;
 import com.google.inject.Inject;
 import java.awt.Cursor;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -19,14 +17,12 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JComponent;
 import org.apache.log4j.Logger;
-import org.sankozi.rogueland.control.Game;
 import org.sankozi.rogueland.control.LogListener;
 import org.sankozi.rogueland.model.Controls;
 import org.sankozi.rogueland.model.Direction;
 import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.Move;
 import org.sankozi.rogueland.resources.Cursors;
-import org.sankozi.rogueland.resources.ResourceProvider;
 
 /**
  * Panel that renders current level state
@@ -66,19 +62,20 @@ public class LevelPanel extends JComponent{
         g.drawImage(gameSupport.getLevelImage(), 0, 0, this);
     }
 
-    @Inject
-    public void setGame(Game game){
-        LOG.info("set game");
-        gameSupport = new GameSupport(game, gc);
+	/**
+	 * Method for injecting GameSupport, method adds LevelPanel to GameListeners
+	 * and sets Controls to gc
+	 * @param support 
+	 */
+	@Inject 
+	void setGameSupport(GameSupport support){
+		gameSupport = support;
         gameSupport.addListener(new GameListener(){
             @Override public void onEvent(GameEvent event) { refreshGameState(); }
         });
-        gameSupport.gameStart();
-    }
-
-    public void addLogListener(LogListener logListener){
-        gameSupport.addLogListener(logListener);
-    }
+		gameSupport.setControls(gc);
+		gameSupport.gameStart();
+	}
 
     private void setDirectionCursor(Direction dir){
         cursorDirection = dir;

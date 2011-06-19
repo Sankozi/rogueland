@@ -1,7 +1,6 @@
 package org.sankozi.rogueland.control;
 
 import com.google.common.collect.Lists;
-import com.google.inject.internal.Preconditions;
 import java.awt.Point;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -29,14 +28,6 @@ public class Game {
 
     private GameRunnable runningGame;
 
-//    /**
-//     * Starts the game in different Thread, this method can be called only once for each Game created
-//     * @throws IllegalStateException if game has already started
-//     */
-//    public void start(){
-//        Preconditions.checkState(!gameThread.isAlive(), "game has already started");
-//        gameThread.start();
-//    }
 
     public Runnable provideRunnable(){
         if(runningGame == null){

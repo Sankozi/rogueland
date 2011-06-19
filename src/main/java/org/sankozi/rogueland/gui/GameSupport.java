@@ -2,6 +2,7 @@ package org.sankozi.rogueland.gui;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -45,14 +46,18 @@ class GameSupport {
     private Rectangle levelSize = new Rectangle(0, 0, Level.WIDTH, Level.HEIGHT);
     private BufferedImage levelImage = new BufferedImage(1,1, BufferedImage.TYPE_4BYTE_ABGR);
 
-    public GameSupport(Game game, Controls controls) {
+	@Inject
+    public GameSupport(Game game) {
         Preconditions.checkNotNull(game, "game cannot be null");
         this.game = game;
-        this.game.setControls(new SynchronizedControls(controls));
         this.gameEvent = new GameEvent(game);
         //TODO Guice
         this.painter = new FontPainter();
     }
+
+	public void setControls(Controls controls){
+		this.game.setControls(new SynchronizedControls(controls));
+	}
 
     public void resize(Dimension newDim) {
         LOG.info("component resized : new size : " + newDim);

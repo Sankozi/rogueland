@@ -9,6 +9,7 @@ import javax.swing.JComponent;
  * @author sankozi
  */
 public class HealthBar extends JComponent{
+	private static final long serialVersionUID = 1L;
 
     {
         setPreferredSize(new Dimension(100, 20));

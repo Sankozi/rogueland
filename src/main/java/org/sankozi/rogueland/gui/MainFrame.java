@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.FrameView;
-import org.sankozi.rogueland.control.LogListener;
 
 /**
  *
@@ -35,9 +34,6 @@ public class MainFrame extends FrameView {
     public void setLevelPanel(@Named("level-panel") LevelPanel levelPanel){
         this.levelPanel = levelPanel;
         contentPane.add(levelPanel ,BorderLayout.CENTER);
-        if(logPanel != null){
-            levelPanel.addLogListener((LogListener) logPanel);
-        }
     }
 
     @Inject
@@ -45,8 +41,5 @@ public class MainFrame extends FrameView {
         LOG.info("injecting log-panel " + logPanel);
         this.logPanel = logPanel;
         contentPane.add(logPanel, BorderLayout.EAST);
-        if(levelPanel != null){
-            levelPanel.addLogListener((LogListener) logPanel);
-        }
     }
 }
