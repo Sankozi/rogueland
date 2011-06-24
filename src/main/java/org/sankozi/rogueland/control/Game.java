@@ -10,6 +10,7 @@ import org.sankozi.rogueland.model.Controls;
 import org.sankozi.rogueland.model.Damage;
 import org.sankozi.rogueland.model.Destroyable.Param;
 import org.sankozi.rogueland.model.Level;
+import org.sankozi.rogueland.model.LevelGenerator;
 import org.sankozi.rogueland.model.Move;
 import org.sankozi.rogueland.model.Player;
 import org.sankozi.rogueland.model.Tile;
@@ -28,6 +29,9 @@ public class Game {
 
     private GameRunnable runningGame;
 
+	{
+		LevelGenerator.generate(level);
+	}
 
     public Runnable provideRunnable(){
         if(runningGame == null){

@@ -11,7 +11,7 @@ public class Tile {
         FLOOR,
         GRASS
     }
-    public Type type;
+    public Type type = Type.GRASS;
     public Actor actor;
 
     @Override
