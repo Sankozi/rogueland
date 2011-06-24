@@ -22,7 +22,7 @@ import org.sankozi.rogueland.model.Tile;
 public class Game {
     private final static Logger LOG = Logger.getLogger(Game.class);
 
-    private Level level = new Level();
+    private Level level = new Level(30, 20);
     private GameLog log = new GameLog();
     private Player player = null;
     private List<Actor> actors = Lists.newArrayList();

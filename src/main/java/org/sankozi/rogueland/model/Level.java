@@ -5,19 +5,16 @@ package org.sankozi.rogueland.model;
  * @author sankozi
  */
 public final class Level {
-
-    public final static int WIDTH = 20;
-    public final static int HEIGHT = 20;
-
-	private final int width = WIDTH;
-	private final int height = HEIGHT;
+	private final int width;
+	private final int height;
 	
     Tile[][] tiles;
 
-
-    {
+	public Level(int width, int height) {
+		this.width = width;
+		this.height = height;
         tiles = new Tile[width][];
-        for(int x =0; x<height; ++x){
+        for(int x =0; x<width; ++x){
             tiles[x] = new Tile[height];
             for(int y = 0; y < height; ++ y){
                 tiles[x][y] = new Tile();

@@ -19,7 +19,6 @@ import javax.swing.JComponent;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.model.Controls;
 import org.sankozi.rogueland.model.Direction;
-import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.Move;
 import org.sankozi.rogueland.resources.Cursors;
 
@@ -32,7 +31,6 @@ public class LevelPanel extends JComponent{
 	private final static long serialVersionUID = 1L;
 
     GameSupport gameSupport;
-    Rectangle levelSize = new Rectangle(0, 0, Level.WIDTH, Level.HEIGHT);
 
     Rectangle playerLocation = new Rectangle(50, 50, 10, 10);
     Direction cursorDirection;

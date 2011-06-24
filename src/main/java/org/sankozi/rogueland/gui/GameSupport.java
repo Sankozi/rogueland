@@ -45,13 +45,15 @@ class GameSupport {
     private final TilePainter painter;
 
     private Dimension paintedLevelFragment;
-    private Rectangle levelSize = new Rectangle(0, 0, Level.WIDTH, Level.HEIGHT);
+    private Rectangle levelSize;
     private BufferedImage levelImage = new BufferedImage(1,1, BufferedImage.TYPE_4BYTE_ABGR);
 
 	@Inject
     public GameSupport(Game game) {
         Preconditions.checkNotNull(game, "game cannot be null");
         this.game = game;
+		this.levelSize = new Rectangle(0, 0,
+				game.getLevel().getWidth(), game.getLevel().getHeight());
         this.gameEvent = new GameEvent(game);
         //TODO Guice
         this.painter = new FontPainter();
