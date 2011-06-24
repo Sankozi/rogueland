@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.model.Actor;
+import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.Tile;
 
 /**
@@ -70,14 +71,18 @@ public class FontPainter implements TilePainter{
     }
 
     @Override
-    public void paint(Rectangle rect, Tile[][] tiles, Graphics g) {
-        LOG.trace("font painter!");
+    public void paint(Level level, Graphics g) {
+//		LOG.info("paint start");
+		Tile[][] tiles = level.getTiles();
+		Rectangle rect = new Rectangle(0,0, level.getWidth(), level.getHeight());
         initMetrics(g);
 
         g.setFont(font);
         g.setColor(Color.BLACK);
+		//clean part with black
         g.fillRect(rect.x * dx, rect.y * dy, rect.width * dx,  rect.height * dy);
 
+		//fill with symbols
         int y = rect.y * dy + metrics.getAscent();
         for(int iy = rect.y; iy < rect.height; ++iy){
             int x = rect.x * dx;
@@ -92,6 +97,7 @@ public class FontPainter implements TilePainter{
             }
             y += dy;
         }
+//		LOG.info("paint end");
     }
 
     private void drawField(Graphics g, Tile tile, int x, int y) {

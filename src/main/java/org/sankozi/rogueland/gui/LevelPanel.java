@@ -56,7 +56,9 @@ public class LevelPanel extends JComponent{
 
     @Override
     public void paint(Graphics g) {
-        g.drawImage(gameSupport.getLevelImage(), 0, 0, this);
+//		LOG.info("copy start");
+		gameSupport.paintLevelImage(g, this);
+//		LOG.info("copy end");
     }
 
 	/**
@@ -182,7 +184,7 @@ public class LevelPanel extends JComponent{
 
     private class GuiControls implements Controls, KeyListener, MouseListener {
 
-        BlockingQueue<Move> keysPressed = new ArrayBlockingQueue<Move>(5);
+        BlockingQueue<Move> keysPressed = new ArrayBlockingQueue<Move>(2);
 
         @Override
         public Move waitForMove() throws InterruptedException {

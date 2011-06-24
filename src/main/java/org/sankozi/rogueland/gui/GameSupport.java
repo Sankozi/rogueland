@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -12,11 +13,12 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.control.Game;
 import org.sankozi.rogueland.control.LogListener;
 import org.sankozi.rogueland.model.Controls;
-import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.Move;
 
 /**
@@ -71,7 +73,7 @@ class GameSupport {
             g = newImage.createGraphics();
             if(readWriteLock.readLock().tryLock()){
                 try {
-                    painter.paint(levelSize, game.getLevel().getTiles(), g);
+                    painter.paint(game.getLevel(), g);
                 } finally {
                     readWriteLock.readLock().unlock();
                 }
@@ -118,6 +120,15 @@ class GameSupport {
         gameThread.start();
     }
 
+	void paintLevelImage(Graphics g, JComponent comp) {
+		try {
+			readWriteLock.readLock().lock();
+        	g.drawImage(levelImage, 0, 0, comp.getWidth(), comp.getHeight(), comp);
+		} finally {
+			readWriteLock.readLock().unlock();
+		}
+	}
+
     private class GameStart implements Runnable {
         @Override
         public void run() {
@@ -137,8 +148,7 @@ class GameSupport {
         @Override
         public Move waitForMove() throws InterruptedException {
             readWriteLock.writeLock().unlock();
-            Graphics2D g = null;
-            drawLevel(g);
+			drawLevel();
             fireEvents();
             //allow level read while waiting for player move
             Move ret = base.waitForMove();
@@ -147,16 +157,23 @@ class GameSupport {
         }
 
         private void fireEvents() {
-            for (GameListener gl : listeners) {
-                gl.onEvent(gameEvent);
+            for (final GameListener gl : listeners) {
+				SwingUtilities.invokeLater(new Runnable(){
+					@Override public void run() {
+                		gl.onEvent(gameEvent);
+					}
+				});
             }
         }
 
-        private void drawLevel(Graphics2D g) {
+        private void drawLevel() {
+			Graphics2D g = null;
             try {
+				readWriteLock.writeLock().lock();
                 g = levelImage.createGraphics();
-                painter.paint(levelSize, game.getLevel().getTiles(), g);
+                painter.paint(game.getLevel(), g);
             } finally {
+				readWriteLock.writeLock().unlock();
                 if (g != null) {
                     g.dispose();
                 }
