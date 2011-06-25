@@ -3,7 +3,7 @@ package org.sankozi.rogueland.gui;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import org.sankozi.rogueland.model.Level;
+import org.sankozi.rogueland.control.Game;
 
 /**
  *
@@ -11,7 +11,7 @@ import org.sankozi.rogueland.model.Level;
  */
 public interface TilePainter {
 
-    void paint(Level level, Graphics g);
+    void paint(Game game, Graphics g, int width, int height);
 
-    Rectangle getPixelLocation(Rectangle rect, Point location);
+    Rectangle getPixelLocation(Game game, int width, int height, Point location); 
 }

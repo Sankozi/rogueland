@@ -9,9 +9,11 @@ import java.awt.Rectangle;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import org.apache.log4j.Logger;
+import org.sankozi.rogueland.control.Game;
 import org.sankozi.rogueland.model.Actor;
-import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.Tile;
+
+import static java.lang.Math.*;
 
 /**
  *
@@ -23,6 +25,9 @@ public class FontPainter implements TilePainter{
     private Font font;
     private FontMetrics metrics;
 
+    private int tileHeight;
+    private int tileWidth;
+
     private final ConcurrentMap<String,PainterOptions> optionsCache = new ConcurrentHashMap<String, PainterOptions>();
 
     {
@@ -32,14 +37,21 @@ public class FontPainter implements TilePainter{
             LOG.error(ex.getMessage(), ex);
         }
     }
-    private int dy;
-    private int dx;
 
     @Override
-    public Rectangle getPixelLocation(Rectangle rect, Point location) {
-        int x = location.x - rect.x;
-        int y = location.y - rect.y;
-        return new Rectangle(x * dx, y * dy, dx, dy);
+    public Rectangle getPixelLocation(Game game, int width, int height, Point location) {
+		//pixel coordinates
+		width = width - width % tileWidth;
+		height = height - height % tileHeight;
+		
+		//tile coordinates
+		int screenWidth = width / tileWidth;
+		int screenHeight = height / tileHeight;
+		
+        return new Rectangle(
+				(screenWidth  / 2) * tileWidth,
+				(screenHeight / 2) * tileHeight,
+				tileWidth, tileHeight);
     }
 
     private static class PainterOptions{
@@ -66,36 +78,62 @@ public class FontPainter implements TilePainter{
 
     private void initMetrics(Graphics g){
         metrics = g.getFontMetrics(font);
-        dy = metrics.getHeight() - 3;
-        dx = metrics.charWidth('#') - 3;
+        tileHeight = metrics.getHeight() - 3;
+        tileWidth = metrics.charWidth('#') - 3;
     }
 
     @Override
-    public void paint(Level level, Graphics g) {
-//		LOG.info("paint start");
-		Tile[][] tiles = level.getTiles();
-		Rectangle rect = new Rectangle(0,0, level.getWidth(), level.getHeight());
-        initMetrics(g);
+    public void paint(Game game, Graphics g, int width, int height) {
+//		LOG.info("paint start : size ->" + width + " " + height);
+		Tile[][] tiles = game.getLevel().getTiles();
+
+		if(metrics == null){
+        	initMetrics(g);
+		}
+
+		//pixel coordinates
+		width = width - width % tileWidth;
+		height = height - height % tileHeight;
+		int startingPixelX = 0;
+		int startingPixelY = metrics.getAscent();
+
+		//tile coordinates
+		int screenWidth = width / tileWidth;
+		int screenHeight = height / tileHeight;
+		Point playerLocation = game.getPlayer().getLocation();
+		int startingX = playerLocation.x - screenWidth  / 2;
+		if(startingX < 0){
+			startingPixelX -= startingX * tileWidth;
+			screenWidth += startingX;
+			startingX = 0;
+		}
+		int startingY = playerLocation.y - screenHeight / 2;
+		if(startingY < 0){
+			startingPixelY -= startingY * tileHeight;
+			screenHeight += startingY;
+			startingY = 0;
+		}
+		Rectangle rect = new Rectangle(startingX, startingY, screenWidth, screenHeight);
 
         g.setFont(font);
         g.setColor(Color.BLACK);
 		//clean part with black
-        g.fillRect(rect.x * dx, rect.y * dy, rect.width * dx,  rect.height * dy);
+        g.fillRect(0, 0, width, height);
 
 		//fill with symbols
-        int y = rect.y * dy + metrics.getAscent();
+        int y = startingPixelY;
         for(int iy = rect.y; iy < rect.height; ++iy){
-            int x = rect.x * dx;
-            for(int ix = rect.x; ix < rect.width; ++ix){
-                Actor actor = tiles[ix][iy].actor;
-                if(actor != null){
-                    drawActor(g, actor,x,y);
-                } else {
-                    drawField(g,tiles[ix][iy], x, y);
-                }
-                x += dx;
-            }
-            y += dy;
+			int x = startingPixelX;
+			for(int ix = rect.x; ix < rect.width; ++ix){
+				Actor actor = tiles[ix][iy].actor;
+				if(actor != null){
+					drawActor(g, actor,x,y);
+				} else {
+					drawField(g,tiles[ix][iy], x, y);
+				}
+				x += tileWidth;
+			}
+            y += tileHeight;
         }
 //		LOG.info("paint end");
     }

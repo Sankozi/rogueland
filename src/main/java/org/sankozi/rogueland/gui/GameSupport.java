@@ -73,7 +73,7 @@ class GameSupport {
             g = newImage.createGraphics();
             if(readWriteLock.readLock().tryLock()){
                 try {
-                    painter.paint(game.getLevel(), g);
+                    painter.paint(game, g, newDim.width, newDim.height);
                 } finally {
                     readWriteLock.readLock().unlock();
                 }
@@ -102,7 +102,9 @@ class GameSupport {
     }
 
     public Rectangle getPlayerLocation(){
-        return painter.getPixelLocation(levelSize, game.getPlayer().getLocation());
+        return painter.getPixelLocation(game, 
+				levelImage.getWidth(), levelImage.getHeight(),
+				game.getPlayer().getLocation());
     }
 
     public void fireGameEvent(GameEvent ge){
@@ -171,7 +173,7 @@ class GameSupport {
             try {
 				readWriteLock.writeLock().lock();
                 g = levelImage.createGraphics();
-                painter.paint(game.getLevel(), g);
+                painter.paint(game, g, levelImage.getWidth(), levelImage.getHeight());
             } finally {
 				readWriteLock.writeLock().unlock();
                 if (g != null) {
