@@ -1,6 +1,10 @@
 package org.sankozi.rogueland.model;
 
+import com.google.common.collect.Sets;
 import java.awt.Point;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.Set;
 import org.apache.log4j.Logger;
 
 /**
@@ -12,11 +16,27 @@ public class Player extends AbstractActor {
 
     private final static Damage damage = new Damage(Damage.Type.SLASHING, 10);
 
+	private final static Set<Param> STATS = Sets.newEnumSet(Arrays.asList(
+				Param.AGILITY, 
+				Param.CHARISMA,
+				Param.DEXTERITY,
+				Param.ENDURANCE,
+				Param.INTELLIGENCE,
+				Param.LUCK,
+				Param.STRENGTH,
+				Param.WILLPOWER), 
+			Param.class);
+
+    private final EnumMap<Param, Float> params = new EnumMap<Param, Float>(Param.class);
+
     private final Controls controls;
     private Point location;
 
     public Player(Controls controls){
         super(10);
+		for(Param param: STATS){
+			setPlayerParam(param, 10f);
+		}
         this.controls = controls;
         setDestroyableParam(Destroyable.Param.HEALTH_REGEN, 256);
         setDestroyableParam(Destroyable.Param.MAX_HEALTH, 20);
@@ -31,6 +51,26 @@ public class Player extends AbstractActor {
             return null;
         }
     }
+
+	public enum Param {
+		/* === STATS === */
+		STRENGTH,
+		DEXTERITY,
+		AGILITY,
+		ENDURANCE,
+		INTELLIGENCE,
+		WILLPOWER,
+		CHARISMA,
+		LUCK
+	}
+
+	public final void setPlayerParam(Param param, float value){
+		params.put(param, value);
+	}
+
+	public final float playerParam(Param param){
+		return params.get(param);
+	}
 
     @Override
     public Point getLocation() {
