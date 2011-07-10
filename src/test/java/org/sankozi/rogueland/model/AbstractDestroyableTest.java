@@ -21,7 +21,7 @@ public class AbstractDestroyableTest {
     public void testSetDestroyableParam() {
         AbstractDestroyable ad = new DestroyableImpl(10);
         ad.setDestroyableParam(Destroyable.Param.PIERCING_PROT, 10);
-        assertEquals(ad.destroyableParam(Destroyable.Param.PIERCING_PROT), 10);
+        assertEquals(ad.protection(Damage.Type.PIERCING), 10);
     }
 
     @Test
@@ -46,9 +46,9 @@ public class AbstractDestroyableTest {
         AbstractDestroyable ad = new DestroyableImpl(10);
         ad.damage(1);
         assertEquals(9,  ad.getDurability());
-        ad.healFraction(1023);
+        ad.heal(1f - 0.0625f);
         assertEquals(9, ad.getDurability());
-        ad.healFraction(1);
+        ad.heal(0.0625f);
         assertEquals(10,  ad.getDurability());
     }
 

@@ -107,7 +107,7 @@ public class Game {
 
         private void processActors() {
             for(Actor actor:actors){
-                actor.healFraction(actor.destroyableParam(Param.HEALTH_REGEN));
+                actor.heal(actor.destroyableParam(Param.HEALTH_REGEN));
                 processActor(actor);
             }
         }
@@ -125,11 +125,11 @@ public class Game {
      */
     private void interact(Actor actor, Actor target) {
         Damage dam = actor.getPower();
-        int res = target.protection(dam.type);
+        float res = target.protection(dam.type);
         
         if(res < dam.value){
             GameLog.info(actor.getName() + " attacked " + target.getName() + " for " + dam + "[" + res + " resisted]");
-            target.damage(dam.value - res);
+            target.damage(dam.value - (int) res);
             if(target.isDestroyed()){
                 GameLog.info(target.getName() + " is destroyed!");
                 removeActor(target);

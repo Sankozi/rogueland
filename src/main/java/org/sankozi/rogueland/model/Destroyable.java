@@ -14,14 +14,14 @@ public interface Destroyable extends GameObject{
      * Increases durability by passed fraction
      * @param fraction amount to heal * 2^10
      */
-    void healFraction(int fraction);
+    void heal(float value);
 
     int protection(Damage.Type type);
 
     boolean isDestroyed();
 
-    int destroyableParam(Param param);
-    void setDestroyableParam(Param param, int value);
+    float destroyableParam(Param param);
+    void setDestroyableParam(Param param, float value);
 
     public enum Param {
         MAX_HEALTH,

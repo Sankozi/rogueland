@@ -12,9 +12,8 @@ import org.sankozi.rogueland.model.Damage.Type;
 public abstract class AbstractDestroyable implements Destroyable{
     private final static Logger LOG = Logger.getLogger(AbstractDestroyable.class);
 
-    private final EnumMap<Param, Integer> params = new EnumMap<Param, Integer>(Param.class);
-    private int durability;
-    private int durabilityFraction;
+    private final EnumMap<Param, Float> params = new EnumMap<Param, Float>(Param.class);
+    private float durability;
 
     /**
      * Abstract destroyable constructor, created object will have
@@ -23,26 +22,25 @@ public abstract class AbstractDestroyable implements Destroyable{
      */
     public AbstractDestroyable(int durability) {
         this.durability = durability;
-        this.durabilityFraction = 0;
         this.setDestroyableParam(Param.MAX_HEALTH, durability);
         for(Type damage : Type.values()){
-            params.put(damage.getResistanceParam(), 0);
+            params.put(damage.getResistanceParam(), 0f);
         }
     }
 
     @Override
-    public final int destroyableParam(Param param) {
+    public final float destroyableParam(Param param) {
         return params.get(param);
     }
 
     @Override
-    public final void setDestroyableParam(Param param, int value) {
+    public final void setDestroyableParam(Param param, float value) {
         params.put(param, value);
     }
 
     @Override
     public int protection(Type type) {
-        return params.get(type.getResistanceParam());
+        return (int) params.get(type.getResistanceParam()).floatValue();
     }
 
     @Override
@@ -51,18 +49,11 @@ public abstract class AbstractDestroyable implements Destroyable{
     }
 
     @Override
-    public void healFraction(int fraction){
+    public void heal(float value){
 //        LOG.info(this.getName() + " : healing +" + fraction);
-        durability += (fraction >> 10);
-        durabilityFraction += fraction % 1024;
-
-        if(durabilityFraction >= 1024){
-            durability++;
-            durabilityFraction -= 1024;
-        }
+        durability += value;
         if(durability >= destroyableParam(Param.MAX_HEALTH)){
-            durability = destroyableParam(Param.MAX_HEALTH);
-            durabilityFraction = 0;
+            durability = (int) destroyableParam(Param.MAX_HEALTH);
             LOG.info(this.getName() + ": MAX HEALTH");
         }
     }
@@ -74,6 +65,6 @@ public abstract class AbstractDestroyable implements Destroyable{
 
     @Override
     public int getDurability() {
-        return durability;
+        return (int) durability;
     }
 }
