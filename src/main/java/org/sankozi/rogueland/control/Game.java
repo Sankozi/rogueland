@@ -27,6 +27,7 @@ public class Game {
     private GameLog log = new GameLog();
     private Player player = null;
     private List<Actor> actors = Lists.newArrayList();
+	private List<Actor> toBeRemoved = Lists.newArrayList();
 
 	private Locator locator;
 
@@ -63,18 +64,6 @@ public class Game {
         log.addListener(logListener);
     }
 
-    public Level getLevel() {
-        return level;
-    }
-
-    public GameLog getLog() {
-        return log;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
     private class GameRunnable implements Runnable {
         @Override
         public void run() {
@@ -82,7 +71,7 @@ public class Game {
             GameLog.info("Game has started");
             do {
                 processActors();
-            } while (true);
+            } while (player != null);
         }
 
         private void processActor(Actor actor) {
@@ -114,13 +103,21 @@ public class Game {
                 actor.heal(actor.destroyableParam(Param.HEALTH_REGEN));
                 processActor(actor);
             }
+			actors.removeAll(toBeRemoved);
+			toBeRemoved.clear();
         }
     }
 
     private void removeActor(Actor actor){
-        actors.remove(actor);
+		if(actor == player){
+			player = null;
+			getLog().log("You die...", MessageType.INFO);
+		}
+		toBeRemoved.add(actor);
         level.getTiles()[actor.getLocation().x][actor.getLocation().y ].actor = null;
     }
+
+	
 
     /**
      * Default attack handle
@@ -193,5 +190,17 @@ public class Game {
             Tile tile = tiles[playerLocation.x][playerLocation.y];
             return tile.type != Tile.Type.WALL;
         }
+    }
+
+	public Level getLevel() {
+        return level;
+    }
+
+    public GameLog getLog() {
+        return log;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }
