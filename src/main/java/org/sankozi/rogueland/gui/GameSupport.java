@@ -135,7 +135,13 @@ class GameSupport {
         @Override
         public void run() {
             readWriteLock.writeLock().lock();
-            game.provideRunnable().run();
+			try {
+            	game.provideRunnable().run();
+			} catch (Throwable t) {
+				LOG.error(t.getMessage(), t);
+			} finally {
+				readWriteLock.writeLock().unlock();
+			}
         }
     }
 

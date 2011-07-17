@@ -71,7 +71,7 @@ public class Game {
             GameLog.info("Game has started");
             do {
                 processActors();
-            } while (player != null);
+            } while (!player.isDestroyed());
         }
 
         private void processActor(Actor actor) {
@@ -110,7 +110,6 @@ public class Game {
 
     private void removeActor(Actor actor){
 		if(actor == player){
-			player = null;
 			getLog().log("You die...", MessageType.INFO);
 		}
 		toBeRemoved.add(actor);
