@@ -43,7 +43,7 @@ public class Player extends AbstractActor {
     }
 
     @Override
-    public Move act(Level input) {
+    public Move act(Level input, Locator location) {
         try {
             return controls.waitForMove();
         } catch (InterruptedException ex) {

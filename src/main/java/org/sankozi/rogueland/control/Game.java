@@ -11,6 +11,7 @@ import org.sankozi.rogueland.model.Damage;
 import org.sankozi.rogueland.model.Destroyable.Param;
 import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.LevelGenerator;
+import org.sankozi.rogueland.model.Locator;
 import org.sankozi.rogueland.model.Move;
 import org.sankozi.rogueland.model.Player;
 import org.sankozi.rogueland.model.Tile;
@@ -27,10 +28,13 @@ public class Game {
     private Player player = null;
     private List<Actor> actors = Lists.newArrayList();
 
+	private Locator locator;
+
     private GameRunnable runningGame;
 
 	{
 		LevelGenerator.generate(level);
+		locator = new GameLevelLocator(this, level);
 	}
 
     public Runnable provideRunnable(){
@@ -88,7 +92,7 @@ public class Game {
             final Tile[][] tiles = level.getTiles();
             do {
                 tiles[actorLocation.x][actorLocation.y].actor = actor;
-                m = actor.act(level);
+                m = actor.act(level, locator);
                 newLocation = actorLocation.getLocation();
                 processMove(m, newLocation);
 //                LOG.info("actor : " + actor + " move : " + newLocation);

@@ -7,7 +7,7 @@ import java.awt.Point;
  * @author sankozi
  */
 public interface Actor extends Destroyable{
-    Move act(Level input);
+    Move act(Level input, Locator locator);
 
     Point getLocation();
     void setLocation(Point point);

@@ -14,6 +14,15 @@ public enum Direction {
          Move.Go.WEST,      Move.WAIT,     Move.Go.EAST,
          Move.Go.SOUTHWEST, Move.Go.SOUTH, Move.Go.SOUTHEAST};
 
+	private static final Direction[][] diffDirections =
+		{ new Direction[] {NW, W, SW},
+		  new Direction[] {N,  C, S},
+		  new Direction[] {NE, E, SE}};
+
+	public static Direction fromDiff(int dx, int dy){
+		return diffDirections[dx + 1] [dy + 1];
+	}
+
     public static Direction fromNumpad(int dir){
         return numpadDirections[dir];
     }
