@@ -12,9 +12,9 @@ import org.apache.log4j.Logger;
 public class GameLog {
     private final static Logger LOG = Logger.getLogger(GameLog.class);
     /** GameLog attached to this game thread */
-    private final static ThreadLocal<GameLog> threadLog = new ThreadLocal<GameLog>();
+    private final static ThreadLocal<GameLog> threadLog = new ThreadLocal<>();
 
-    private final List<LogListener> listeners = new ArrayList<LogListener>();
+    private final List<LogListener> listeners = new ArrayList<>();
 
     public static void info(String message){
         threadLog.get().log(message, MessageType.INFO);

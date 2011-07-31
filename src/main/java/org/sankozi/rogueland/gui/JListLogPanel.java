@@ -14,8 +14,8 @@ public class JListLogPanel extends LogPanel{
     private final static Logger LOG = Logger.getLogger(JListLogPanel.class);
 	private static final long serialVersionUID = 1L;
 
-    private final JList jlist  = new JList();
-    private final DefaultListModel list = new DefaultListModel();
+    private final JList<String> jlist  = new JList<>();
+    private final DefaultListModel<String> list = new DefaultListModel<>();
 
     {
         jlist.setModel(list);
@@ -26,6 +26,7 @@ public class JListLogPanel extends LogPanel{
     public void onMessage(String message, MessageType type) {
         LOG.info("onMessage : " + message);
         list.addElement(message);
+		this.repaint();
     }
 
 	@Inject 
