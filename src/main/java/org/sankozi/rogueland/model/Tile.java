@@ -4,7 +4,7 @@ package org.sankozi.rogueland.model;
  *
  * @author sankozi
  */
-public class Tile {
+public final class Tile {
 
     public static enum Type {
         WALL,
@@ -13,6 +13,10 @@ public class Tile {
     }
     public Type type = Type.GRASS;
     public Actor actor;
+
+	public boolean isPassable(){
+		return type != Type.WALL && actor == null;
+	}
 
     @Override
     public String toString() {

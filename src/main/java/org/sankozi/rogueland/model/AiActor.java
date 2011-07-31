@@ -33,11 +33,40 @@ public class AiActor extends AbstractActor{
 		int dy = clamp(destination.y - this.getLocation().y, -1, 1) ;
 		int x = this.getLocation().x + dx;
 		int y = this.getLocation().y + dy;
-		if(level.getTiles()[x][y].type != Tile.Type.WALL){
+		
+		//if player is nearby or tile toward it is free
+		if((destination.x == x && destination.y == y) 
+			||	level.getTiles()[x][y].isPassable()){
 			return Direction.fromDiff(dx, dy).toSingleMove();
 		} else {
-			LOG.info("point " + x + "," + y + " occupied");
-			return Move.WAIT;
+			if(dx != 0 && dy != 0){ //diagonal direction -> try move closer
+				if(level.getTiles()[x][y-dy].isPassable()){
+					return Direction.fromDiff(dx, 0).toSingleMove();
+				} else if (level.getTiles()[x-dx][y].isPassable()){
+					return Direction.fromDiff(0, dy).toSingleMove();
+				} else {
+					return Move.WAIT;
+				}
+			} else if(dx != 0) {//dy == 0 -> lets try move diagonal
+				if(level.getTiles()[x][y-1].isPassable()){
+					return Direction.fromDiff(dx, -1).toSingleMove();
+				} else if(level.getTiles()[x][y+1].isPassable()){
+					return Direction.fromDiff(dx, +1).toSingleMove();
+				} else {
+					return Move.WAIT;
+				}
+			} else if(dy != 0) {//dx == 0 -> lets try move diagonal
+				if(level.getTiles()[x-1][y].isPassable()){
+					return Direction.fromDiff(-1, dy).toSingleMove();
+				} else if(level.getTiles()[x+1][y].isPassable()){
+					return Direction.fromDiff(+1, dy).toSingleMove();
+				} else {
+					return Move.WAIT;
+				}
+			} else {
+				LOG.warn("0,0 AI move -> waiting");
+				return Move.WAIT;
+			}
 		}
 	}
 
