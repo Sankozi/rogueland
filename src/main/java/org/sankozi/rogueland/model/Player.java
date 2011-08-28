@@ -47,8 +47,7 @@ public class Player extends AbstractActor {
         try {
             return controls.waitForMove();
         } catch (InterruptedException ex) {
-            LOG.error(ex.getMessage(), ex);
-            return null;
+			throw new IllegalStateException(ex);
         }
     }
 

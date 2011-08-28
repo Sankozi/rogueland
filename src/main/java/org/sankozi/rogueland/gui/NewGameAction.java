@@ -30,5 +30,6 @@ public class NewGameAction extends AbstractAction{
 	public void actionPerformed(ActionEvent e) {
 		LOG.info("new-game");
 		gameSupport.newGame();
+		gameSupport.startGame();
 	}
 }

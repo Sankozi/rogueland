@@ -1,7 +1,6 @@
 package org.sankozi.rogueland;
 
 import com.google.inject.AbstractModule;
-import org.sankozi.rogueland.control.Game;
 
 /**
  *

@@ -47,6 +47,7 @@ class GameSupport {
 	
 	private final Provider<Game> gameProvider;
     private Game game;
+	private Controls gameControls;
     private Thread gameThread = new Thread(new GameStart());
 
     private Dimension paintedLevelFragment;
@@ -74,11 +75,16 @@ class GameSupport {
 
 	private void endGame(){
 		this.gameThread.interrupt();
-		this.gameThread = new Thread(new GameStart());
+		try {
+			this.readWriteLock.writeLock().lock();
+			this.gameThread = new Thread(new GameStart());
+		} finally {
+			this.readWriteLock.writeLock().unlock();
+		}
 	}
 
 	public void setControls(Controls controls){
-		this.game.setControls(new SynchronizedControls(controls));
+		this.gameControls = controls;
 	}
 
     public void resize(Dimension newDim) {
@@ -133,8 +139,9 @@ class GameSupport {
         game.addLogListener(logListener);
     }
 
-    public void gameStart() {
+    public void startGame() {
         Preconditions.checkState(!gameThread.isAlive());
+		this.game.setControls(new SynchronizedControls(gameControls));
         gameThread.start();
 		LOG.info("starting game thread");
     }
@@ -177,7 +184,7 @@ class GameSupport {
             fireEvents();
             //allow level read while waiting for player move
             Move ret = base.waitForMove();
-            readWriteLock.writeLock().lock();
+            readWriteLock.writeLock().lockInterruptibly();
             return ret;
         }
 

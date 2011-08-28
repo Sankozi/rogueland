@@ -69,9 +69,15 @@ public class Game {
         public void run() {
             GameLog.initThreadLog(log);
             GameLog.info("Game has started");
-            do {
-                processActors();
-            } while (!player.isDestroyed());
+			try {
+				do {
+					processActors();
+				} while (!player.isDestroyed());
+			} catch (IllegalStateException ex){
+				if(ex.getCause() instanceof InterruptedException){
+					LOG.info("game ended");
+				}
+			}
         }
 
         private void processActor(Actor actor) {

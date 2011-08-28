@@ -73,7 +73,7 @@ public class LevelPanel extends JComponent{
             @Override public void onEvent(GameEvent event) { refreshGameState(); }
         });
 		gameSupport.setControls(gc);
-		gameSupport.gameStart();
+		gameSupport.startGame();
 	}
 
     private void setDirectionCursor(Direction dir){
