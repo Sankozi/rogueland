@@ -9,14 +9,12 @@ import org.sankozi.rogueland.control.Game;
  */
 public class RoguelandModule extends AbstractModule {
 
-	Game game;
 
-	public RoguelandModule(Game game) {
-		this.game = game;
+	public RoguelandModule() {
 	}
 
     @Override
     protected void configure() {
- 		bind(Game.class).toInstance(game);
+ 		//bind(Game.class).to(Game.class);
     }
 }

@@ -14,10 +14,14 @@ import javax.swing.JMenuBar;
 public class MainMenuProvider implements Provider<JMenuBar> {
 
     private final Action exit;
+    private final Action newGame;
 
     @Inject
-    public MainMenuProvider(@Named("exit") Action exit){
+    public MainMenuProvider(
+			@Named("exit") Action exit, 
+			@Named("new-game") Action newGame){
         this.exit = exit;
+		this.newGame = newGame;
     }
 
     @Override
@@ -26,6 +30,7 @@ public class MainMenuProvider implements Provider<JMenuBar> {
 
         JMenu fileMenu = new JMenu();
         fileMenu.setText("File");
+		fileMenu.add(newGame);
         fileMenu.add(exit);
         menu.add(fileMenu);
 

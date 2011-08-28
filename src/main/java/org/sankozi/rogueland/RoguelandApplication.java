@@ -12,7 +12,6 @@ import javax.swing.Action;
 import org.apache.log4j.PropertyConfigurator;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
-import org.sankozi.rogueland.control.Game;
 import org.sankozi.rogueland.gui.GuiModule;
 import org.sankozi.rogueland.gui.MainFrame;
 import org.sankozi.rogueland.resources.ResourceProvider;
@@ -22,7 +21,7 @@ import org.sankozi.rogueland.resources.ResourceProvider;
  */
 public class RoguelandApplication extends SingleFrameApplication {
 
-    Module module = new RoguelandModule(new Game());
+    Module module = new RoguelandModule();
     Module applicationModule = new ApplicationModule();
 	Module guiModule = new GuiModule();
 
@@ -69,7 +68,7 @@ public class RoguelandApplication extends SingleFrameApplication {
         }
 
         @Provides
-        @Named(value = "exit")
+        @Named("exit")
         public Action exitAction() {
             return new AbstractAction() {
                 {

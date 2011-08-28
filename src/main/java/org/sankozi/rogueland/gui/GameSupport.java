@@ -3,6 +3,7 @@ package org.sankozi.rogueland.gui;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -10,7 +11,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
 import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -32,8 +32,7 @@ class GameSupport {
 
     private final List<GameListener> listeners = Lists.newArrayList();
 
-    private final Game game;
-    private final GameEvent gameEvent;
+    private GameEvent gameEvent;
 
     /**
      * Lock that protects Game object during move processing
@@ -43,24 +42,40 @@ class GameSupport {
      */
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
-    private final Thread gameThread = new Thread(new GameStart());
 
     private final TilePainter painter;
+	
+	private final Provider<Game> gameProvider;
+    private Game game;
+    private Thread gameThread = new Thread(new GameStart());
 
     private Dimension paintedLevelFragment;
     private Rectangle levelSize;
     private BufferedImage levelImage = new BufferedImage(1,1, BufferedImage.TYPE_4BYTE_ABGR);
 
 	@Inject
-    public GameSupport(Game game) {
-        Preconditions.checkNotNull(game, "game cannot be null");
-        this.game = game;
+    public GameSupport(Provider<Game> gameProvider) {
+		this.gameProvider = gameProvider;
+		this.painter = new FontPainter();
+		newGame();
+    }
+
+	public final void newGame(){
+		if(this.game != null){
+			endGame();
+		}
+		this.game = gameProvider.get();
+		Preconditions.checkNotNull(game, "game cannot be null");
 		this.levelSize = new Rectangle(0, 0,
 				game.getLevel().getWidth(), game.getLevel().getHeight());
-        this.gameEvent = new GameEvent(game);
-        //TODO Guice
-        this.painter = new FontPainter();
-    }
+		this.gameEvent = new GameEvent(game);
+		//TODO Guice
+	}
+
+	private void endGame(){
+		this.gameThread.interrupt();
+		this.gameThread = new Thread(new GameStart());
+	}
 
 	public void setControls(Controls controls){
 		this.game.setControls(new SynchronizedControls(controls));
@@ -121,6 +136,7 @@ class GameSupport {
     public void gameStart() {
         Preconditions.checkState(!gameThread.isAlive());
         gameThread.start();
+		LOG.info("starting game thread");
     }
 
 	void paintLevelImage(Graphics g, JComponent comp) {

@@ -2,6 +2,7 @@ package org.sankozi.rogueland.gui;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
+import javax.swing.Action;
 import javax.swing.JMenuBar;
 import org.apache.log4j.Logger;
 
@@ -24,6 +25,10 @@ public class GuiModule extends AbstractModule{
 
         bind(LevelPanel.class)
                 .annotatedWith(Names.named("level-panel"))
-                .to(LevelPanel.class);
+                .toInstance(new LevelPanel());
+
+		bind(Action.class)
+				.annotatedWith(Names.named("new-game"))
+				.to(NewGameAction.class);
 	}
 }
