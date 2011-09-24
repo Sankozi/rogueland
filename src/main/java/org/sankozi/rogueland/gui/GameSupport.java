@@ -11,7 +11,9 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.swing.JComponent;
@@ -41,11 +43,10 @@ class GameSupport {
 	 * (i.e. game is waiting for human player move)
      */
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
-
-
     private final TilePainter painter;
-	
 	private final Provider<Game> gameProvider;
+	private final Set<LogListener> logListeners = new HashSet<>();
+	
     private Game game;
 	private Controls gameControls;
     private Thread gameThread = new Thread(new GameStart());
@@ -66,6 +67,9 @@ class GameSupport {
 			endGame();
 		}
 		this.game = gameProvider.get();
+		for(LogListener ll : logListeners){
+			game.addLogListener(ll);
+		}
 		Preconditions.checkNotNull(game, "game cannot be null");
 		this.levelSize = new Rectangle(0, 0,
 				game.getLevel().getWidth(), game.getLevel().getHeight());
@@ -136,6 +140,7 @@ class GameSupport {
     }
 
     void addLogListener(LogListener logListener) {
+		logListeners.add(logListener);
         game.addLogListener(logListener);
     }
 
