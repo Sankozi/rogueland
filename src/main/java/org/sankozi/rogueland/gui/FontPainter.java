@@ -6,14 +6,16 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.control.Game;
 import org.sankozi.rogueland.model.Actor;
+import org.sankozi.rogueland.model.Direction;
+import org.sankozi.rogueland.model.Player;
 import org.sankozi.rogueland.model.Tile;
-
-import static java.lang.Math.*;
 
 /**
  *
@@ -28,9 +30,20 @@ public class FontPainter implements TilePainter{
     private int tileHeight;
     private int tileWidth;
 
-    private final ConcurrentMap<String,PainterOptions> optionsCache = new ConcurrentHashMap<String, PainterOptions>();
+    private final ConcurrentMap<String,PainterOptions> optionsCache = new ConcurrentHashMap<>();
+	private final Map<Direction, Character> directionChars = new EnumMap<>(Direction.class);
 
     {
+		directionChars.put(Direction.NW, '/');
+		directionChars.put(Direction.N, '|');
+		directionChars.put(Direction.NE, '\\');
+		
+		directionChars.put(Direction.W, '-');
+		directionChars.put(Direction.E, '-');
+
+		directionChars.put(Direction.SW, '/');
+		directionChars.put(Direction.S, '|');
+		directionChars.put(Direction.SE, '\\');
         try {
             font = new Font("Monospaced", Font.BOLD, 30);
         } catch (Exception ex) {
@@ -75,6 +88,17 @@ public class FontPainter implements TilePainter{
         g.setColor(po.color);
         g.drawString(po.character, x, y);
     }
+
+	private void drawSword(Game game, Graphics g, int startingPixelX, int startingX, int startingPixelY, int startingY) {
+		g.setColor(Color.WHITE);
+		Player p = game.getPlayer();
+		Point location = p.getLocation();
+		Direction dir = p.getWeaponDirection();
+		g.drawString(directionChars.get(dir).toString(), 
+				startingPixelX + tileWidth * (location.x - startingX + dir.dx), 
+				startingPixelY + tileHeight * (location.y - startingY + dir.dy));
+//		LOG.info("paint end");
+	}
 
     private void initMetrics(Graphics g){
         metrics = g.getFontMetrics(font);
@@ -135,6 +159,7 @@ public class FontPainter implements TilePainter{
 			}
             y += tileHeight;
         }
+		drawSword(game, g, startingPixelX, startingX, startingPixelY, startingY);
 //		LOG.info("paint end");
     }
 

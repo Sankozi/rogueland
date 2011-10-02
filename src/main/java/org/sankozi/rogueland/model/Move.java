@@ -17,6 +17,11 @@ public interface Move {
         SOUTHWEST;
     }
 
+	public static enum Rotate implements Move{
+		CLOCKWISE,
+		COUNTERCLOCKWISE
+	}
+
     public static final Move WAIT = new Move(){};
 
 }

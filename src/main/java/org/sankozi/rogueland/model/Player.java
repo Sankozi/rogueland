@@ -31,6 +31,7 @@ public class Player extends AbstractActor {
 
     private final Controls controls;
     private Point location;
+	private Direction weaponDirection = Direction.N;
 
     public Player(Controls controls){
         super(10);
@@ -69,6 +70,14 @@ public class Player extends AbstractActor {
 
 	public final float playerParam(Param param){
 		return params.get(param);
+	}
+
+	public Direction getWeaponDirection() {
+		return weaponDirection;
+	}
+
+	public void setWeaponDirection(Direction weaponDirection) {
+		this.weaponDirection = weaponDirection;
 	}
 
     @Override
