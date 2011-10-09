@@ -207,6 +207,10 @@ public class LevelPanel extends JComponent{
                     return Move.Go.SOUTH;
                 case KeyEvent.VK_RIGHT:
                     return Move.Go.EAST;
+				case KeyEvent.VK_Q:
+					return Move.Rotate.COUNTERCLOCKWISE;
+				case KeyEvent.VK_E:
+					return Move.Rotate.CLOCKWISE;
                 default:
                     return null;
             }

@@ -9,6 +9,7 @@ import org.sankozi.rogueland.model.AiActor;
 import org.sankozi.rogueland.model.Controls;
 import org.sankozi.rogueland.model.Damage;
 import org.sankozi.rogueland.model.Destroyable.Param;
+import org.sankozi.rogueland.model.Direction;
 import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.LevelGenerator;
 import org.sankozi.rogueland.model.Locator;
@@ -89,7 +90,7 @@ public class Game {
                 tiles[actorLocation.x][actorLocation.y].actor = actor;
                 m = actor.act(level, locator);
                 newLocation = actorLocation.getLocation();
-                processMove(m, newLocation);
+                processMove(actor, m, newLocation);
 //                LOG.info("actor : " + actor + " move : " + newLocation);
                 tiles[actorLocation.x][actorLocation.y].actor = null;
             } while (!validLocation(newLocation, tiles));
@@ -145,7 +146,7 @@ public class Game {
         }
     }
 
-    private static void processMove(Move m, Point newLocation) {
+    private static void processMove(Actor a, Move m, Point newLocation) {
         if(m instanceof Move.Go){
             switch ((Move.Go) m) {
                 case EAST:
@@ -179,7 +180,18 @@ public class Game {
                 default:
                     LOG.error("unhandled move : " + m);
             }
-        } else if(m == Move.WAIT) {
+        } else if(m instanceof Move.Rotate) {
+			Player p = (Player) a;
+			Direction dir = p.getWeaponDirection();
+			switch ((Move.Rotate) m) {
+				case CLOCKWISE:
+					p.setWeaponDirection(dir.nextClockwise());
+					return;
+				case COUNTERCLOCKWISE:
+					p.setWeaponDirection(dir.prevClockwise());
+					return;
+			}
+		} else if(m == Move.WAIT) {
             GameLog.info("Waiting");
         } else {
             LOG.error("unhandled move : " + m);

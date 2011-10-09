@@ -34,9 +34,9 @@ public class FontPainter implements TilePainter{
 	private final Map<Direction, Character> directionChars = new EnumMap<>(Direction.class);
 
     {
-		directionChars.put(Direction.NW, '/');
+		directionChars.put(Direction.NW, '\\');
 		directionChars.put(Direction.N, '|');
-		directionChars.put(Direction.NE, '\\');
+		directionChars.put(Direction.NE, '/');
 		
 		directionChars.put(Direction.W, '-');
 		directionChars.put(Direction.E, '-');
