@@ -13,9 +13,10 @@ public final class Tile {
     }
     public Type type = Type.GRASS;
     public Actor actor;
+	public boolean weapon;
 
 	public boolean isPassable(){
-		return type != Type.WALL && actor == null;
+		return type != Type.WALL && actor == null && !weapon;
 	}
 
     @Override

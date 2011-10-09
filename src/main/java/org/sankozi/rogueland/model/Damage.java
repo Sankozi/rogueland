@@ -37,5 +37,4 @@ public final class Damage {
     public String toString() {
         return value + " " + type + " damage";
     }
-
 }

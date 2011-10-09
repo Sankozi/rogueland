@@ -70,6 +70,21 @@ public class AiActor extends AbstractActor{
 		}
 	}
 
+	@Override
+	public final boolean isArmed() {
+		return false;
+	}
+
+	@Override
+	public Damage getWeaponPower() {
+		return null;
+	}
+
+	@Override
+	public Point getWeaponLocation() {
+		return null;
+	}
+
     @Override
     public Point getLocation() {
         return location;

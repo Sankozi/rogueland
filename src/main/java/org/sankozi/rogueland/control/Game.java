@@ -97,7 +97,7 @@ public class Game {
 
             Tile tile = tiles[newLocation.x][newLocation.y];
             if(tile.actor != null){
-                interact(actor, tile.actor);
+                interact(actor, tile.actor, actor.getPower());
             } else {
                 actorLocation = newLocation;
             }
@@ -105,11 +105,54 @@ public class Game {
             actor.setLocation(actorLocation);
         }
 
+		private void processArmedActor(Actor actor) {
+            Move m;
+            Point newLocation;
+            Point actorLocation = actor.getLocation();
+			Point prevWeaponLocation = actor.getWeaponLocation();	
+            final Tile[][] tiles = level.getTiles();
+            do {
+                tiles[actorLocation.x][actorLocation.y].actor = actor;
+                m = actor.act(level, locator);
+                newLocation = actorLocation.getLocation();
+                processMove(actor, m, newLocation);
+//                LOG.info("actor : " + actor + " move : " + newLocation);
+                tiles[actorLocation.x][actorLocation.y].actor = null;
+            } while (!validLocation(newLocation, tiles));
+
+			if(!newLocation.equals(actorLocation)){
+				Tile tile = tiles[newLocation.x][newLocation.y];
+				if(tile.actor != null){
+					interact(actor, tile.actor, actor.getPower());
+				} else {
+					actorLocation = newLocation;
+				}
+				tiles[actorLocation.x][actorLocation.y].actor = actor;
+				actor.setLocation(actorLocation);
+			}
+			Point nextWeaponLocation = actor.getWeaponLocation();	
+
+			if(!prevWeaponLocation.equals(nextWeaponLocation)){
+				LOG.info("new weapon location : " + nextWeaponLocation.x + "," + nextWeaponLocation.y);
+				Tile tile = tiles[nextWeaponLocation.x][nextWeaponLocation.y];
+				level.getTiles()[prevWeaponLocation.x][prevWeaponLocation.y].weapon = false;
+				level.getTiles()[nextWeaponLocation.x][nextWeaponLocation.y].weapon = true;
+				if(tile.actor != null){
+					interact(actor, tile.actor, actor.getWeaponPower());
+				}
+			}
+        }
+
         private void processActors() {
             for(Actor actor:actors){
                 actor.heal(actor.destroyableParam(Param.HEALTH_REGEN));
 				if(!actor.isDestroyed()){
-                	processActor(actor);
+					if(actor.isArmed()){
+						processArmedActor(actor);
+						
+					} else {
+						processActor(actor);
+					}
 				}
             }
 			actors.removeAll(toBeRemoved);
@@ -132,8 +175,7 @@ public class Game {
      * @param actor
      * @param target
      */
-    private void interact(Actor actor, Actor target) {
-        Damage dam = actor.getPower();
+    private void interact(Actor actor, Actor target, Damage dam){
         float res = target.protection(dam.type);
         
         if(res < dam.value){

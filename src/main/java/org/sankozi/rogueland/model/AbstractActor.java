@@ -7,7 +7,7 @@ import java.util.EnumMap;
  * @author sankozi
  */
 public abstract class AbstractActor extends AbstractDestroyable implements Actor{
-    private final EnumMap<Actor.Param, Float> params = new EnumMap<Actor.Param, Float>(Actor.Param.class);
+    private final EnumMap<Actor.Param, Float> params = new EnumMap<>(Actor.Param.class);
 
     public AbstractActor(int durability) {
         super(durability);
