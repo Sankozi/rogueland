@@ -37,10 +37,10 @@ class GameSupport {
     private GameEvent gameEvent;
 
     /**
-     * Lock that protects Game object during move processing
+     * Lock that protects all mutable state of this object
      *
      * Write lock is locked before game is started and is released when player is moving 
-	 * (i.e. game is waiting for human player move)
+	 * (i.e. game is waiting for human player move and providing gui information)
      */
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
     private final TilePainter painter;
