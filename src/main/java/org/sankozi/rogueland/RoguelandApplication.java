@@ -1,10 +1,6 @@
 package org.sankozi.rogueland;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-import com.google.inject.Provides;
+import com.google.inject.*;
 import com.google.inject.name.Named;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
