@@ -105,6 +105,10 @@ public class Game {
             actor.setLocation(actorLocation);
         }
 
+		/**
+		 * Process actor that is moving with its weapon (on different tile)
+		 * @param actor 
+		 */
 		private void processArmedActor(Actor actor) {
             Move m;
             Point newLocation;
