@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sankozi.rogueland;
 
 import org.junit.Test;
@@ -24,6 +20,10 @@ public class MathUtilsTest {
         assertEquals(0, MathUtils.clamp(0, 0, 0));        
         assertEquals(0, MathUtils.clamp(0, 0, 5));  
         assertEquals(0, MathUtils.clamp(-5, 0, 5));
-        assertEquals(0, MathUtils.clamp(500, -5, 0));
+        
+        assertEquals(0, MathUtils.clamp(500, -5, 0));        
+        assertEquals(5, MathUtils.clamp(500, -5, 5));
+        
+        assertEquals(5, MathUtils.clamp(5, -50, 50));
     }
 }
