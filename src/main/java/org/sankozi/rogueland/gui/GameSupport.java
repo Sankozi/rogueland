@@ -127,10 +127,18 @@ class GameSupport {
         this.listeners.clear();
     }
 
+	/**
+	 * Returns player location (in pixels) on painted field
+	 * @return player tile location or null if game has not started
+	 */
     public Rectangle getPlayerLocation(){
-        return painter.getPixelLocation(game, 
+		if(game.isInitialized()){
+        	return painter.getPixelLocation(game, 
 				levelImage.getWidth(), levelImage.getHeight(),
 				game.getPlayer().getLocation());
+		} else {
+			return null;
+		}
     }
 
     public void fireGameEvent(GameEvent ge){
@@ -217,4 +225,8 @@ class GameSupport {
             }
         }
     }
+
+	public boolean isGameStarted(){
+		return gameThread.isAlive();
+	}
 }

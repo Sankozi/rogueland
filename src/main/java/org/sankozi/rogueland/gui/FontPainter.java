@@ -18,7 +18,7 @@ import org.sankozi.rogueland.model.Player;
 import org.sankozi.rogueland.model.Tile;
 
 /**
- *
+ * TilePainter that uses font symbols for representing various tiles
  * @author sankozi
  */
 public class FontPainter implements TilePainter{
@@ -108,6 +108,11 @@ public class FontPainter implements TilePainter{
 
     @Override
     public void paint(Game game, Graphics g, int width, int height) {
+		if(!game.isInitialized()){
+			g.setColor(Color.BLACK);
+			g.fillRect(0,0, width, height);
+			return;
+		}
 //		LOG.info("paint start : size ->" + width + " " + height);
 		Tile[][] tiles = game.getLevel().getTiles();
 

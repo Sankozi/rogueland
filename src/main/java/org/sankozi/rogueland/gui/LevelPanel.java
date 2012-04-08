@@ -32,7 +32,7 @@ public class LevelPanel extends JComponent{
 
     GameSupport gameSupport;
 
-    Rectangle playerLocation = new Rectangle(50, 50, 10, 10);
+    Rectangle playerLocation = null;
     Direction cursorDirection;
 
     GuiControls gc = new GuiControls();
@@ -73,7 +73,7 @@ public class LevelPanel extends JComponent{
             @Override public void onEvent(GameEvent event) { refreshGameState(); }
         });
 		gameSupport.setControls(gc);
-		gameSupport.startGame();
+//		gameSupport.startGame();
 	}
 
     private void setDirectionCursor(Direction dir){
@@ -129,6 +129,8 @@ public class LevelPanel extends JComponent{
 
         @Override
         public void mouseMoved(MouseEvent e) {
+			if(playerLocation == null) return; //null means game hasn't loaded yet
+			
             int x = e.getX();
             int y = e.getY();
             int px = playerLocation.x + playerLocation.width / 2;
@@ -219,6 +221,9 @@ public class LevelPanel extends JComponent{
 
         @Override
         public void keyPressed(KeyEvent e) {
+			if(!gameSupport.isGameStarted()){
+				return;
+			}
             try {
                 Move move = fromKeyCode(e.getKeyCode());
                 if(move != null){
@@ -235,6 +240,9 @@ public class LevelPanel extends JComponent{
 
         @Override
         public void mouseClicked(MouseEvent e) {
+			if(!gameSupport.isGameStarted()){
+				return;
+			}
             try {
                 keysPressed.offer(cursorDirection.toSingleMove(), 1, TimeUnit.SECONDS);
             } catch (InterruptedException ex) {

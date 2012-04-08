@@ -41,6 +41,7 @@ public class Game {
 
     public Runnable provideRunnable(){
         if(runningGame == null){
+			LOG.info("providing GameRunnable");
             runningGame = new GameRunnable();
             return runningGame;
         } else {
@@ -256,6 +257,15 @@ public class Game {
             return tile.type != Tile.Type.WALL;
         }
     }
+
+	/**
+	 * Returns true if this game object has been initialized and represents running
+	 * game
+	 * @return 
+	 */
+	public boolean isInitialized(){
+		return player != null;
+	}
 
 	public Level getLevel() {
         return level;

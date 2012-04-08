@@ -17,6 +17,7 @@ public class HealthBar extends JComponent implements GameListener{
 	private static final long serialVersionUID = 1L;
 	private final static Logger LOG = Logger.getLogger(HealthBar.class);
 
+	boolean initialized;
 	float redPart = 0f;
 	
     {
@@ -31,6 +32,10 @@ public class HealthBar extends JComponent implements GameListener{
 
     @Override
     public void paint(Graphics g) {
+		if(!initialized) {
+			super.paint(g);
+			return;
+		}
 		g.setColor(Color.GREEN);
         g.fillRect(0, 0, g.getClipBounds().width, g.getClipBounds().height);
 		g.setColor(Color.RED);
@@ -39,6 +44,7 @@ public class HealthBar extends JComponent implements GameListener{
 
 	@Override
 	public void onEvent(GameEvent event) {
+		initialized = event.game.isInitialized();
 		Player player = event.game.getPlayer();
 		redPart = 1f - ((float) player.getDurability() / (float) player.destroyableParam(Param.MAX_HEALTH));
 //		LOG.info("redPart = " + redPart);
