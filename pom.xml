@@ -7,6 +7,34 @@
     <packaging>jar</packaging>
     <version>0.1-SNAPSHOT</version>
     <name>Rogueland</name>
+	<profiles><profile>
+		<id>fat-jar</id>
+		<build>
+			<plugins>
+				<plugin>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<configuration>
+						<archive>
+							<manifest>
+								<mainClass>org.sankozi.rogueland.RoguelandApplication</mainClass>
+							</manifest>
+						</archive>
+						<descriptorRefs>
+							<descriptorRef>jar-with-dependencies</descriptorRef>
+						</descriptorRefs>
+					</configuration>
+					<executions>
+						<execution>
+							<phase>package</phase>
+							<goals>
+								<goal>single</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</build>
+	</profile></profiles>
     <build>
         <plugins>
             <plugin>
@@ -18,7 +46,7 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
-        </plugins>
+		</plugins>
     </build>
     <repositories>
         <repository>
@@ -31,6 +59,11 @@
         </repository>
     </repositories>
     <dependencies>
+		<dependency>
+          <groupId>javolution</groupId>
+          <artifactId>javolution</artifactId>
+          <version>5.5.1</version>
+      	</dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
