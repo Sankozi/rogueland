@@ -60,7 +60,7 @@ public abstract class AbstractDestroyable implements Destroyable{
 
     @Override
     public boolean isDestroyed() {
-        return durability <= 0;
+        return durability < 1f;
     }
 
     @Override
