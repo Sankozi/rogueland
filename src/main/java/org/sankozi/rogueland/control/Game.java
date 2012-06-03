@@ -91,7 +91,7 @@ public class Game {
                 tiles[actorLocation.x][actorLocation.y].actor = actor;
                 m = actor.act(level, locator);
                 targetLocation = actorLocation.getLocation();
-                processMove(actor, m, targetLocation);
+                setTargetLocationAndRotate(actor, m, targetLocation);
 //                LOG.info("actor : " + actor + " move : " + newLocation);
                 tiles[actorLocation.x][actorLocation.y].actor = null;
             } while (!validLocation(targetLocation, tiles));
@@ -128,21 +128,23 @@ public class Game {
                 tiles[actorLocation.x][actorLocation.y].actor = actor;
                 m = actor.act(level, locator);
                 targetLocation = actorLocation.getLocation();
-                processMove(actor, m, targetLocation);
+                setTargetLocationAndRotate(actor, m, targetLocation);
 //                LOG.info("actor : " + actor + " move : " + newLocation);
-                tiles[actorLocation.x][actorLocation.y].actor = null;
             } while (!validLocation(targetLocation, tiles));
 
 			if(!targetLocation.equals(actorLocation)){
+                tiles[actorLocation.x][actorLocation.y].actor = null;
 				Tile tile = tiles[targetLocation.x][targetLocation.y];
 				if(tile.actor != null){
 					interact(actor, tile.actor, actor.getPower());
 				} else {
 					actorLocation = targetLocation;
 				}
+				assert tiles[actorLocation.x][actorLocation.y].actor == null 
+						: tiles[actorLocation.x][actorLocation.y].actor.getName() + " on point " + actorLocation;
 				tiles[actorLocation.x][actorLocation.y].actor = actor;
 				actor.setLocation(actorLocation);
-			}
+			} 
 			if(actor.isArmed()){
 				Point nextWeaponLocation = actor.getWeaponLocation();	
 
@@ -202,7 +204,7 @@ public class Game {
         }
     }
 
-    private static void processMove(Actor a, Move m, Point newLocation) {
+    private static void setTargetLocationAndRotate(Actor a, Move m, Point newLocation) {
         if(m instanceof Move.Go){
             switch ((Move.Go) m) {
                 case EAST:
