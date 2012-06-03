@@ -1,7 +1,7 @@
 package org.sankozi.rogueland.model;
 
 /**
- *
+ * Object that acts, on each tile there can be only one actor
  * @author sankozi
  */
 public interface Actor extends Destroyable{

@@ -27,7 +27,7 @@ public class Player extends AbstractActor {
 				Param.WILLPOWER), 
 			Param.class);
 
-    private final EnumMap<Param, Float> params = new EnumMap<Param, Float>(Param.class);
+    private final EnumMap<Param, Float> params = new EnumMap<>(Param.class);
 
     private final Controls controls;
     private Coords location;
