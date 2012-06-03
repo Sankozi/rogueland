@@ -1,6 +1,5 @@
 package org.sankozi.rogueland.model;
 
-import java.awt.Point;
 import java.util.Random;
 import org.apache.log4j.Logger;
 

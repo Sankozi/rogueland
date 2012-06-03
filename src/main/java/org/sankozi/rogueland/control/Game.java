@@ -1,11 +1,10 @@
 package org.sankozi.rogueland.control;
 
 import com.google.common.collect.Lists;
-import java.awt.Point;
 import java.util.List;
 import org.apache.log4j.Logger;
-import org.sankozi.rogueland.model.*;
 import org.sankozi.rogueland.model.Destroyable.Param;
+import org.sankozi.rogueland.model.*;
 
 /**
  * Object responsible for single game instance

@@ -1,7 +1,6 @@
 package org.sankozi.rogueland.gui;
 
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.Rectangle;
 import org.sankozi.rogueland.control.Game;
 import org.sankozi.rogueland.model.Coords;

@@ -1,7 +1,5 @@
 package org.sankozi.rogueland.model;
 
-import java.awt.Point;
-
 /**
  *
  * @author sankozi

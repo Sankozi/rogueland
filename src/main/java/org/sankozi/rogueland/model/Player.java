@@ -1,7 +1,6 @@
 package org.sankozi.rogueland.model;
 
 import com.google.common.collect.Sets;
-import java.awt.Point;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Set;

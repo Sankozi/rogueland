@@ -1,6 +1,5 @@
 package org.sankozi.rogueland.control;
 
-import java.awt.Point;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.model.Coords;
 import org.sankozi.rogueland.model.Level;
