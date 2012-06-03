@@ -17,8 +17,4 @@ public abstract class AbstractActor extends AbstractDestroyable implements Actor
     public float actorParam(Actor.Param param) {
         return params.get(param);
     }
-//
-//    protected void setResistance(Type type, int value){
-//        params.put(type.getResistanceParam(), value);
-//    }
 }

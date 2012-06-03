@@ -71,37 +71,6 @@ public class Game {
 			}
         }
 
-        private void processActorx(Actor actor) {
-            Move m;
-            Coords targetLocation;
-            Coords actorLocation = actor.getLocation();
-            final Tile[][] tiles = level.getTiles();
-            do {
-                tiles[actorLocation.x][actorLocation.y].actor = actor;
-                m = actor.act(level, locator);
-                targetLocation = getTargetLocationAndRotate(actor, m, actorLocation);
-//                LOG.info("actor : " + actor + " move : " + newLocation);
-                tiles[actorLocation.x][actorLocation.y].actor = null;
-            } while (!validLocation(targetLocation, tiles));
-
-//            Tile tile = tiles[newLocation.x][newLocation.y];
-//            if(tile.actor != null){
-//                interact(actor, tile.actor, actor.getPower());
-//            } else {
-//                actorLocation = newLocation;
-//            }
-			if(!targetLocation.equals(actorLocation)){
-				Tile tile = tiles[targetLocation.x][targetLocation.y];
-				if(tile.actor != null){
-					interact(actor, tile.actor, actor.getPower());
-				} else {
-					actorLocation = targetLocation;
-				}
-				tiles[actorLocation.x][actorLocation.y].actor = actor;
-				actor.setLocation(actorLocation);
-			}
-        }
-
 		/**
 		 * Process actor that is moving with its weapon (on different tile)
 		 * @param actor 
@@ -151,11 +120,7 @@ public class Game {
             for(Actor actor:actors){
                 actor.heal(actor.destroyableParam(Param.HEALTH_REGEN));
 				if(!actor.isDestroyed()){
-//					if(actor.isArmed()){
-//						processArmedActor(actor);
-//					} else {
-						processActor(actor);
-//					}
+					processActor(actor);
 				}
             }
 			actors.removeAll(toBeRemoved);
