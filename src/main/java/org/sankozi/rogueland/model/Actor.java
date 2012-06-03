@@ -24,7 +24,7 @@ public interface Actor extends Destroyable{
 	/** Returns true if Actor has weapon */
 	boolean isArmed();
 
-	Point getWeaponLocation();
+	Coords getWeaponLocation();
 
     enum Param {
         DAMAGE_MIN,

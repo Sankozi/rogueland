@@ -78,8 +78,8 @@ public class Player extends AbstractActor {
 	}
 
 	@Override
-	public Point getWeaponLocation(){
-		return new Point(location.x + weaponDirection.dx, location.y + weaponDirection.dy);
+	public Coords getWeaponLocation(){
+		return new Coords(location.x + weaponDirection.dx, location.y + weaponDirection.dy);
 	}
 
 	public void setWeaponDirection(Direction weaponDirection) {

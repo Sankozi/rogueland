@@ -111,7 +111,7 @@ public class Game {
             Move m;
             Coords targetLocation;
             Coords actorLocation = actor.getLocation();
-			Point prevWeaponLocation = actor.getWeaponLocation();	
+			Coords prevWeaponLocation = actor.getWeaponLocation();	
             final Tile[][] tiles = level.getTiles();
             do {
                 tiles[actorLocation.x][actorLocation.y].actor = actor;
@@ -134,7 +134,7 @@ public class Game {
 				actor.setLocation(actorLocation);
 			} 
 			if(actor.isArmed()){
-				Point nextWeaponLocation = actor.getWeaponLocation();	
+				Coords nextWeaponLocation = actor.getWeaponLocation();	
 
 				if(!prevWeaponLocation.equals(nextWeaponLocation)){
 					LOG.info("new weapon location : " + nextWeaponLocation.x + "," + nextWeaponLocation.y);

@@ -81,7 +81,7 @@ public class AiActor extends AbstractActor{
 	}
 
 	@Override
-	public Point getWeaponLocation() {
+	public Coords getWeaponLocation() {
 		return null;
 	}
 
