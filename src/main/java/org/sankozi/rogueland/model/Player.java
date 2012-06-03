@@ -102,7 +102,7 @@ public class Player extends AbstractActor {
 
     @Override
     public Damage getPower() {
-        return damage;
+        return closeDamage;
     }
 
 	@Override
