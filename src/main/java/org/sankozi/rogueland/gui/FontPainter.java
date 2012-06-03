@@ -7,10 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.control.Game;
-import org.sankozi.rogueland.model.Actor;
-import org.sankozi.rogueland.model.Direction;
-import org.sankozi.rogueland.model.Player;
-import org.sankozi.rogueland.model.Tile;
+import org.sankozi.rogueland.model.*;
 
 /**
  * TilePainter that uses font symbols for representing various tiles
@@ -47,7 +44,7 @@ public class FontPainter implements TilePainter{
     }
 
     @Override
-    public Rectangle getPixelLocation(Game game, int width, int height, Point location) {
+    public Rectangle getPixelLocation(Game game, int width, int height, Coords location) {
 		//pixel coordinates
 		width = width - width % tileWidth;
 		height = height - height % tileHeight;
@@ -87,7 +84,7 @@ public class FontPainter implements TilePainter{
 	private void drawSword(Game game, Graphics g, int startingPixelX, int startingX, int startingPixelY, int startingY) {
 		g.setColor(Color.WHITE);
 		Player p = game.getPlayer();
-		Point location = p.getLocation();
+		Coords location = p.getLocation();
 		Direction dir = p.getWeaponDirection();
 		g.drawString(directionChars.get(dir).toString(), 
 				startingPixelX + tileWidth * (location.x - startingX + dir.dx), 
@@ -124,7 +121,7 @@ public class FontPainter implements TilePainter{
 		//tile coordinates
 		int screenWidth = width / tileWidth;
 		int screenHeight = height / tileHeight;
-		Point playerLocation = game.getPlayer().getLocation();
+		Coords playerLocation = game.getPlayer().getLocation();
 		int startingX = playerLocation.x - screenWidth  / 2;
 		if(startingX < 0){
 			startingPixelX -= startingX * tileWidth;

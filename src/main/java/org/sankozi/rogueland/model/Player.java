@@ -31,7 +31,7 @@ public class Player extends AbstractActor {
     private final EnumMap<Param, Float> params = new EnumMap<Param, Float>(Param.class);
 
     private final Controls controls;
-    private Point location;
+    private Coords location;
 	private Direction weaponDirection = Direction.N;
 
     public Player(Controls controls){
@@ -77,6 +77,7 @@ public class Player extends AbstractActor {
 		return weaponDirection;
 	}
 
+	@Override
 	public Point getWeaponLocation(){
 		return new Point(location.x + weaponDirection.dx, location.y + weaponDirection.dy);
 	}
@@ -86,12 +87,12 @@ public class Player extends AbstractActor {
 	}
 
     @Override
-    public Point getLocation() {
+    public Coords getLocation() {
         return location;
     }
 
     @Override
-    public void setLocation(Point point) {
+    public void setLocation(Coords point) {
         this.location = point;
     }
 

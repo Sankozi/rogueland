@@ -2,6 +2,7 @@ package org.sankozi.rogueland.control;
 
 import java.awt.Point;
 import org.apache.log4j.Logger;
+import org.sankozi.rogueland.model.Coords;
 import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.Locator;
 
@@ -21,7 +22,7 @@ class GameLevelLocator implements Locator{
 	}
 
 	@Override
-	public Point playerLocation() {
+	public Coords playerLocation() {
 		return game.getPlayer().getLocation();
 	}
 }

@@ -9,8 +9,8 @@ import java.awt.Point;
 public interface Actor extends Destroyable{
     Move act(Level input, Locator locator);
 
-    Point getLocation();
-    void setLocation(Point point);
+    Coords getLocation();
+    void setLocation(Coords point);
 
 	/** returns power of close attacks */
     Damage getPower();
@@ -19,14 +19,14 @@ public interface Actor extends Destroyable{
 	Damage getWeaponPower();
 
     /** Returns value stored in int */
-    public float actorParam(Param param);
+    float actorParam(Param param);
 
 	/** Returns true if Actor has weapon */
-	public boolean isArmed();
+	boolean isArmed();
 
-	public Point getWeaponLocation();
+	Point getWeaponLocation();
 
-    public enum Param {
+    enum Param {
         DAMAGE_MIN,
         DAMAGE_MAX,
        

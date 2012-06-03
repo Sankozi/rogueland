@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import org.sankozi.rogueland.control.Game;
+import org.sankozi.rogueland.model.Coords;
 
 /**
  * Object that paint game field
@@ -28,5 +29,5 @@ public interface TilePainter {
 	 * @param location point in pixels
 	 * @return rectangle (coords in pixels)
 	 */
-    Rectangle getPixelLocation(Game game, int width, int height, Point location); 
+    Rectangle getPixelLocation(Game game, int width, int height, Coords location); 
 }

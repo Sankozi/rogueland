@@ -14,7 +14,7 @@ public class AiActor extends AbstractActor{
 	private final static Logger LOG = Logger.getLogger(AiActor.class);
     private final static Damage damage = new Damage(Damage.Type.BLUNT, 5);
 
-    Point location;
+    Coords location;
     Random rand = new Random();
 
     public AiActor() {
@@ -28,7 +28,7 @@ public class AiActor extends AbstractActor{
         return findDirectionToward(level, locator.playerLocation());
     }
 
-	private Move findDirectionToward(Level level, Point destination){
+	private Move findDirectionToward(Level level, Coords destination){
 		int dx = clamp(destination.x - this.getLocation().x, -1, 1) ;
 		int dy = clamp(destination.y - this.getLocation().y, -1, 1) ;
 		int x = this.getLocation().x + dx;
@@ -86,12 +86,12 @@ public class AiActor extends AbstractActor{
 	}
 
     @Override
-    public Point getLocation() {
+    public Coords getLocation() {
         return location;
     }
 
     @Override
-    public void setLocation(Point point) {
+    public void setLocation(Coords point) {
         this.location = point;
     }
 

@@ -4,18 +4,8 @@ import com.google.common.collect.Lists;
 import java.awt.Point;
 import java.util.List;
 import org.apache.log4j.Logger;
-import org.sankozi.rogueland.model.Actor;
-import org.sankozi.rogueland.model.AiActor;
-import org.sankozi.rogueland.model.Controls;
-import org.sankozi.rogueland.model.Damage;
+import org.sankozi.rogueland.model.*;
 import org.sankozi.rogueland.model.Destroyable.Param;
-import org.sankozi.rogueland.model.Direction;
-import org.sankozi.rogueland.model.Level;
-import org.sankozi.rogueland.model.LevelGenerator;
-import org.sankozi.rogueland.model.Locator;
-import org.sankozi.rogueland.model.Move;
-import org.sankozi.rogueland.model.Player;
-import org.sankozi.rogueland.model.Tile;
 
 /**
  * Object responsible for single game instance
@@ -55,10 +45,10 @@ public class Game {
      */
     public void setControls(Controls controls){
         this.player = new Player(controls);
-        player.setLocation(new Point(5,5));
+        player.setLocation(new Coords(5,5));
         actors.add(player);
         Actor ai = new AiActor();
-        ai.setLocation(new Point(10,10));
+        ai.setLocation(new Coords(10,10));
         actors.add(ai);
     }
 
@@ -84,14 +74,13 @@ public class Game {
 
         private void processActorx(Actor actor) {
             Move m;
-            Point targetLocation;
-            Point actorLocation = actor.getLocation();
+            Coords targetLocation;
+            Coords actorLocation = actor.getLocation();
             final Tile[][] tiles = level.getTiles();
             do {
                 tiles[actorLocation.x][actorLocation.y].actor = actor;
                 m = actor.act(level, locator);
-                targetLocation = actorLocation.getLocation();
-                setTargetLocationAndRotate(actor, m, targetLocation);
+                targetLocation = getTargetLocationAndRotate(actor, m, actorLocation);
 //                LOG.info("actor : " + actor + " move : " + newLocation);
                 tiles[actorLocation.x][actorLocation.y].actor = null;
             } while (!validLocation(targetLocation, tiles));
@@ -120,15 +109,14 @@ public class Game {
 		 */
 		private void processActor(Actor actor) {
             Move m;
-            Point targetLocation;
-            Point actorLocation = actor.getLocation();
+            Coords targetLocation;
+            Coords actorLocation = actor.getLocation();
 			Point prevWeaponLocation = actor.getWeaponLocation();	
             final Tile[][] tiles = level.getTiles();
             do {
                 tiles[actorLocation.x][actorLocation.y].actor = actor;
                 m = actor.act(level, locator);
-                targetLocation = actorLocation.getLocation();
-                setTargetLocationAndRotate(actor, m, targetLocation);
+                targetLocation = getTargetLocationAndRotate(actor, m, actorLocation);
 //                LOG.info("actor : " + actor + " move : " + newLocation);
             } while (!validLocation(targetLocation, tiles));
 
@@ -204,59 +192,65 @@ public class Game {
         }
     }
 
-    private static void setTargetLocationAndRotate(Actor a, Move m, Point newLocation) {
+    private static Coords getTargetLocationAndRotate(Actor a, Move m, Coords location) {
         if(m instanceof Move.Go){
+			int newX = location.x;
+			int newY = location.y;
             switch ((Move.Go) m) {
                 case EAST:
-                    newLocation.x++;
+                    newX++;
                     break;
                 case NORTH:
-                    newLocation.y--;
+                    newY--;
                     break;
                 case WEST:
-                    newLocation.x--;
+                    newX--;
                     break;
                 case SOUTH:
-                    newLocation.y++;
+                    newY++;
                     break;
                 case NORTHEAST:
-                    newLocation.y--;
-                    newLocation.x++;
+                    newY--;
+                    newX++;
                     break;
                 case NORTHWEST:
-                    newLocation.y--;
-                    newLocation.x--;
+                    newY--;
+                    newX--;
                     break;
                 case SOUTHEAST:
-                    newLocation.y++;
-                    newLocation.x++;
+                    newY++;
+                    newX++;
                     break;
                 case SOUTHWEST:
-                    newLocation.y++;
-                    newLocation.x--;
+                    newY++;
+                    newX--;
                     break;
                 default:
                     LOG.error("unhandled move : " + m);
             }
+			return new Coords(newX, newY);
         } else if(m instanceof Move.Rotate) {
 			Player p = (Player) a;
 			Direction dir = p.getWeaponDirection();
 			switch ((Move.Rotate) m) {
 				case CLOCKWISE:
 					p.setWeaponDirection(dir.nextClockwise());
-					return;
+					break;
 				case COUNTERCLOCKWISE:
 					p.setWeaponDirection(dir.prevClockwise());
-					return;
+					break;
 			}
+			return location;
 		} else if(m == Move.WAIT) {
             GameLog.info("Waiting");
+			return location;
         } else {
             LOG.error("unhandled move : " + m);
+			return location;
         }
     }
 
-    private static boolean validLocation(Point playerLocation, Tile[][] tiles) {
+    private static boolean validLocation(Coords playerLocation, Tile[][] tiles) {
         //location outside level
         if(playerLocation.x < 0 || playerLocation.y < 0
                 || playerLocation.x >= tiles.length
