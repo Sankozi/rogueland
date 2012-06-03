@@ -18,8 +18,8 @@ public class AiActor extends AbstractActor{
 
     public AiActor() {
         super(10);
-        setDestroyableParam(Destroyable.Param.HEALTH_REGEN, 0.125f);
-        setDestroyableParam(Destroyable.Param.MAX_HEALTH, 20);
+        setDestroyableParam(Destroyable.Param.DURABILITY_REGEN, 0.125f);
+        setDestroyableParam(Destroyable.Param.MAX_DURABILITY, 20);
     }
 
     @Override

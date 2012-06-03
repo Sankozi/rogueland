@@ -39,8 +39,8 @@ public class Player extends AbstractActor {
 			setPlayerParam(param, 10f);
 		}
         this.controls = controls;
-        setDestroyableParam(Destroyable.Param.HEALTH_REGEN, 0.25f);
-        setDestroyableParam(Destroyable.Param.MAX_HEALTH, 20);
+        setDestroyableParam(Destroyable.Param.DURABILITY_REGEN, 0.25f);
+        setDestroyableParam(Destroyable.Param.MAX_DURABILITY, 20);
     }
 
     @Override

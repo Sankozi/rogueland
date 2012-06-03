@@ -118,7 +118,7 @@ public class Game {
 
         private void processActors() {
             for(Actor actor:actors){
-                actor.heal(actor.destroyableParam(Param.HEALTH_REGEN));
+                actor.heal(actor.destroyableParam(Param.DURABILITY_REGEN));
 				if(!actor.isDestroyed()){
 					processActor(actor);
 				}

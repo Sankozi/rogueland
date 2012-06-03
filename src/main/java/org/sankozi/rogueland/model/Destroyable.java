@@ -24,8 +24,8 @@ public interface Destroyable extends GameObject{
     void setDestroyableParam(Param param, float value);
 
     public enum Param {
-        MAX_HEALTH,
-        HEALTH_REGEN,
+        MAX_DURABILITY,
+        DURABILITY_REGEN,
 
         /* Protections */
 

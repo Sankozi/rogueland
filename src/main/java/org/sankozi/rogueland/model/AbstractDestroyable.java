@@ -22,7 +22,7 @@ public abstract class AbstractDestroyable implements Destroyable{
      */
     public AbstractDestroyable(int durability) {
         this.durability = durability;
-        this.setDestroyableParam(Param.MAX_HEALTH, durability);
+        this.setDestroyableParam(Param.MAX_DURABILITY, durability);
         for(Type damage : Type.values()){
             params.put(damage.getResistanceParam(), 0f);
         }
@@ -52,8 +52,8 @@ public abstract class AbstractDestroyable implements Destroyable{
     public void heal(float value){
 //        LOG.info(this.getName() + " : healing +" + fraction);
         durability += value;
-        if(durability >= destroyableParam(Param.MAX_HEALTH)){
-            durability = (int) destroyableParam(Param.MAX_HEALTH);
+        if(durability >= destroyableParam(Param.MAX_DURABILITY)){
+            durability = (int) destroyableParam(Param.MAX_DURABILITY);
             LOG.info(this.getName() + ": MAX HEALTH");
         }
     }

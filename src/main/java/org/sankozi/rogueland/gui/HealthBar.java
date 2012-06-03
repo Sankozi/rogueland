@@ -46,7 +46,7 @@ public class HealthBar extends JComponent implements GameListener{
 	public void onEvent(GameEvent event) {
 		initialized = event.game.isInitialized();
 		Player player = event.game.getPlayer();
-		redPart = 1f - ((float) player.getDurability() / (float) player.destroyableParam(Param.MAX_HEALTH));
+		redPart = 1f - ((float) player.getDurability() / (float) player.destroyableParam(Param.MAX_DURABILITY));
 //		LOG.info("redPart = " + redPart);
 		this.repaint();
 	}
