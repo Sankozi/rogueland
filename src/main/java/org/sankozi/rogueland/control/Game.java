@@ -82,68 +82,78 @@ public class Game {
 			}
         }
 
-        private void processActor(Actor actor) {
+        private void processActorx(Actor actor) {
             Move m;
-            Point newLocation;
+            Point targetLocation;
             Point actorLocation = actor.getLocation();
             final Tile[][] tiles = level.getTiles();
             do {
                 tiles[actorLocation.x][actorLocation.y].actor = actor;
                 m = actor.act(level, locator);
-                newLocation = actorLocation.getLocation();
-                processMove(actor, m, newLocation);
+                targetLocation = actorLocation.getLocation();
+                processMove(actor, m, targetLocation);
 //                LOG.info("actor : " + actor + " move : " + newLocation);
                 tiles[actorLocation.x][actorLocation.y].actor = null;
-            } while (!validLocation(newLocation, tiles));
+            } while (!validLocation(targetLocation, tiles));
 
-            Tile tile = tiles[newLocation.x][newLocation.y];
-            if(tile.actor != null){
-                interact(actor, tile.actor, actor.getPower());
-            } else {
-                actorLocation = newLocation;
-            }
-            tiles[actorLocation.x][actorLocation.y].actor = actor;
-            actor.setLocation(actorLocation);
+//            Tile tile = tiles[newLocation.x][newLocation.y];
+//            if(tile.actor != null){
+//                interact(actor, tile.actor, actor.getPower());
+//            } else {
+//                actorLocation = newLocation;
+//            }
+			if(!targetLocation.equals(actorLocation)){
+				Tile tile = tiles[targetLocation.x][targetLocation.y];
+				if(tile.actor != null){
+					interact(actor, tile.actor, actor.getPower());
+				} else {
+					actorLocation = targetLocation;
+				}
+				tiles[actorLocation.x][actorLocation.y].actor = actor;
+				actor.setLocation(actorLocation);
+			}
         }
 
 		/**
 		 * Process actor that is moving with its weapon (on different tile)
 		 * @param actor 
 		 */
-		private void processArmedActor(Actor actor) {
+		private void processActor(Actor actor) {
             Move m;
-            Point newLocation;
+            Point targetLocation;
             Point actorLocation = actor.getLocation();
 			Point prevWeaponLocation = actor.getWeaponLocation();	
             final Tile[][] tiles = level.getTiles();
             do {
                 tiles[actorLocation.x][actorLocation.y].actor = actor;
                 m = actor.act(level, locator);
-                newLocation = actorLocation.getLocation();
-                processMove(actor, m, newLocation);
+                targetLocation = actorLocation.getLocation();
+                processMove(actor, m, targetLocation);
 //                LOG.info("actor : " + actor + " move : " + newLocation);
                 tiles[actorLocation.x][actorLocation.y].actor = null;
-            } while (!validLocation(newLocation, tiles));
+            } while (!validLocation(targetLocation, tiles));
 
-			if(!newLocation.equals(actorLocation)){
-				Tile tile = tiles[newLocation.x][newLocation.y];
+			if(!targetLocation.equals(actorLocation)){
+				Tile tile = tiles[targetLocation.x][targetLocation.y];
 				if(tile.actor != null){
 					interact(actor, tile.actor, actor.getPower());
 				} else {
-					actorLocation = newLocation;
+					actorLocation = targetLocation;
 				}
 				tiles[actorLocation.x][actorLocation.y].actor = actor;
 				actor.setLocation(actorLocation);
 			}
-			Point nextWeaponLocation = actor.getWeaponLocation();	
+			if(actor.isArmed()){
+				Point nextWeaponLocation = actor.getWeaponLocation();	
 
-			if(!prevWeaponLocation.equals(nextWeaponLocation)){
-				LOG.info("new weapon location : " + nextWeaponLocation.x + "," + nextWeaponLocation.y);
-				Tile tile = tiles[nextWeaponLocation.x][nextWeaponLocation.y];
-				level.getTiles()[prevWeaponLocation.x][prevWeaponLocation.y].weapon = false;
-				level.getTiles()[nextWeaponLocation.x][nextWeaponLocation.y].weapon = true;
-				if(tile.actor != null){
-					interact(actor, tile.actor, actor.getWeaponPower());
+				if(!prevWeaponLocation.equals(nextWeaponLocation)){
+					LOG.info("new weapon location : " + nextWeaponLocation.x + "," + nextWeaponLocation.y);
+					Tile tile = tiles[nextWeaponLocation.x][nextWeaponLocation.y];
+					tiles[prevWeaponLocation.x][prevWeaponLocation.y].weapon = false;
+					tiles[nextWeaponLocation.x][nextWeaponLocation.y].weapon = true;
+					if(tile.actor != null){
+						interact(actor, tile.actor, actor.getWeaponPower());
+					}
 				}
 			}
         }
@@ -152,12 +162,11 @@ public class Game {
             for(Actor actor:actors){
                 actor.heal(actor.destroyableParam(Param.HEALTH_REGEN));
 				if(!actor.isDestroyed()){
-					if(actor.isArmed()){
-						processArmedActor(actor);
-						
-					} else {
+//					if(actor.isArmed()){
+//						processArmedActor(actor);
+//					} else {
 						processActor(actor);
-					}
+//					}
 				}
             }
 			actors.removeAll(toBeRemoved);
