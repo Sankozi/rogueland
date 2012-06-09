@@ -17,7 +17,7 @@ public abstract class AbstractDestroyable implements Destroyable{
 
     /**
      * Abstract destroyable constructor, created object will have
-     * all resistances equal 0, MAX_HEALTH param eqal to passed durability
+     * all resistances equal 0, MAX_HEALTH param equal to passed durability
      * @param durability initial durability
      */
     public AbstractDestroyable(int durability) {
