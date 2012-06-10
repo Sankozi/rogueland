@@ -21,6 +21,7 @@ public class EffectManagerTest {
 		verify(mockedEffect, atLeast(1)).getFinishTime();
 		verify(mockedEffect).start(em);
 		
+		verify(mockedEffect, never()).end(em);
 		em.tick();
 		verify(mockedEffect).end(em);
 	}
