@@ -14,7 +14,7 @@ public abstract class Effect implements GameObject{
 	 * for instants should return 0f
 	 * @return 
 	 */
-	public abstract float finishTime();
+	public abstract float getFinishTime();
 
 	/**
 	 * Makes changes to attached object
