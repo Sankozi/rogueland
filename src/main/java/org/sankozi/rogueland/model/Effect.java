@@ -39,4 +39,19 @@ public abstract class Effect implements GameObject{
 	public void reload(EffectManager manager) {
 		start(manager);
 	}
+
+	/**
+	 * Two effects are equal if they are same instances
+	 * @param obj
+	 * @return 
+	 */
+	@Override
+	public final boolean equals(Object obj) {
+		return this == obj;
+	}
+
+	@Override
+	public final int hashCode() {
+		return super.hashCode();
+	}
 }

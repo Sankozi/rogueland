@@ -1,11 +1,11 @@
 package org.sankozi.rogueland.model;
 
 /**
- * Access for single parameter value, parameter access is always done is some 
+ * Access for single parameter value, parameter access is always done in some 
  * context 
  * @author sankozi
  */
-public interface ParameterAccess {
+public interface ParamAccess {
 
 	/**
 	 * Returns codename of parameter
@@ -26,7 +26,7 @@ public interface ParameterAccess {
 
 	/**
 	 * Sets change done to parameter in this context, subsequent calls will not
-	 * sum but will overwrite 
+	 * sum but overwrite 
 	 * <pre>
 	 * {@code
 	 * pa.change(1f);

@@ -1,11 +1,9 @@
 package org.sankozi.rogueland.model;
 
 import com.google.common.collect.TreeMultimap;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import javax.annotation.Nullable;
+import org.sankozi.rogueland.model.Destroyable.Param;
 
 /**
  * Object that manages active Effects, it is responsible for:
@@ -15,13 +13,18 @@ import javax.annotation.Nullable;
  * @author sankozi
  */
 public class EffectManager {
+	private final static ResourceBundle paramsBundle = ResourceBundle.getBundle("org/sankozi/rogueland/resources/params");
+	
     //EffectManager might work for different kinds of objects
 	private final @Nullable Player player;
 	private final @Nullable Actor actor;
 	private final Destroyable destroyable;
 
+	/** map storing time -> collection of effects that end at that time
+	 *  (guava TreeMultimap is not navigable)  */
 	private TreeMap<Float, Collection<Effect>> registeredEffects = new TreeMap<>();
 	private float now;
+	private IdentityHashMap<Effect, EffectContext> contexts = new IdentityHashMap<>();
 			
 	private @Nullable EffectContext currentContext;
 
@@ -36,6 +39,10 @@ public class EffectManager {
 		return ret;
 	}
 
+	/**
+	 * Puts effect inside registeredEffects
+	 * @param effect 
+	 */
 	private void putEffect(Effect effect) {
 		Collection<Effect> col = registeredEffects.get(now + effect.getFinishTime());
 		if(col == null) {
@@ -70,6 +77,32 @@ public class EffectManager {
 
 		public EffectContext(Effect effect) {
 			this.effect = effect;
+		}
+	}
+
+	public ParamAccess accessDestroyableParam(Destroyable.Param param){
+		return new DestroyableParameterAccess(param);
+	}
+
+	private class DestroyableParameterAccess implements ParamAccess{
+		final Destroyable.Param param;
+		float change = 0f;
+		private ResourceBundle paramsBundle;
+
+		public DestroyableParameterAccess(Param param) {
+			this.param = param;
+		}
+
+		@Override public String cn() { return param.name(); }
+			
+		@Override public String name() { return paramsBundle.getString(cn()); }
+
+		@Override public float get() { return destroyable.destroyableParam(param); }
+		
+		@Override
+		public void setChange(float d) {
+			destroyable.setDestroyableParam(param, -change + d); //removes previous change and add new
+			change = d;
 		}
 	}
 }
