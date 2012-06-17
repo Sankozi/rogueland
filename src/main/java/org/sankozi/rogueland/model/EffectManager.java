@@ -67,13 +67,20 @@ public class EffectManager {
 		currentContext = null;
 	}
 
+	private void endEffect(Effect effect) {
+		currentContext = getEffectContext(effect);
+		effect.end(this);
+		currentContext = null;
+		contexts.remove(effect);
+	}
+
 	public void tick(){
 		now += 1f;
 		Map<Float, Collection<Effect>> head = registeredEffects.headMap(now, true);
 		if(!head.isEmpty()){
 			for(Collection<Effect> efs : head.values()){
 				for(Effect ef : efs){
-					ef.end(this);
+					endEffect(ef);
 				}
 			}
 			for(float key : new ArrayList<>(head.keySet())){
