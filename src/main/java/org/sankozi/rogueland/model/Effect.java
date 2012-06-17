@@ -8,13 +8,21 @@ package org.sankozi.rogueland.model;
  */
 public abstract class Effect implements GameObject{
 
+	protected final float finishTime;
+
+	protected Effect(float finishTime) {
+		this.finishTime = finishTime;
+	}
+
 	/**
 	 * Time at which this effect will end relative to start moment, 
 	 * for permanent effects this method should return Float.POSITIVE_INFINITY 
 	 * for instants should return 0f
 	 * @return 
 	 */
-	public abstract float getFinishTime();
+	public final float getFinishTime(){
+		return finishTime;
+	}
 
 	/**
 	 * Makes changes to attached object
