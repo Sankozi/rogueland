@@ -100,7 +100,8 @@ public class EffectManager {
 
 	private void storeCurrentContextCheck(){
 		if(!contextStored){
-			
+			contexts.put(currentContext.effect, currentContext);
+			contextStored = true;
 		}
 	}
 	
@@ -118,9 +119,7 @@ public class EffectManager {
 
 		void putChange(Destroyable.Param param, float change) {
 			if(destroyableParamChanges == null){
-				if(change == 0f) {
-					return;
-				} else {
+				if(change != 0f) {
 					destroyableParamChanges = new EnumMap<>(Destroyable.Param.class);
 					destroyableParamChanges.put(param, change);
 				}
