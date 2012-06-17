@@ -24,9 +24,9 @@ public class EffectManager {
 	 *  (guava TreeMultimap is not navigable)  */
 	private TreeMap<Float, Collection<Effect>> registeredEffects = new TreeMap<>();
 	private float now;
-	private IdentityHashMap<Effect, EffectContext> contexts = new IdentityHashMap<>();
-			
+	private final IdentityHashMap<Effect, EffectContext> contexts = new IdentityHashMap<>();
 	private @Nullable EffectContext currentContext;
+	private boolean contextStored;
 
 	public EffectManager(Player p) {
 		this.destroyable = p;
@@ -54,7 +54,17 @@ public class EffectManager {
 
 	public void registerEffect(Effect effect){
 		putEffect(effect);
+		startEffect(effect);
+	}
+
+	/**
+	 * Starts effect with proper context
+	 * @param effect 
+	 */
+	private void startEffect(Effect effect) {
+		currentContext = getEffectContext(effect);
 		effect.start(this);
+		currentContext = null;
 	}
 
 	public void tick(){
@@ -72,24 +82,74 @@ public class EffectManager {
 		}
 	}
 
-	private static class EffectContext {
-		private final Effect effect;
+	/**
+	 * Gets stored context or creates new one, contexts are created only if needed
+	 * @param effect
+	 * @return 
+	 */
+	private EffectContext getEffectContext(Effect effect){
+		EffectContext ret = contexts.get(effect);
+		if(ret == null){
+			ret = new EffectContext(effect);
+			contextStored = false;
+		} else {
+			contextStored = true;
+		}
+		return ret;
+	}
 
-		public EffectContext(Effect effect) {
+	private void storeCurrentContextCheck(){
+		if(!contextStored){
+			
+		}
+	}
+	
+	public ParamAccess accessDestroyableParam(Destroyable.Param param){
+		return new DestroyableParamAccess(param);
+	}
+
+	private static class EffectContext {
+		final Effect effect;
+		@Nullable Map<Destroyable.Param, Float> destroyableParamChanges;
+
+		EffectContext(Effect effect) {
 			this.effect = effect;
+		}
+
+		void putChange(Destroyable.Param param, float change) {
+			if(destroyableParamChanges == null){
+				if(change == 0f) {
+					return;
+				} else {
+					destroyableParamChanges = new EnumMap<>(Destroyable.Param.class);
+					destroyableParamChanges.put(param, change);
+				}
+			} else {
+				if(change == 0f) {
+					destroyableParamChanges.remove(param);
+				} else {
+					destroyableParamChanges.put(param, change);
+				}
+			}
+		}
+
+		private float getChange(Param param) {
+			if(destroyableParamChanges == null) {
+				return 0f;
+			}
+			Float ret = destroyableParamChanges.get(param);
+			if(ret == null) {
+				return 0f;
+			} else {
+				return ret.floatValue();
+			}
 		}
 	}
 
-	public ParamAccess accessDestroyableParam(Destroyable.Param param){
-		return new DestroyableParameterAccess(param);
-	}
-
-	private class DestroyableParameterAccess implements ParamAccess{
+	private class DestroyableParamAccess implements ParamAccess{
 		final Destroyable.Param param;
-		float change = 0f;
-		private ResourceBundle paramsBundle;
 
-		public DestroyableParameterAccess(Param param) {
+		public DestroyableParamAccess(Param param) {
 			this.param = param;
 		}
 
@@ -101,8 +161,11 @@ public class EffectManager {
 		
 		@Override
 		public void setChange(float d) {
-			destroyable.setDestroyableParam(param, -change + d); //removes previous change and add new
-			change = d;
+			destroyable.setDestroyableParam(param, get() - currentContext.getChange(param) + d); //removes previous change and add new
+			currentContext.putChange(param, d);
+			if(d != 0f){
+				storeCurrentContextCheck();
+			}
 		}
 	}
 }
