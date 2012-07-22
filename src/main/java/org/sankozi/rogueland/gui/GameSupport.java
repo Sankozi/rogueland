@@ -105,7 +105,9 @@ class GameSupport {
                 }
             }
         } finally {
-            g.dispose();
+			if(g != null){
+            	g.dispose();
+			}
         }
         levelImage = newImage;
     }

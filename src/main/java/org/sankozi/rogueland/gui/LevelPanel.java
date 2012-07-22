@@ -12,6 +12,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -30,24 +32,28 @@ public class LevelPanel extends JComponent{
     private final static Logger LOG = Logger.getLogger(LevelPanel.class);
 	private final static long serialVersionUID = 1L;
 
-    GameSupport gameSupport;
 
     Rectangle playerLocation = null;
     Direction cursorDirection;
 
-    GuiControls gc = new GuiControls();
+    transient GameSupport gameSupport;
+    transient GuiControls gc = new GuiControls();
+    transient ComponentListener componentListener;
+	
+	{
+		init();
+	}
 
-    ComponentListener componentListener = new ComponentAdapter() {
-        @Override public void componentResized(ComponentEvent e) { gameSupport.resize(getSize()); repaint();}
-        @Override public void componentShown  (ComponentEvent e) { gameSupport.resize(getSize()); repaint();}
-    };
-
-    {
+    private void init(){
         this.setFocusable(true);
         this.addKeyListener(gc);
         this.addMouseMotionListener(new MoveCursor());
         this.addMouseListener(gc);
         this.addComponentListener(componentListener);
+		componentListener = new ComponentAdapter() {
+			@Override public void componentResized(ComponentEvent e) { gameSupport.resize(getSize()); repaint();}
+			@Override public void componentShown  (ComponentEvent e) { gameSupport.resize(getSize()); repaint();}
+		};
     }
 
     public KeyListener getKeyListener(){
@@ -227,7 +233,10 @@ public class LevelPanel extends JComponent{
             try {
                 Move move = fromKeyCode(e.getKeyCode());
                 if(move != null){
-                    keysPressed.offer(move, 1, TimeUnit.SECONDS);
+                    boolean successfull = keysPressed.offer(move, 1, TimeUnit.SECONDS);
+					if(!successfull){
+						LOG.info("offer unsuccessfull");
+					}
                 }
             } catch (InterruptedException ex) {
                 LOG.error(ex.getMessage(), ex);
@@ -266,4 +275,9 @@ public class LevelPanel extends JComponent{
         public void mouseExited(MouseEvent e) {
         }
     }
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException{
+    	in.defaultReadObject();
+		init();
+	}
 }
