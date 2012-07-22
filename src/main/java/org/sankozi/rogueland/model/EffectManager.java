@@ -55,6 +55,9 @@ public class EffectManager {
 	public void registerEffect(Effect effect){
 		putEffect(effect);
 		startEffect(effect);
+		if(effect.getFinishTime() == 0f){
+			endEffect(effect);
+		}
 	}
 
 	/**

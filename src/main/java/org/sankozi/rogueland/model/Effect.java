@@ -20,7 +20,7 @@ public abstract class Effect implements GameObject{
 	 * for instants should return 0f
 	 * @return 
 	 */
-	public final float getFinishTime(){
+	public float getFinishTime(){
 		return finishTime;
 	}
 
