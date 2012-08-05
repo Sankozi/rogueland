@@ -12,7 +12,7 @@ import org.sankozi.rogueland.model.Damage.Type;
 public abstract class AbstractDestroyable implements Destroyable{
     private final static Logger LOG = Logger.getLogger(AbstractDestroyable.class);
 
-    private final EnumMap<Param, Float> params = new EnumMap<Param, Float>(Param.class);
+    private final EnumMap<Param, Float> params = new EnumMap<>(Param.class);
     private float durability;
 
     /**
