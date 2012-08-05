@@ -10,6 +10,8 @@ import static org.mockito.Mockito.*;
  */
 public class EffectManagerTest {
 
+	
+
 	@Test
 	public void registerEventTest(){
 		Player p = new Player(Controls.ALWAYS_WAIT);
@@ -37,5 +39,35 @@ public class EffectManagerTest {
 		verify(mockedEffect, atLeast(1)).getFinishTime();
 		verify(mockedEffect).start(em);
 		verify(mockedEffect).end(em);
+	}
+
+	/** Effect increases Destroyable.Param.BLUNT_PROT by 2 */
+	private class MockedAccessingEffect extends Effect {
+		public MockedAccessingEffect(float finishTime) {super(finishTime);}
+		
+		@Override
+		public void start(EffectManager manager) {
+			manager.accessDestroyableParam(Destroyable.Param.BLUNT_PROT).setChange(2f);
+		}
+
+		@Override
+		public void end(EffectManager manager) {
+			manager.accessDestroyableParam(Destroyable.Param.BLUNT_PROT).setChange(0f);
+		}
+
+		@Override
+		public String getName() {
+			return "effect/mocked";
+		}
+	}
+
+	@Test 
+	public void accessDestroyableParamTest(){
+		Player p = new Player(Controls.ALWAYS_WAIT);
+		EffectManager em = EffectManager.forPlayer(p);
+		float before = p.destroyableParam(Destroyable.Param.BLUNT_PROT);
+		em.registerEffect(new MockedAccessingEffect(2f));
+		float after = p.destroyableParam(Destroyable.Param.BLUNT_PROT);
+		assertEquals(2f, after - before, 0.01f);
 	}
 }
