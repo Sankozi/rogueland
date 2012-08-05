@@ -11,12 +11,12 @@ public final class ParamChangeEffect extends Effect {
 	}
 	
 	@Override
-	public void start(EffectManager manager) {
+	public void start(ParamAccessManager manager) {
 		manager.accessDestroyableParam(Destroyable.Param.BLUNT_PROT).setChange(+5);
 	}
 
 	@Override
-	public void end(EffectManager manager) {
+	public void end(ParamAccessManager manager) {
 		manager.accessDestroyableParam(Destroyable.Param.BLUNT_PROT).setChange(+5);
 	}
 

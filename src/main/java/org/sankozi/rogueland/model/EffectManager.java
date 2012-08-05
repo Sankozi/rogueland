@@ -12,7 +12,7 @@ import org.sankozi.rogueland.model.Destroyable.Param;
  * - it properly destroys all events that should have ended
  * @author sankozi
  */
-public class EffectManager {
+public class EffectManager implements ParamAccessManager {
 	private final static ResourceBundle paramsBundle = ResourceBundle.getBundle("org/sankozi/rogueland/resources/params");
 	
     //EffectManager might work for different kinds of objects

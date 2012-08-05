@@ -46,12 +46,12 @@ public class EffectManagerTest {
 		public MockedAccessingEffect(float finishTime) {super(finishTime);}
 		
 		@Override
-		public void start(EffectManager manager) {
+		public void start(ParamAccessManager manager) {
 			manager.accessDestroyableParam(Destroyable.Param.BLUNT_PROT).setChange(2f);
 		}
 
 		@Override
-		public void end(EffectManager manager) {
+		public void end(ParamAccessManager manager) {
 			manager.accessDestroyableParam(Destroyable.Param.BLUNT_PROT).setChange(0f);
 		}
 

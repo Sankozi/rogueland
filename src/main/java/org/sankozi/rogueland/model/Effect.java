@@ -28,13 +28,13 @@ public abstract class Effect implements GameObject{
 	 * Makes changes to attached object
 	 * @param manager, not null
 	 */
-	public abstract void start(EffectManager manager);
+	public abstract void start(ParamAccessManager manager);
 	
 	/**
 	 * Ends this Effect, implementing classes may undo changes made in start method
 	 * @param manager 
 	 */
-	public abstract void end(EffectManager manager);
+	public abstract void end(ParamAccessManager manager);
 
 	/**
 	 * If this Effect is based on parameters of attached GameObject this method 
