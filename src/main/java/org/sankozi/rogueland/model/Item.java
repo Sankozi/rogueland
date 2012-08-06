@@ -21,6 +21,10 @@ public final class Item implements Destroyable{
 		this.durability = template.destroyableParam(Param.MAX_DURABILITY);
 	}
 
+	public Iterable<ItemType> getTypes(){
+		return template.getTypes();
+	}
+
 	@Override
 	public boolean isDestroyed() {
 		return durability <= 0f;
