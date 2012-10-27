@@ -48,16 +48,6 @@
             </plugin>
 		</plugins>
     </build>
-    <repositories>
-        <repository>
-            <id>neo4j-public-repository</id>
-            <name>Publically available Maven 2 repository for Neo4j</name>
-            <url>http://m2.neo4j.org</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
     <dependencies>
 		<dependency>
           <groupId>javolution</groupId>
@@ -100,11 +90,6 @@
 			<artifactId>guava</artifactId>
 			<version>13.0</version>
 		</dependency>
-       <dependency>
-         <groupId>org.neo4j</groupId>
-         <artifactId>neo4j</artifactId>
-         <version>1.7.2</version>
-      </dependency>
         <dependency>
             <groupId>com.miglayout</groupId>
             <artifactId>miglayout</artifactId>
