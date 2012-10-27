@@ -4,9 +4,11 @@ import org.apache.log4j.Logger;
 import org.sankozi.rogueland.model.Damage.Type;
 
 /**
- * Destroyable game object that can be collected by Player, Item object cannot be
- * modified (in game every modification is really just replacement). Except methods
- * isDestroyed and damage(int), calls are delegated to ItemTemplate instances
+ * Destroyable game object that can be collected by Player, 
+ * except durability Item object cannot be modified 
+ * (in game every modification is really just replacement). 
+ * Except methods isDestroyed and damage(int), calls are delegated to ItemTemplate instances
+ * 
  * @author sankozi
  */
 public final class Item implements Destroyable{
@@ -57,7 +59,7 @@ public final class Item implements Destroyable{
 
 	@Override
 	public void setDestroyableParam(Param param, float value) {
-		LOG.warn("setDestroyableParam called on Item - call ignored");	
+		LOG.warn("setDestroyableParam called on Item - call ignored", new Throwable());	
 	}
 
 	@Override
@@ -65,7 +67,7 @@ public final class Item implements Destroyable{
 		return "item";
 	}
 
-	public ItemTemplate getTemplate() {
+	ItemTemplate getTemplate() {
 		return template;
 	}
 }
