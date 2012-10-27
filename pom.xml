@@ -98,51 +98,13 @@
         <dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>12.0</version>
+			<version>13.0</version>
 		</dependency>
-        <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j</artifactId>
-            <version>1.2</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>neo4j-lucene-index</artifactId>
-                    <groupId>org.neo4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>neo4j-online-backup</artifactId>
-                    <groupId>org.neo4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>neo4j-management</artifactId>
-                    <groupId>org.neo4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>neo4j-shell</artifactId>
-                    <groupId>org.neo4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>neo4j-remote-graphdb</artifactId>
-                    <groupId>org.neo4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>neo4j-lucene-index</artifactId>
-                    <groupId>org.neo4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>neo4j-ha</artifactId>
-                    <groupId>org.neo4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>neo4j-udc</artifactId>
-                    <groupId>org.neo4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>neo4j-index</artifactId>
-                    <groupId>org.neo4j</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+       <dependency>
+         <groupId>org.neo4j</groupId>
+         <artifactId>neo4j</artifactId>
+         <version>1.7.2</version>
+      </dependency>
         <dependency>
             <groupId>com.miglayout</groupId>
             <artifactId>miglayout</artifactId>
