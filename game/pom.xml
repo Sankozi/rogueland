@@ -50,6 +50,11 @@
     </build>
     <dependencies>
 		<dependency>
+			<groupId>org.sankozi</groupId>
+			<artifactId>database</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
           <groupId>javolution</groupId>
           <artifactId>javolution</artifactId>
           <version>5.5.1</version>
