@@ -8,11 +8,8 @@ import java.sql.Connection;
  */
 public final class H2TableDatabase {
 	private final Connection con;
-	private final KeyValueDescriptor desc;
 
-	public H2TableDatabase(Connection con, KeyValueDescriptor desc){
+	public H2TableDatabase(Connection con){
 		this.con = con;		
-		this.desc = desc;
 	}
-	
 }

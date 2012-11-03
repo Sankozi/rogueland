@@ -55,6 +55,11 @@
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
+			<groupId>org.clojure</groupId>
+			<artifactId>clojure</artifactId>
+			<version>1.4.0</version>
+		</dependency>
+		<dependency>
           <groupId>javolution</groupId>
           <artifactId>javolution</artifactId>
           <version>5.5.1</version>
