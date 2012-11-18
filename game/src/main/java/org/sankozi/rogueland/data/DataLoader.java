@@ -1,7 +1,9 @@
 package org.sankozi.rogueland.data;
 
+import clojure.lang.Named;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
 import com.google.common.io.CharStreams;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +11,12 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.sankozi.rogueland.model.ItemTemplate;
+import org.sankozi.rogueland.model.ItemType;
 
 /**
  * Object that loads games resources - strings, game data, and others
@@ -37,5 +44,20 @@ public final class DataLoader {
 
 	Object evaluateClResource(String name){
 		return clojure.lang.Compiler.load(new StringReader(loadResource(name)));
+	}
+
+	Map<String, ItemTemplate> loadItemTemplates(){
+		Map clMap = (Map) evaluateClResource("items.cl");
+		Map<String, ItemTemplate> ret = Maps.newHashMapWithExpectedSize(clMap.size());
+		for(Map.Entry entry : (Set<Map.Entry>) clMap.entrySet()){
+			String name = ((Named)entry.getKey()).getName();
+			ret.put(name, buildItemTemplate(name, (Map)entry.getValue()));
+		}
+		return ret;
+	}
+
+	private ItemTemplate buildItemTemplate(String name, Map map) {
+		EnumSet<ItemType> types = EnumSet.noneOf(ItemType.class);
+		return null;
 	}
 }

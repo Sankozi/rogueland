@@ -2,26 +2,30 @@ package org.sankozi.rogueland.model;
 
 import java.util.EnumMap;
 import java.util.EnumSet;
-import javax.annotation.Nullable;
 import org.sankozi.rogueland.model.Destroyable.Param;
 
+import static com.google.common.base.Preconditions.*;
 /**
  * Immutable object representing various parameters and characteristics of an item;
  * @author sankozi
  */
-final class ItemTemplate {
+public final class ItemTemplate {
+	private final String name;
 	/** Destroyable parameters of an item */
     private final EnumMap<Param, Float> params;
-	/** Effect of an item when it is worn, wield, or used can be null if types 
+	/** Effect of an item when it is worn, wield, or used; can be null if types 
 	 *  doesn't contain any of above */ 
-	private final @Nullable Effect effect;
+	private final Effect effect;
 
 	private final EnumSet<ItemType> types;
 
-	ItemTemplate(EnumMap<Param, Float> params, @Nullable Effect effect, EnumSet<ItemType> types) {
-		this.params = params;
-		this.effect = effect;
-		this.types = types;
+	
+
+	public ItemTemplate(String name, EnumMap<Param, Float> params, Effect effect, EnumSet<ItemType> types) {
+		this.name = name;
+		this.params = checkNotNull(params, "params cannot be null");
+		this.effect = checkNotNull(effect, "effect cannot be null");
+		this.types = checkNotNull(types, "types cannot be null");
 	}
 
 	float destroyableParam(Param param) {
@@ -30,5 +34,9 @@ final class ItemTemplate {
 
 	Iterable<ItemType> getTypes() {
 		return types;
+	}
+
+	String getName() {
+		return name;
 	}
 }

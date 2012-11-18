@@ -7,7 +7,13 @@ package org.sankozi.rogueland.model;
  * @author sankozi
  */
 public abstract class Effect implements GameObject{
-
+	/** Null effect */
+	public static final Effect NULL = new Effect(-1f){
+		@Override public void start(ParamAccessManager manager) {}
+		@Override public void end(ParamAccessManager manager) {}
+		@Override public String getName() { return "none"; }
+	};
+			
 	protected final float finishTime;
 
 	protected Effect(float finishTime) {
