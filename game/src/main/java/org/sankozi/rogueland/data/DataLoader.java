@@ -47,17 +47,17 @@ public final class DataLoader {
 	}
 
 	Map<String, ItemTemplate> loadItemTemplates(){
-		Map clMap = (Map) evaluateClResource("items.cl");
+		Map<String, ?> clMap = (Map) evaluateClResource("items.cl");
 		Map<String, ItemTemplate> ret = Maps.newHashMapWithExpectedSize(clMap.size());
-		for(Map.Entry entry : (Set<Map.Entry>) clMap.entrySet()){
-			String name = ((Named)entry.getKey()).getName();
-			ret.put(name, buildItemTemplate(name, (Map)entry.getValue()));
+		for(Map.Entry<String, ?> entry : clMap.entrySet()){
+			ret.put(entry.getKey(), buildItemTemplate(entry.getKey(), (Map)entry.getValue()));
 		}
 		return ret;
 	}
 
 	private ItemTemplate buildItemTemplate(String name, Map map) {
 		EnumSet<ItemType> types = EnumSet.noneOf(ItemType.class);
+        
 		return null;
 	}
 }

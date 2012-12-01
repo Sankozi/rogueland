@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.sankozi.rogueland.model.ItemTemplate;
 
 /**
  *
@@ -33,4 +34,12 @@ public class DataLoaderTest {
 		assert res != null : "items not null";
 		assert res instanceof Map : "items loads map";
 	}
+
+    @Test
+    public void loadItemTemplates(){
+        Map<String, ItemTemplate> templates = new DataLoader().loadItemTemplates();
+		assert templates != null : "itemTemplates not null";
+        assert !templates.isEmpty() : "itemTemplates not empty";
+        assert templates.containsKey("test-item") : "itemTemplates contains test-item";
+    }
 }
