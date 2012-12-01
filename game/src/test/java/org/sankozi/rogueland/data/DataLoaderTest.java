@@ -19,9 +19,7 @@ public class DataLoaderTest {
 	@Test
 	public void testGetScriptNames() {
 		Collection<String> scriptNames = new DataLoader().getScriptNames();
-		assert !scriptNames.isEmpty() : "no script names";
-		assert scriptNames.contains("items.cl");
-        assertThat(scriptNames, empty());
+        assertThat(scriptNames, contains("items.cl"));
 	}
 
 	@Test
