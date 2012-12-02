@@ -19,8 +19,6 @@ public final class ItemTemplate {
 
 	private final EnumSet<ItemType> types;
 
-	
-
 	public ItemTemplate(String name, EnumMap<Param, Float> params, Effect effect, EnumSet<ItemType> types) {
 		this.name = name;
 		this.params = checkNotNull(params, "params cannot be null");

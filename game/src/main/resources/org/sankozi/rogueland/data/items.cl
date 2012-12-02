@@ -8,15 +8,15 @@
 (items {
 :sword {
 	:name "Sword"
-	:type #{:weapon}
+	:types #{:weapon}
     :durability 20}
 :leather-armor {
 	:name "Leather armor"
-	:type #{:worn-chest}
+	:types #{:worn-chest}
     :durability 20}
 :test-item {
     :name "Test item"
-    :type #{}
+    :types #{}
     :durability 5}
 })
 		

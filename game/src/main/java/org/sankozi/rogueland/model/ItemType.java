@@ -20,12 +20,17 @@ public enum ItemType {
 	WORN_AROUND_WAIST,
 	/** can be used as a weapon*/	
 	WEAPON(HELD),
-    /** can be used */
+    
+    //=== WEAPON TYPES ===
+    SWORD(WEAPON),
+    MACE(WEAPON),
+
+    /** can be used, i.e. activated */
 	USABLE;
 
     private final ItemType[] includes;
 
-    static EnumSet<ItemType> expand(EnumSet<ItemType> set){
+    public static EnumSet<ItemType> expand(EnumSet<ItemType> set){
 		EnumSet<ItemType> ret = EnumSet.copyOf(set);
 		for(ItemType type : set){
 			recAdd(ret, type);

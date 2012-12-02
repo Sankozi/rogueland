@@ -1,6 +1,7 @@
 package org.sankozi.rogueland.data;
 
 import clojure.lang.Named;
+import com.google.common.base.CaseFormat;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
@@ -11,10 +12,13 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.sankozi.rogueland.model.Destroyable;
+import org.sankozi.rogueland.model.Effect;
 import org.sankozi.rogueland.model.ItemTemplate;
 import org.sankozi.rogueland.model.ItemType;
 
@@ -55,9 +59,22 @@ public final class DataLoader {
 		return ret;
 	}
 
-	private ItemTemplate buildItemTemplate(String name, Map map) {
+	private static ItemTemplate buildItemTemplate(String name, Map map) {
 		EnumSet<ItemType> types = EnumSet.noneOf(ItemType.class);
-        
-		return null;
+        Set<Named> namedTypes = (Set) map.get("types");
+        for(Named nType : namedTypes){
+            types.add(
+                    ItemType.valueOf(
+                    CaseFormat.LOWER_HYPHEN.to(
+                    CaseFormat.UPPER_UNDERSCORE, nType.getName())));
+        }
+        types = ItemType.expand(types);
+
+        return new ItemTemplate(
+                map.get("name").toString(),
+                new EnumMap<Destroyable.Param, Float>(Destroyable.Param.class),
+                Effect.NULL,
+                types
+                );
 	}
 }
