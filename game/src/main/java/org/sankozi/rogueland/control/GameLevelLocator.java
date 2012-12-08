@@ -7,7 +7,7 @@ import org.sankozi.rogueland.model.Locator;
 
 /**
  * Locator based on Level and Game instances
- * @author Michał Sankowski
+ * @author sankozi
  */
 class GameLevelLocator implements Locator{
 	private final static Logger LOG = Logger.getLogger(GameLevelLocator.class);

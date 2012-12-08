@@ -6,14 +6,18 @@
     `(merge ~@(for [entry# (seq items-map)]
             (item (nth entry# 0) (nth entry# 1)))))
 (items {
+:simple-quarterstaff {
+    :name "Simple quarterstaff"
+    :types #{:staff}
+    :durability 100}
 :sword {
 	:name "Sword"
 	:types #{:weapon}
-    :durability 20}
+    :durability 200}
 :leather-armor {
 	:name "Leather armor"
 	:types #{:worn-chest}
-    :durability 20}
+    :durability 200}
 :test-item {
     :name "Test item"
     :types #{}

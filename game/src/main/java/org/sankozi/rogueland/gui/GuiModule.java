@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 
 /**
  *
- * @author Michał Sankowski
+ * @author sankozi
  */
 public class GuiModule extends AbstractModule{
 

@@ -1,5 +1,6 @@
 package org.sankozi.rogueland.control;
 
+import org.sankozi.rogueland.generator.LevelGenerator;
 import com.google.common.collect.Lists;
 import java.util.List;
 import org.apache.log4j.Logger;

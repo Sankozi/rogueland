@@ -17,10 +17,12 @@ public final class Item implements Destroyable{
 	private final ItemTemplate template;
 
 	private float durability;
+    private final int hashCode;
 
 	Item(ItemTemplate template) {
 		this.template = template;
 		this.durability = template.destroyableParam(Param.MAX_DURABILITY);
+        this.hashCode = template.hashCode();
 	}
 
 	public Iterable<ItemType> getTypes(){
@@ -70,4 +72,27 @@ public final class Item implements Destroyable{
 	ItemTemplate getTemplate() {
 		return template;
 	}
+
+    public String getDescription(){
+        return template.getName();
+    }
+
+    @Override
+    public int hashCode() {
+        return hashCode;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Item other = (Item) obj;
+        return true;
+    }
+
+    
 }

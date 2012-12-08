@@ -24,6 +24,7 @@ public enum ItemType {
     //=== WEAPON TYPES ===
     SWORD(WEAPON),
     MACE(WEAPON),
+    STAFF(WEAPON),
 
     /** can be used, i.e. activated */
 	USABLE;

@@ -27,9 +27,12 @@ public class Player extends AbstractActor {
 				Param.WILLPOWER), 
 			Param.class);
 
+    private final Inventory equipment = new Inventory();
+    
     private final EnumMap<Param, Float> params = new EnumMap<>(Param.class);
-
+    
     private final Controls controls;
+    
     private Coords location;
 	private Direction weaponDirection = Direction.N;
 
