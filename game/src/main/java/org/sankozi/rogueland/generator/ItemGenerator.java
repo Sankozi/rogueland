@@ -1,6 +1,6 @@
 package org.sankozi.rogueland.generator;
 
-import com.google.common.base.Supplier;
+import com.google.common.base.Function;
 import java.util.Collections;
 import org.sankozi.rogueland.model.Item;
 
@@ -8,14 +8,13 @@ import org.sankozi.rogueland.model.Item;
  * Generates loot
  * @author sankozi
  */
-public class ItemGenerator implements Supplier<Iterable<Item>>{
+public interface ItemGenerator extends Function<Float, Iterable<Item>> {
 
     /**
      * Creates new batch of items
-     * @return 
+     * @param luck luck bonus - may affect quality of generated items
+     * @return new batch of items
      */
     @Override
-    public Iterable<Item> get() {
-        return Collections.emptyList();
-    }
+    public Iterable<Item> apply(Float luck);
 }

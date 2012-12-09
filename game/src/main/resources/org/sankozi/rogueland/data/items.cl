@@ -17,6 +17,15 @@
 :leather-armor {
 	:name "Leather armor"
 	:types #{:worn-chest}
+	:effects {
+	    :protection {
+	        :piercing-prot +1
+	        :slashing-prot +2
+	        :blunt-prot +3}}
+	:protection {
+	        :piercing-prot 0
+	        :slashing-prot 0
+	        :blunt-prot 1}
     :durability 200}
 :test-item {
     :name "Test item"

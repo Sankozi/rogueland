@@ -13,7 +13,7 @@ public final class ItemTemplate {
 	private final String name;
 	/** Destroyable parameters of an item */
     private final EnumMap<Param, Float> params;
-	/** Effect of an item when it is worn, wield, or used; can be null if types 
+	/** Effect of an item when it is worn or wield; can be null if types 
 	 *  doesn't contain any of above */ 
 	private final Effect effect;
 

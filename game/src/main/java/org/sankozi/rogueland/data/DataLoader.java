@@ -70,6 +70,11 @@ public final class DataLoader {
         }
         types = ItemType.expand(types);
 
+        Map effects = (Map) map.get("effects");
+        for(Map.Entry entry : (Set<Map.Entry>)effects.entrySet()){
+//            Effect effect = 
+        }
+
         return new ItemTemplate(
                 map.get("name").toString(),
                 new EnumMap<Destroyable.Param, Float>(Destroyable.Param.class),
