@@ -49,11 +49,11 @@ public class LevelPanel extends JComponent{
         this.addKeyListener(gc);
         this.addMouseMotionListener(new MoveCursor());
         this.addMouseListener(gc);
-        this.addComponentListener(componentListener);
 		componentListener = new ComponentAdapter() {
 			@Override public void componentResized(ComponentEvent e) { gameSupport.resize(getSize()); repaint();}
 			@Override public void componentShown  (ComponentEvent e) { gameSupport.resize(getSize()); repaint();}
 		};
+        this.addComponentListener(componentListener);
     }
 
     public KeyListener getKeyListener(){
