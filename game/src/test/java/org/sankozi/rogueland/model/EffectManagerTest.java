@@ -10,8 +10,6 @@ import static org.mockito.Mockito.*;
  */
 public class EffectManagerTest {
 
-	
-
 	@Test
 	public void registerEventTest(){
 		Player p = new Player(Controls.ALWAYS_WAIT);

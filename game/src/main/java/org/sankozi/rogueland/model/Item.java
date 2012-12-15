@@ -19,7 +19,7 @@ public final class Item implements Destroyable{
 	private float durability;
     private final int hashCode;
 
-	Item(ItemTemplate template) {
+	public Item(ItemTemplate template) {
 		this.template = template;
 		this.durability = template.destroyableParam(Param.MAX_DURABILITY);
         this.hashCode = template.hashCode();
@@ -69,6 +69,10 @@ public final class Item implements Destroyable{
 		return "item";
 	}
 
+    public Effect getEffect(){
+        return template.getEffect();
+    }
+
 	ItemTemplate getTemplate() {
 		return template;
 	}
@@ -93,6 +97,4 @@ public final class Item implements Destroyable{
         final Item other = (Item) obj;
         return true;
     }
-
-    
 }

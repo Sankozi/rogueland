@@ -30,6 +30,9 @@
 :test-item {
     :name "Test item"
     :types #{}
+    :effects {
+	    :protection {
+	        :piercing-prot +1}}
     :durability 5}
 })
 		

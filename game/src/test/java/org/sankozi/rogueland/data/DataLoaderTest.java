@@ -7,6 +7,7 @@ import org.sankozi.rogueland.model.ItemTemplate;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+import org.sankozi.rogueland.model.Item;
 /**
  *
  * @author sankozi
@@ -38,5 +39,8 @@ public class DataLoaderTest {
     public void loadItemTemplates(){
         Map<String, ItemTemplate> templates = new DataLoader().loadItemTemplates();
         assertThat(templates, hasKey("test-item"));
+        ItemTemplate testItemTemplate = templates.get("test-item");
+        Item testItem = new Item(testItemTemplate);
+        assert testItem.getEffect() != null;
     }
 }

@@ -37,4 +37,8 @@ public final class ItemTemplate {
 	String getName() {
 		return name;
 	}
+
+    Effect getEffect() {
+        return effect;
+    }
 }
