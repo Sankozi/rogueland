@@ -192,7 +192,7 @@ public class LevelPanel extends JComponent{
 
     private class GuiControls implements Controls, KeyListener, MouseListener {
 
-        BlockingQueue<Move> keysPressed = new ArrayBlockingQueue<Move>(2);
+        BlockingQueue<Move> keysPressed = new ArrayBlockingQueue<>(2);
 
         @Override
         public Move waitForMove() throws InterruptedException {
