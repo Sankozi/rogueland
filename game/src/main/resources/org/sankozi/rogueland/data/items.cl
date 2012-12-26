@@ -1,7 +1,13 @@
-(defn item [code-name params] 
-    {(name code-name) (zipmap 
-        (for [x (keys params)] (name x)) ;keywords to string (for java interop)
-        (vals params))}) ;map values
+(defn protection-value [prots] 
+    (into {} (map (fn [entry] 
+            (let [[ikey ivalue] entry] [(name ikey) ivalue]))        
+        (merge {:max-durability 1} prots))))
+(defn item-entry [entry] (let [[ikey ivalue] entry] 
+        [(name ikey) (if (= ikey :protection) (protection-value ivalue) ivalue)]))
+(defn item [code-name params] ;keywords to string (for java interop)
+    {(name code-name) 
+     (into {} 
+         (map item-entry (merge {:protection {}} params)))}) ;add empty protection element
 (defmacro items [items-map] 
     `(merge ~@(for [entry# (seq items-map)]
             (item (nth entry# 0) (nth entry# 1)))))
@@ -25,8 +31,9 @@
 	:protection {
 	        :piercing-prot 0
 	        :slashing-prot 0
-	        :blunt-prot 1}
-    :durability 200}
+	        :blunt-prot 1
+	        :max-durability 200}
+    }
 :test-item {
     :name "Test item"
     :types #{}

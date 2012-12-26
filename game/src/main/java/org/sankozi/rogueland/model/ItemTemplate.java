@@ -20,6 +20,7 @@ public final class ItemTemplate {
 	private final EnumSet<ItemType> types;
 
 	public ItemTemplate(String name, EnumMap<Param, Float> params, Effect effect, EnumSet<ItemType> types) {
+        checkArgument(params.containsKey(Param.MAX_DURABILITY), "params %s does not contain MAX_DURABILITY", params);
 		this.name = name;
 		this.params = checkNotNull(params, "params cannot be null");
 		this.effect = checkNotNull(effect, "effect cannot be null");

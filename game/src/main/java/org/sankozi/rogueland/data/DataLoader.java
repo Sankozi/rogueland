@@ -22,6 +22,8 @@ import org.sankozi.rogueland.model.Effect;
 import org.sankozi.rogueland.model.ItemTemplate;
 import org.sankozi.rogueland.model.ItemType;
 
+import static org.sankozi.rogueland.data.LoaderUtils.*;
+
 /**
  * Object that loads games resources - strings, game data, and others
  * @author sankozi
@@ -79,7 +81,7 @@ public final class DataLoader {
 
         return new ItemTemplate(
                 map.get("name").toString(),
-                new EnumMap<Destroyable.Param, Float>(Destroyable.Param.class),
+                toFloatMap((Map)map.get("protection"), Destroyable.Param.class),
                 Effect.NULL,
                 types
                 );
