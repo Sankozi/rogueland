@@ -4,10 +4,12 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -20,6 +22,8 @@ public class ShowInventoryAction extends AbstractAction{
 
     {
 		this.putValue(Action.NAME, "Inventory");
+		this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('i'));
+        this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_I);
 	}
 
     @Inject

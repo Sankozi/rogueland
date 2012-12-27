@@ -15,13 +15,16 @@ public class MainMenuProvider implements Provider<JMenuBar> {
 
     private final Action exit;
     private final Action newGame;
+    private final Action showInventory;
 
     @Inject
     public MainMenuProvider(
 			@Named("exit") Action exit, 
-			@Named("new-game") Action newGame){
+			@Named("new-game") Action newGame,
+            @Named("show-inventory") Action showInventory){
         this.exit = exit;
 		this.newGame = newGame;
+        this.showInventory = showInventory;
     }
 
     @Override
@@ -34,6 +37,11 @@ public class MainMenuProvider implements Provider<JMenuBar> {
         fileMenu.add(exit);
         menu.add(fileMenu);
 
+        JMenu gameMenu = new JMenu(); 
+        gameMenu.setText("Game");
+        gameMenu.add(showInventory);
+        menu.add(gameMenu);
+        
         return menu;
     }
 }

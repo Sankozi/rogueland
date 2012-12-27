@@ -20,5 +20,6 @@ public class MainPanel extends JPanel implements ComponentSwitcher {
     public void setComponent(JComponent component) {
         this.removeAll();
         this.add(component, BorderLayout.CENTER);
+        this.repaint();
     }
 }
