@@ -5,11 +5,10 @@ import com.google.inject.name.Names;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JMenuBar;
-import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 /**
- *
+ * TODO - make it possible to call guice outside Event Dispatch Thread
  * @author sankozi
  */
 public class GuiModule extends AbstractModule{
@@ -28,7 +27,7 @@ public class GuiModule extends AbstractModule{
         bind(ComponentSwitcher.class)
                 .to(MainPanel.class);
 
-        // -------------- COMPONENTS -----------------
+        // -------------- NAMED COMPONENTS -----------------
 
         bind(JComponent.class)
                 .annotatedWith(Names.named("main-panel"))
@@ -42,7 +41,7 @@ public class GuiModule extends AbstractModule{
                 .annotatedWith(Names.named("inventory-panel"))
                 .toInstance(new InventoryPanel());
 
-        // ---------------- ACTIONS ------------------
+        // ---------------- NAMED ACTIONS ------------------
 		bind(Action.class)
 				.annotatedWith(Names.named("new-game"))
 				.to(NewGameAction.class);

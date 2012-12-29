@@ -1,13 +1,10 @@
 package org.sankozi.rogueland.gui.utils;
 
 import com.google.common.base.Throwables;
+import com.google.inject.Inject;
 import com.google.inject.Provider;
-import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 
 /**

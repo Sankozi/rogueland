@@ -74,7 +74,6 @@ class GameSupport {
 		this.levelSize = new Rectangle(0, 0,
 				game.getLevel().getWidth(), game.getLevel().getHeight());
 		this.gameEvent = new GameEvent(game);
-		//TODO Guice
 	}
 
 	private void endGame(){
