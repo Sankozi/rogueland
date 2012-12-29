@@ -65,7 +65,7 @@ public final class Item implements Destroyable{
 	}
 
 	@Override
-	public String getName() {
+	public String getObjectName() {
 		return "item";
 	}
 
@@ -77,8 +77,12 @@ public final class Item implements Destroyable{
 		return template;
 	}
 
-    public String getDescription(){
+    public String getName(){
         return template.getName();
+    }
+
+    public String getDescription(){
+        return template.getDescription();
     }
 
     @Override

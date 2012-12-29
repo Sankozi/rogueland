@@ -160,6 +160,10 @@ class GameSupport {
 		LOG.info("starting game thread");
     }
 
+    public Game getGame(){
+        return game;
+    }
+
 	void paintLevelImage(Graphics g, JComponent comp) {
 		try {
 			readWriteLock.readLock().lock();

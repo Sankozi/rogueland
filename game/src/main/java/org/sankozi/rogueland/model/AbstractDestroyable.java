@@ -54,7 +54,7 @@ public abstract class AbstractDestroyable implements Destroyable{
         durability += value;
         if(durability >= destroyableParam(Param.MAX_DURABILITY)){
             durability = (int) destroyableParam(Param.MAX_DURABILITY);
-            LOG.info(this.getName() + ": MAX HEALTH");
+            LOG.info(this.getObjectName() + ": MAX HEALTH");
         }
     }
 

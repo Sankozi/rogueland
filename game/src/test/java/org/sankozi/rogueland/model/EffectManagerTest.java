@@ -54,7 +54,7 @@ public class EffectManagerTest {
 		}
 
 		@Override
-		public String getName() {
+		public String getObjectName() {
 			return "effect/mocked";
 		}
 	}

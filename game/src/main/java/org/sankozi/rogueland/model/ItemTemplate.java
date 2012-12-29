@@ -42,4 +42,8 @@ public final class ItemTemplate {
     Effect getEffect() {
         return effect;
     }
+
+    String getDescription() {
+        return name;
+    }
 }

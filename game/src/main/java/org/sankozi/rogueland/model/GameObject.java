@@ -13,5 +13,5 @@ public interface GameObject {
      *
      * @return name, never null
      */
-    String getName();
+    String getObjectName();
 }

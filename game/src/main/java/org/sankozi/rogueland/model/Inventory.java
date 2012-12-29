@@ -3,6 +3,7 @@ package org.sankozi.rogueland.model;
 import java.util.HashSet;
 
 import static com.google.inject.internal.Preconditions.*;
+import org.sankozi.rogueland.data.DataLoader;
 
 /**
  * Item container

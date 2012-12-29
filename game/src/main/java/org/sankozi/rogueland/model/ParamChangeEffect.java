@@ -38,7 +38,7 @@ public final class ParamChangeEffect extends Effect {
 	}
 
 	@Override
-	public String getName() {
+	public String getObjectName() {
 		return name;
 	}
 }

@@ -99,7 +99,7 @@ public class Player extends AbstractActor {
     }
 
     @Override
-    public String getName() {
+    public String getObjectName() {
         return "actor/player";
     }
 
@@ -117,4 +117,8 @@ public class Player extends AbstractActor {
 	public boolean isArmed() {
 		return true;
 	}
+
+    public Inventory getEquipment(){
+        return equipment;
+    }
 }

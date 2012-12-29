@@ -98,7 +98,7 @@ public class Game {
 					actorLocation = targetLocation;
 				}
 				assert tiles[actorLocation.x][actorLocation.y].actor == null 
-						: tiles[actorLocation.x][actorLocation.y].actor.getName() + " on point " + actorLocation;
+						: tiles[actorLocation.x][actorLocation.y].actor.getObjectName() + " on point " + actorLocation;
 				tiles[actorLocation.x][actorLocation.y].actor = actor;
 				actor.setLocation(actorLocation);
 			} 
@@ -148,10 +148,10 @@ public class Game {
         float res = target.protection(dam.type);
         
         if(res < dam.value){
-            GameLog.info(actor.getName() + " attacked " + target.getName() + " for " + dam + "[" + res + " resisted]");
+            GameLog.info(actor.getObjectName() + " attacked " + target.getObjectName() + " for " + dam + "[" + res + " resisted]");
             target.damage(dam.value - (int) res);
             if(target.isDestroyed()){
-                GameLog.info(target.getName() + " is destroyed!");
+                GameLog.info(target.getObjectName() + " is destroyed!");
                 removeActor(target);
             }
         }

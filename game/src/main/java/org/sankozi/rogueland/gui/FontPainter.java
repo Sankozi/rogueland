@@ -65,17 +65,17 @@ public class FontPainter implements TilePainter{
     }
 
     private void drawActor(Graphics g, Actor actor, int x, int y){
-        PainterOptions po = optionsCache.get(actor.getName());
+        PainterOptions po = optionsCache.get(actor.getObjectName());
         if(po == null){
             po = new PainterOptions();
-            if(actor.getName().contains("player")){
+            if(actor.getObjectName().contains("player")){
                 po.character = "@";
                 po.color = Color.WHITE;
             } else {
                 po.character = "@";
                 po.color = Color.RED;
             }
-            optionsCache.put(actor.getName(), po);
+            optionsCache.put(actor.getObjectName(), po);
         }
         g.setColor(po.color);
         g.drawString(po.character, x, y);

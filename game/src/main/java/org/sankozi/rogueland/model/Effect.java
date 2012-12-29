@@ -11,7 +11,7 @@ public abstract class Effect implements GameObject{
 	public static final Effect NULL = new Effect(-1f){
 		@Override public void start(ParamAccessManager manager) {}
 		@Override public void end(ParamAccessManager manager) {}
-		@Override public String getName() { return "none"; }
+		@Override public String getObjectName() { return "none"; }
 	};
 			
 	protected final float finishTime;
