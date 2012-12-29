@@ -3,15 +3,17 @@ package org.sankozi.rogueland.gui;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.name.Named;
+import java.util.concurrent.Callable;
 import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import org.sankozi.rogueland.gui.utils.EDTProvider;
 
 /**
  *
  * @author sankozi
  */
-public class MainMenuProvider implements Provider<JMenuBar> {
+public class MainMenuProvider implements Callable<JMenuBar>, Provider<JMenuBar> {
 
     private final Action exit;
     private final Action newGame;
@@ -28,7 +30,7 @@ public class MainMenuProvider implements Provider<JMenuBar> {
     }
 
     @Override
-    public JMenuBar get() {
+    public JMenuBar call() {
         JMenuBar menu = new JMenuBar();
 
         JMenu fileMenu = new JMenu();
@@ -43,5 +45,10 @@ public class MainMenuProvider implements Provider<JMenuBar> {
         menu.add(gameMenu);
         
         return menu;
+    }
+
+    @Override
+    public JMenuBar get() {
+        return new EDTProvider<>(this).get();
     }
 }

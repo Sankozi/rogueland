@@ -18,8 +18,8 @@ public class MainPanel extends JPanel implements ComponentSwitcher {
 
     @Override
     public void setComponent(JComponent component) {
-        this.removeAll();
-        this.add(component, BorderLayout.CENTER);
-        this.repaint();
+        removeAll();
+        add(component, BorderLayout.CENTER);
+        revalidate();
     }
 }
