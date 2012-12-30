@@ -12,7 +12,7 @@ public class EffectManagerTest {
 
 	@Test
 	public void registerEventTest(){
-		Player p = new Player(Controls.ALWAYS_WAIT);
+        Player p = getPlayer();
 		EffectManager em = EffectManager.forPlayer(p);
 		Effect mockedEffect = mock(Effect.class);
 		when(mockedEffect.getFinishTime()).thenReturn(1f);
@@ -28,7 +28,7 @@ public class EffectManagerTest {
 
 	@Test
 	public void registerEvent0TimeTest(){
-		Player p = new Player(Controls.ALWAYS_WAIT);
+		Player p = getPlayer();
 		EffectManager em = EffectManager.forPlayer(p);
 		Effect mockedEffect = mock(Effect.class);
 		when(mockedEffect.getFinishTime()).thenReturn(0f);
@@ -38,6 +38,12 @@ public class EffectManagerTest {
 		verify(mockedEffect).start(em);
 		verify(mockedEffect).end(em);
 	}
+
+    private Player getPlayer() {
+        Player p = new Player();
+        p.setControls(Controls.ALWAYS_WAIT);
+        return p;
+    }
 
 	/** Effect increases Destroyable.Param.BLUNT_PROT by 2 */
 	private class MockedAccessingEffect extends Effect {
@@ -61,7 +67,7 @@ public class EffectManagerTest {
 
 	@Test 
 	public void accessDestroyableParamTest(){
-		Player p = new Player(Controls.ALWAYS_WAIT);
+		Player p = getPlayer();
 		EffectManager em = EffectManager.forPlayer(p);
 		float before = p.destroyableParam(Destroyable.Param.BLUNT_PROT);
 		em.registerEffect(new MockedAccessingEffect(2f));

@@ -2,6 +2,8 @@ package org.sankozi.rogueland.control;
 
 import org.sankozi.rogueland.generator.LevelGenerator;
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.model.Destroyable.Param;
@@ -14,6 +16,8 @@ import org.sankozi.rogueland.model.*;
 public class Game {
     private final static Logger LOG = Logger.getLogger(Game.class);
 
+    private final Provider<Player> playerProvider;
+
     private Level level = new Level(300, 200);
     private GameLog log = new GameLog();
     private Player player = null;
@@ -24,10 +28,15 @@ public class Game {
 
     private GameRunnable runningGame;
 
-	{
+    {
 		LevelGenerator.generate(level);
 		locator = new GameLevelLocator(this, level);
 	}
+
+    @Inject
+    public Game(Provider<Player> playerProvider) {
+        this.playerProvider = playerProvider;
+    }
 
     public Runnable provideRunnable(){
         if(runningGame == null){
@@ -44,7 +53,8 @@ public class Game {
      * @param controls
      */
     public void setControls(Controls controls){
-        this.player = new Player(controls);
+        this.player = playerProvider.get();
+        player.setControls(controls);
         player.setLocation(new Coords(5,5));
         actors.add(player);
         Actor ai = new AiActor();
@@ -136,8 +146,6 @@ public class Game {
 		toBeRemoved.add(actor);
         level.getTiles()[actor.getLocation().x][actor.getLocation().y ].actor = null;
     }
-
-	
 
     /**
      * Default attack handle

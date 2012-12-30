@@ -1,7 +1,6 @@
 package org.sankozi.rogueland.generator;
 
 import com.google.common.base.Function;
-import java.util.Collections;
 import org.sankozi.rogueland.model.Item;
 
 /**

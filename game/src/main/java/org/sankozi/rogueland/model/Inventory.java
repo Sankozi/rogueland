@@ -1,17 +1,20 @@
 package org.sankozi.rogueland.model;
 
+import com.google.inject.internal.Lists;
 import java.util.HashSet;
 
 import static com.google.inject.internal.Preconditions.*;
-import org.sankozi.rogueland.data.DataLoader;
 
 /**
  * Item container
  * @author sankozi
  */
 public final class Inventory {
-
     private final HashSet<Item> items = new HashSet<>();
+
+    Inventory(Iterable<Item> startingEquipment) {
+        items.addAll(Lists.newArrayList(startingEquipment));
+    }
 
     public Iterable<Item> getItems(){
         return items;

@@ -3,6 +3,10 @@ package org.sankozi.rogueland.data;
 import clojure.lang.Named;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Splitter;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.io.CharStreams;
@@ -17,6 +21,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import org.sankozi.rogueland.model.Destroyable;
 import org.sankozi.rogueland.model.Effect;
 import org.sankozi.rogueland.model.ItemTemplate;
@@ -29,6 +34,18 @@ import static org.sankozi.rogueland.data.LoaderUtils.*;
  * @author sankozi
  */
 public final class DataLoader {
+
+    private final LoadingCache<String, Object> evaluatedClResources = 
+            CacheBuilder.newBuilder()
+                        .concurrencyLevel(1)
+                        .expireAfterAccess(5, TimeUnit.MINUTES)
+                        .build(new CacheLoader<String, Object>(){
+                            public Object load(String name) throws Exception {
+                                return clojure.lang.Compiler.load(new StringReader(loadResource(name)));
+                            }
+                        });
+
+    private Map<String, ItemTemplate> baseItemTemplates;
 
 	Collection<String> getScriptNames(){
 		List<String> ret = new ArrayList<>();
@@ -49,17 +66,24 @@ public final class DataLoader {
 	}
 
 	Object evaluateClResource(String name){
-		return clojure.lang.Compiler.load(new StringReader(loadResource(name)));
+		return evaluatedClResources.getUnchecked(name);
 	}
 
 	Map<String, ItemTemplate> loadItemTemplates(){
-		Map<String, ?> clMap = (Map) evaluateClResource("items.cl");
-		Map<String, ItemTemplate> ret = Maps.newHashMapWithExpectedSize(clMap.size());
-		for(Map.Entry<String, ?> entry : clMap.entrySet()){
-			ret.put(entry.getKey(), buildItemTemplate(entry.getKey(), (Map)entry.getValue()));
-		}
-		return ret;
+        if(baseItemTemplates == null) {
+            Map<String, ?> clMap = (Map) evaluateClResource("items.cl");
+            Map<String, ItemTemplate> ret = Maps.newHashMapWithExpectedSize(clMap.size());
+            for(Map.Entry<String, ?> entry : clMap.entrySet()){
+                ret.put(entry.getKey(), buildItemTemplate(entry.getKey(), (Map)entry.getValue()));
+            }
+            baseItemTemplates = ret;
+        }
+		return baseItemTemplates;
 	}
+
+    public ItemTemplate getItemTemplate(String name){
+        return loadItemTemplates().get(name);
+    }
 
 	private static ItemTemplate buildItemTemplate(String name, Map map) {
 		EnumSet<ItemType> types = EnumSet.noneOf(ItemType.class);

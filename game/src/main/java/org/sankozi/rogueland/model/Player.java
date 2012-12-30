@@ -2,6 +2,7 @@ package org.sankozi.rogueland.model;
 
 import com.google.common.collect.Sets;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Set;
 import org.apache.log4j.Logger;
@@ -27,23 +28,27 @@ public class Player extends AbstractActor {
 				Param.WILLPOWER), 
 			Param.class);
 
-    private final Inventory equipment = new Inventory();
+    private final Inventory equipment;
     
     private final EnumMap<Param, Float> params = new EnumMap<>(Param.class);
     
-    private final Controls controls;
+    private Controls controls;
     
     private Coords location;
 	private Direction weaponDirection = Direction.N;
 
-    public Player(Controls controls){
+    public Player(){
+        this(Collections.<Item>emptySet());
+    }
+
+    public Player(Iterable<Item> startingEquipment){
         super(10);
 		for(Param param: STATS){
 			setPlayerParam(param, 10f);
 		}
-        this.controls = controls;
         setDestroyableParam(Destroyable.Param.DURABILITY_REGEN, 0.25f);
         setDestroyableParam(Destroyable.Param.MAX_DURABILITY, 20);
+        this.equipment = new Inventory(startingEquipment);
     }
 
     @Override
@@ -120,5 +125,9 @@ public class Player extends AbstractActor {
 
     public Inventory getEquipment(){
         return equipment;
+    }
+
+    public void setControls(Controls controls) {
+        this.controls = controls;
     }
 }
