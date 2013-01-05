@@ -1,8 +1,14 @@
 package org.sankozi.rogueland.gui;
 
+import com.google.common.base.Throwables;
 import com.google.inject.Inject;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.io.IOException;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -15,6 +21,9 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.html.HTMLDocument;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.model.Item;
 
@@ -41,8 +50,8 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
         itemList.addListSelectionListener(this);
         itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         itemList.setCellRenderer(new ItemListRenderer());
-
-        itemDescription.setEditable(false);
+        
+        initItemDescription();
         
         setLayout(new BorderLayout());
         contents.setLeftComponent(itemList);
@@ -53,11 +62,41 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
         addAncestorListener(this);
     }
 
-    private static class ItemListRenderer implements ListCellRenderer {
+    MutableAttributeSet attrs;
+    Font font;
+
+    private void initItemDescription() {
+        itemDescription.setEditable(false);
+        itemDescription.setContentType("text/html");
+        attrs = itemDescription.getInputAttributes();
+        try {
+            font = Font.createFont(Font.TRUETYPE_FONT, InventoryPanel.class.getResourceAsStream("Stoke-Regular.ttf")).deriveFont(14f);
+        } catch (FontFormatException | IOException ex) {
+            Throwables.propagate(ex);
+        }
+        itemDescription.setDocument(new CustomFontStyledDocument());
+    }
+
+    private class CustomFontStyledDocument extends HTMLDocument{
+
+        @Override
+        public Font getFont(AttributeSet attr) {
+            return font;
+        }
+    }
+
+    private class ItemListRenderer implements ListCellRenderer {
 
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            return new JLabel(((Item)value).getName());
+            JLabel ret = new JLabel(((Item)value).getName()); 
+            ret.setFont(font);
+            if(isSelected){
+                ret.setOpaque(true);
+                ret.setBackground(new Color(254,237,170));
+                ret.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2, false));
+            }
+            return ret;
         }
     }
 
@@ -83,6 +122,6 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
     @Override
     public void valueChanged(ListSelectionEvent e) {
         Item item = (Item) itemList.getSelectedValue();
-        itemDescription.setText(item.getDescription());
+        itemDescription.setText(item.getDescription().replace("\n", "<br/>"));
     }
 }

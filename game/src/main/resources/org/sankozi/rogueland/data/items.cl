@@ -38,6 +38,7 @@
     }
 :test-item {
     :name "Test item"
+    :desc "Item used for testing"
     :types #{}
     :effects {
 	    :protection {
