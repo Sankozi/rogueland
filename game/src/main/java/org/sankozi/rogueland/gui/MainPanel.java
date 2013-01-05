@@ -14,12 +14,14 @@ public class MainPanel extends JPanel implements ComponentSwitcher {
 
     {
         this.setLayout(new BorderLayout());
+        this.setFocusable(true);
     }
 
     @Override
     public void setComponent(JComponent component) {
         removeAll();
         add(component, BorderLayout.CENTER);
+        component.requestFocusInWindow();
         revalidate();
     }
 }
