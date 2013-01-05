@@ -5,14 +5,9 @@ import org.apache.log4j.Logger;
 import org.sankozi.rogueland.control.LogListener;
 
 /**
- * Base class for LoggingPanels
+ * Base class for Components that show game logs
  * @author sankozi
  */
 public abstract class LogPanel extends JPanel implements LogListener{
     private final static Logger LOG = Logger.getLogger(LogPanel.class);
-
-//    @Override
-//    public void onMessage(String message, MessageType type) {
-//        LOG.info("onMessage:" + message);
-//    }
 }

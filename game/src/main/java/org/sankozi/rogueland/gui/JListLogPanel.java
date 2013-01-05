@@ -1,11 +1,16 @@
 package org.sankozi.rogueland.gui;
 
 import com.google.inject.Inject;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.control.MessageType;
 import org.sankozi.rogueland.resources.ResourceProvider;
+
+import static org.sankozi.rogueland.gui.Constants.*;
 
 /**
  *
@@ -20,8 +25,12 @@ public class JListLogPanel extends LogPanel{
 
     {
         jlist.setModel(list);
-        jlist.setFont(ResourceProvider.getFont(ResourceProvider.STANDARD_FONT_NAME, 12f));
-        this.add(jlist);
+        jlist.setFont(ResourceProvider.getFont(STANDARD_FONT_NAME, 12f));
+        jlist.setOpaque(true);
+        jlist.setBackground(BACKGROUND_TEXT_COLOR);
+        this.setLayout(new BorderLayout());
+        this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        this.add(jlist, BorderLayout.CENTER);
     }
 
     @Override

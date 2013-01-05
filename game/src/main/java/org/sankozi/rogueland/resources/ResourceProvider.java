@@ -19,8 +19,6 @@ import javax.imageio.ImageIO;
  * @author sankozi
  */
 public class ResourceProvider {
-    public final static String STANDARD_FONT_NAME = "Stoke-Regular.ttf";
-    
     private final static LoadingCache<String, Font> FONT_CACHE = CacheBuilder.newBuilder()
             .concurrencyLevel(1)
             .build(new CacheLoader<String,Font>(){
