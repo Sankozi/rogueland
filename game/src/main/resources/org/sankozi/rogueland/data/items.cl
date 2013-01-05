@@ -12,8 +12,10 @@
     `(merge ~@(for [entry# (seq items-map)]
             (item (nth entry# 0) (nth entry# 1)))))
 (items {
-:simple-quarterstaff {
-    :name "Simple quarterstaff"
+:simple-staff {
+    :name "Simple staff"
+    :desc "2 meter high stick stripped of bark
+           5 blunt damage"
     :types #{:staff}
     :durability 100}
 :sword {

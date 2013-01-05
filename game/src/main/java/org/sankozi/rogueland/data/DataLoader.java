@@ -20,6 +20,7 @@ import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.sankozi.rogueland.model.Destroyable;
@@ -105,6 +106,7 @@ public final class DataLoader {
 
         return new ItemTemplate(
                 map.get("name").toString(),
+                Objects.toString(map.get("desc"), ""),
                 toFloatMap((Map)map.get("protection"), Destroyable.Param.class),
                 Effect.NULL,
                 types

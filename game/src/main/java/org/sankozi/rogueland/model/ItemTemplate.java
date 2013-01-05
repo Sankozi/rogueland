@@ -11,6 +11,7 @@ import static com.google.common.base.Preconditions.*;
  */
 public final class ItemTemplate {
 	private final String name;
+    private final String description;
 	/** Destroyable parameters of an item */
     private final EnumMap<Param, Float> params;
 	/** Effect of an item when it is worn or wield; can be null if types 
@@ -19,9 +20,10 @@ public final class ItemTemplate {
 
 	private final EnumSet<ItemType> types;
 
-	public ItemTemplate(String name, EnumMap<Param, Float> params, Effect effect, EnumSet<ItemType> types) {
+	public ItemTemplate(String name, String description, EnumMap<Param, Float> params, Effect effect, EnumSet<ItemType> types) {
         checkArgument(params.containsKey(Param.MAX_DURABILITY), "params %s does not contain MAX_DURABILITY", params);
 		this.name = name;
+        this.description = description;
 		this.params = checkNotNull(params, "params cannot be null");
 		this.effect = checkNotNull(effect, "effect cannot be null");
 		this.types = checkNotNull(types, "types cannot be null");
@@ -44,6 +46,6 @@ public final class ItemTemplate {
     }
 
     String getDescription() {
-        return name;
+        return description;
     }
 }
