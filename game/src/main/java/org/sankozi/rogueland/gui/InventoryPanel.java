@@ -26,6 +26,7 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTMLDocument;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.model.Item;
+import org.sankozi.rogueland.resources.ResourceProvider;
 
 /**
  *
@@ -63,17 +64,11 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
     }
 
     MutableAttributeSet attrs;
-    Font font;
+    Font font = ResourceProvider.getFont("Stoke-Regular.ttf", 14f);
 
     private void initItemDescription() {
         itemDescription.setEditable(false);
         itemDescription.setContentType("text/html");
-        attrs = itemDescription.getInputAttributes();
-        try {
-            font = Font.createFont(Font.TRUETYPE_FONT, InventoryPanel.class.getResourceAsStream("Stoke-Regular.ttf")).deriveFont(14f);
-        } catch (FontFormatException | IOException ex) {
-            Throwables.propagate(ex);
-        }
         itemDescription.setDocument(new CustomFontStyledDocument());
     }
 

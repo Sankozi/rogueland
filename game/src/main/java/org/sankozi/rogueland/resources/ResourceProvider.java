@@ -1,6 +1,9 @@
 package org.sankozi.rogueland.resources;
 
+import com.google.common.base.Throwables;
 import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -26,6 +29,17 @@ public class ResourceProvider {
 			throw new ResourceException("cannot load image : " + name, ex);
 		}
 	}
+
+    public static Font getFont(String name, float size){
+        Font ret;
+        try {
+            ret = Font.createFont(Font.TRUETYPE_FONT, 
+                    ResourceProvider.class.getResourceAsStream("fonts/" + name)).deriveFont(size);
+        } catch (FontFormatException | IOException ex) {
+            throw Throwables.propagate(ex);
+        }
+        return ret;
+    }
 
 	public static Cursor getCursor(String name, Point center){
 		Image im = getImage(name);
