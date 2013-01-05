@@ -1,6 +1,9 @@
 package org.sankozi.rogueland.resources;
 
 import com.google.common.base.Throwables;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -16,6 +19,16 @@ import javax.imageio.ImageIO;
  * @author sankozi
  */
 public class ResourceProvider {
+    public final static String STANDARD_FONT_NAME = "Stoke-Regular.ttf";
+    
+    private final static LoadingCache<String, Font> FONT_CACHE = CacheBuilder.newBuilder()
+            .concurrencyLevel(1)
+            .build(new CacheLoader<String,Font>(){
+                public Font load(String name) throws Exception {
+                    return Font.createFont(Font.TRUETYPE_FONT, 
+                        ResourceProvider.class.getResourceAsStream("fonts/" + name));
+                }
+            });
 
     public static URL getLog4jProperties() {
         return ResourceProvider.class.getResource("log4j.properties");
@@ -31,14 +44,7 @@ public class ResourceProvider {
 	}
 
     public static Font getFont(String name, float size){
-        Font ret;
-        try {
-            ret = Font.createFont(Font.TRUETYPE_FONT, 
-                    ResourceProvider.class.getResourceAsStream("fonts/" + name)).deriveFont(size);
-        } catch (FontFormatException | IOException ex) {
-            throw Throwables.propagate(ex);
-        }
-        return ret;
+        return FONT_CACHE.getUnchecked(name).deriveFont(size);
     }
 
 	public static Cursor getCursor(String name, Point center){

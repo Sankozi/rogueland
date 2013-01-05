@@ -5,6 +5,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.control.MessageType;
+import org.sankozi.rogueland.resources.ResourceProvider;
 
 /**
  *
@@ -19,6 +20,7 @@ public class JListLogPanel extends LogPanel{
 
     {
         jlist.setModel(list);
+        jlist.setFont(ResourceProvider.getFont(ResourceProvider.STANDARD_FONT_NAME, 12f));
         this.add(jlist);
     }
 
