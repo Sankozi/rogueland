@@ -117,6 +117,8 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
     @Override
     public void valueChanged(ListSelectionEvent e) {
         Item item = (Item) itemList.getSelectedValue();
-        itemDescription.setText(item.getDescription().replace("\n", "<br/>"));
+        if(item != null){
+            itemDescription.setText(item.getDescription().replace("\n", "<br/>"));
+        }
     }
 }

@@ -23,7 +23,7 @@ public final class ItemTemplate {
 	public ItemTemplate(String name, String description, EnumMap<Param, Float> params, Effect effect, EnumSet<ItemType> types) {
         checkArgument(params.containsKey(Param.MAX_DURABILITY), "params %s does not contain MAX_DURABILITY", params);
 		this.name = name;
-        this.description = description;
+        this.description = checkNotNull(description);
 		this.params = checkNotNull(params, "params cannot be null");
 		this.effect = checkNotNull(effect, "effect cannot be null");
 		this.types = checkNotNull(types, "types cannot be null");
