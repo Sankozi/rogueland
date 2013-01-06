@@ -15,6 +15,16 @@ public abstract class AbstractActor extends AbstractDestroyable implements Actor
 
     @Override
     public float actorParam(Actor.Param param) {
-        return params.get(param);
+        Float ret = params.get(param);
+        if(ret == null){
+            return 0f;
+        } else {
+            return ret.floatValue();
+        }
+    }
+
+    @Override
+    public void setActorParam(Actor.Param param, float value) {
+        params.put(param, value);
     }
 }

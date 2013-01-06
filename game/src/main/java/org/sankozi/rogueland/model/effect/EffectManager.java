@@ -1,9 +1,13 @@
-package org.sankozi.rogueland.model;
+package org.sankozi.rogueland.model.effect;
 
+import org.sankozi.rogueland.model.effect.Effect;
 import com.google.common.collect.TreeMultimap;
 import java.util.*;
 import javax.annotation.Nullable;
+import org.sankozi.rogueland.model.Actor;
+import org.sankozi.rogueland.model.Destroyable;
 import org.sankozi.rogueland.model.Destroyable.Param;
+import org.sankozi.rogueland.model.Player;
 
 /**
  * Object that manages active Effects, it is responsible for:
@@ -12,7 +16,7 @@ import org.sankozi.rogueland.model.Destroyable.Param;
  * - it properly destroys all events that should have ended
  * @author sankozi
  */
-public class EffectManager implements ParamAccessManager {
+public class EffectManager implements AccessManager {
 	private final static ResourceBundle paramsBundle = ResourceBundle.getBundle("org/sankozi/rogueland/resources/params");
 	
     //EffectManager might work for different kinds of objects
@@ -119,9 +123,15 @@ public class EffectManager implements ParamAccessManager {
 		return new DestroyableParamAccess(param);
 	}
 
+    @Override
+    public ParamAccess accessActorParam(Actor.Param param) {
+        return new ActorParamAccess(param);
+    }
+
 	private static class EffectContext {
 		final Effect effect;
 		@Nullable Map<Destroyable.Param, Float> destroyableParamChanges;
+		@Nullable Map<Actor.Param, Float> actorParamChanges;
 
 		EffectContext(Effect effect) {
 			this.effect = effect;
@@ -142,7 +152,34 @@ public class EffectManager implements ParamAccessManager {
 			}
 		}
 
-		private float getChange(Param param) {
+        void putChange(Actor.Param param, float change) {
+			if(actorParamChanges == null){
+				if(change != 0f) {
+					actorParamChanges = new EnumMap<>(Actor.Param.class);
+					actorParamChanges.put(param, change);
+				}
+			} else {
+				if(change == 0f) {
+					actorParamChanges.remove(param);
+				} else {
+					actorParamChanges.put(param, change);
+				}
+			}
+		}
+
+        private float getChange(Actor.Param param) {
+			if(actorParamChanges == null) {
+				return 0f;
+			}
+			Float ret = actorParamChanges.get(param);
+			if(ret == null) {
+				return 0f;
+			} else {
+				return ret.floatValue();
+			}
+		}
+
+		private float getChange(Destroyable.Param param) {
 			if(destroyableParamChanges == null) {
 				return 0f;
 			}
@@ -155,16 +192,38 @@ public class EffectManager implements ParamAccessManager {
 		}
 	}
 
-	private class DestroyableParamAccess implements ParamAccess{
-		final Destroyable.Param param;
+    private abstract class BaseParamAccess<T extends Enum> implements ParamAccess {
+        final T param;
 
+        public BaseParamAccess(T param) {
+            this.param = param;
+        }
+        
+		@Override public final String cn() { return param.name(); }
+		@Override public final String name() { return paramsBundle.getString(cn()); }
+    }
+
+    private class ActorParamAccess extends BaseParamAccess<Actor.Param> implements ParamAccess {
+        public ActorParamAccess(Actor.Param param) {
+            super(param);
+        }
+        
+		@Override public float get() { return actor.actorParam(param); }
+
+        @Override
+        public void setChange(float d) {
+			actor.setActorParam(param, get() - currentContext.getChange(param) + d); //removes previous change and add new
+            currentContext.putChange(param, d);
+			if(d != 0f){
+				storeCurrentContextCheck();
+			}
+        }
+    }
+
+	private class DestroyableParamAccess extends BaseParamAccess<Destroyable.Param> implements ParamAccess{
 		public DestroyableParamAccess(Param param) {
-			this.param = param;
+            super(param);
 		}
-
-		@Override public String cn() { return param.name(); }
-			
-		@Override public String name() { return paramsBundle.getString(cn()); }
 
 		@Override public float get() { return destroyable.destroyableParam(param); }
 		

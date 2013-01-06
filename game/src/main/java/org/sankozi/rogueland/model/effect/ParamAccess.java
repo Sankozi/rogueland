@@ -1,4 +1,4 @@
-package org.sankozi.rogueland.model;
+package org.sankozi.rogueland.model.effect;
 
 /**
  * Access for single parameter value, parameter access is always done in some 
@@ -12,6 +12,7 @@ public interface ParamAccess {
 	 * @return 
 	 */
 	public String cn();
+
 	/**
 	 * Returns name (string readable for user) of parameter
 	 * @return 

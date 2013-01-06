@@ -24,7 +24,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.sankozi.rogueland.model.Destroyable;
-import org.sankozi.rogueland.model.Effect;
+import org.sankozi.rogueland.model.effect.Effect;
 import org.sankozi.rogueland.model.ItemTemplate;
 import org.sankozi.rogueland.model.ItemType;
 

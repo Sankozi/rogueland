@@ -1,4 +1,6 @@
-package org.sankozi.rogueland.model;
+package org.sankozi.rogueland.model.effect;
+
+import org.sankozi.rogueland.model.GameObject;
 
 /**
  * Base class of effects. Effect is an GameObject that changes parametrized 
@@ -9,8 +11,8 @@ package org.sankozi.rogueland.model;
 public abstract class Effect implements GameObject{
 	/** Null effect */
 	public static final Effect NULL = new Effect(-1f){
-		@Override public void start(ParamAccessManager manager) {}
-		@Override public void end(ParamAccessManager manager) {}
+		@Override public void start(AccessManager manager) {}
+		@Override public void end(AccessManager manager) {}
 		@Override public String getObjectName() { return "none"; }
 	};
 			
@@ -34,13 +36,13 @@ public abstract class Effect implements GameObject{
 	 * Makes changes to attached object
 	 * @param manager, not null
 	 */
-	public abstract void start(ParamAccessManager manager);
+	public abstract void start(AccessManager manager);
 	
 	/**
 	 * Ends this Effect, implementing classes may undo changes made in start method
 	 * @param manager 
 	 */
-	public abstract void end(ParamAccessManager manager);
+	public abstract void end(AccessManager manager);
 
 	/**
 	 * If this Effect is based on parameters of attached GameObject this method 

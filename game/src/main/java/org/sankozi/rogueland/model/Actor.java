@@ -16,8 +16,9 @@ public interface Actor extends Destroyable{
 	/** returns power of weapon attacks */
 	Damage getWeaponPower();
 
-    /** Returns value stored in int */
+    /** Returns actor param value */
     float actorParam(Param param);
+    void setActorParam(Param param, float value);
 
 	/** Returns true if Actor has weapon */
 	boolean isArmed();
@@ -25,8 +26,11 @@ public interface Actor extends Destroyable{
 	Coords getWeaponLocation();
 
     enum Param {
-        DAMAGE_MIN,
-        DAMAGE_MAX,
+        DAMAGE,
+        DAMAGE_TYPE,
+
+        WEAPON_DAMAGE,
+        WEAPON_DAMAGE_TYPE,
        
         MANA_REGEN,
     }

@@ -30,7 +30,12 @@ public abstract class AbstractDestroyable implements Destroyable{
 
     @Override
     public final float destroyableParam(Param param) {
-        return params.get(param);
+        Float ret = params.get(param);
+        if(ret == null){
+            return 0f;
+        } else {
+            return ret.floatValue();
+        }
     }
 
     @Override

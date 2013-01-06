@@ -1,7 +1,10 @@
-package org.sankozi.rogueland.model;
+package org.sankozi.rogueland.model.effect;
 
+import org.sankozi.rogueland.model.effect.AccessManager;
+import org.sankozi.rogueland.model.effect.Effect;
 import java.util.EnumMap;
 import java.util.Map;
+import org.sankozi.rogueland.model.Destroyable;
 
 /**
  * 
@@ -24,14 +27,14 @@ public final class ParamChangeEffect extends Effect {
 	}
 	
 	@Override
-	public void start(ParamAccessManager manager) {
+	public void start(AccessManager manager) {
         for(Map.Entry<Destroyable.Param, Float> entry : changes.entrySet()){
             manager.accessDestroyableParam(entry.getKey()).setChange(entry.getValue());
         }
 	}
 
 	@Override
-	public void end(ParamAccessManager manager) {
+	public void end(AccessManager manager) {
         for(Destroyable.Param param : changes.keySet()){
             manager.accessDestroyableParam(param).setChange(0f);
         }

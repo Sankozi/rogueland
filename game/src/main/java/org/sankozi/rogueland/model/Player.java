@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
 public class Player extends AbstractActor {
     private final static Logger LOG = Logger.getLogger(Player.class);
 
-    private final static Damage closeDamage = new Damage(Damage.Type.BLUNT, 1);
+    private final static Damage bumpDamage = new Damage(Damage.Type.BLUNT, 1);
     private final static Damage damage = new Damage(Damage.Type.SLASHING, 10);
 
 	private final static Set<Param> STATS = Sets.newEnumSet(Arrays.asList(
@@ -110,7 +110,7 @@ public class Player extends AbstractActor {
 
     @Override
     public Damage getPower() {
-        return closeDamage;
+        return bumpDamage;
     }
 
 	@Override

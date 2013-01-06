@@ -1,8 +1,12 @@
-package org.sankozi.rogueland.model;
+package org.sankozi.rogueland.model.effect;
 
 import org.junit.Test;
+import org.sankozi.rogueland.model.Controls;
+import org.sankozi.rogueland.model.Destroyable;
+import org.sankozi.rogueland.model.Player;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import org.sankozi.rogueland.model.Actor;
 
 /**
  *
@@ -50,13 +54,15 @@ public class EffectManagerTest {
 		public MockedAccessingEffect(float finishTime) {super(finishTime);}
 		
 		@Override
-		public void start(ParamAccessManager manager) {
+		public void start(AccessManager manager) {
 			manager.accessDestroyableParam(Destroyable.Param.BLUNT_PROT).setChange(2f);
+            manager.accessActorParam(Actor.Param.DAMAGE).setChange(5f);
 		}
 
 		@Override
-		public void end(ParamAccessManager manager) {
+		public void end(AccessManager manager) {
 			manager.accessDestroyableParam(Destroyable.Param.BLUNT_PROT).setChange(0f);
+            manager.accessActorParam(Actor.Param.DAMAGE).setChange(0f);
 		}
 
 		@Override
@@ -70,8 +76,11 @@ public class EffectManagerTest {
 		Player p = getPlayer();
 		EffectManager em = EffectManager.forPlayer(p);
 		float before = p.destroyableParam(Destroyable.Param.BLUNT_PROT);
+        float beforeDamage = p.actorParam(Actor.Param.DAMAGE);
 		em.registerEffect(new MockedAccessingEffect(2f));
 		float after = p.destroyableParam(Destroyable.Param.BLUNT_PROT);
+        float afterDamage = p.actorParam(Actor.Param.DAMAGE);
 		assertEquals(2f, after - before, 0.01f);
+		assertEquals(5f, afterDamage - beforeDamage, 0.01f);
 	}
 }

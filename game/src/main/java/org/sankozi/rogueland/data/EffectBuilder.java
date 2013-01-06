@@ -4,8 +4,8 @@ import com.google.common.base.CaseFormat;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.sankozi.rogueland.model.Destroyable;
-import org.sankozi.rogueland.model.Effect;
-import org.sankozi.rogueland.model.ParamChangeEffect;
+import org.sankozi.rogueland.model.effect.Effect;
+import org.sankozi.rogueland.model.effect.ParamChangeEffect;
 
 /**
  *

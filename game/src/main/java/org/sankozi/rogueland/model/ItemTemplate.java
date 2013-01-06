@@ -1,5 +1,6 @@
 package org.sankozi.rogueland.model;
 
+import org.sankozi.rogueland.model.effect.Effect;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import org.sankozi.rogueland.model.Destroyable.Param;

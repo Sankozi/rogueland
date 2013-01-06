@@ -124,10 +124,6 @@ public class LevelPanel extends JComponent{
         final double first = Math.tan(Math.PI / 8.0);
         final double second = Math.tan(Math.PI / 2.0  - Math.PI / 8.0);
 
-//        {
-//            LOG.info("first = " + first + " second = " + second);
-//        }
-
         @Override
         public void mouseDragged(MouseEvent e) {
         }
@@ -142,7 +138,6 @@ public class LevelPanel extends JComponent{
             int py = playerLocation.y + playerLocation.height / 2;
             double dy = Math.abs(y-py);
             double dx = Math.abs(x-px);
-//            LOG.info("x = " + x + " y = " + y + " px = " + px + " py = " + py + " dx = " + dx + " dy = " + dy);
             if(dx + dy < 20){//cursor close to the player
                 setDirectionCursor(Direction.C);
             } else if(x < px){
@@ -234,7 +229,6 @@ public class LevelPanel extends JComponent{
                     return null;
             }
         }
-
 
         @Override
         public void keyPressed(KeyEvent e) {

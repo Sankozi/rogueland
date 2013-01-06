@@ -1,5 +1,6 @@
 package org.sankozi.rogueland.model;
 
+import org.sankozi.rogueland.model.effect.Effect;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.model.Damage.Type;
 
