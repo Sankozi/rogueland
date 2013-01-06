@@ -206,13 +206,25 @@ public class LevelPanel extends JComponent{
 
         public Move fromKeyCode(int code){
             switch(code){
+                case KeyEvent.VK_NUMPAD1:
+                    return Move.Go.SOUTHWEST;
+                case KeyEvent.VK_NUMPAD7:
+                    return Move.Go.NORTHWEST;
+                case KeyEvent.VK_NUMPAD9:
+                    return Move.Go.NORTHEAST;
+                case KeyEvent.VK_NUMPAD3:
+                    return Move.Go.SOUTHEAST;
                 case KeyEvent.VK_UP:
+                case KeyEvent.VK_NUMPAD8:
                     return Move.Go.NORTH;
                 case KeyEvent.VK_LEFT:
+                case KeyEvent.VK_NUMPAD4:
                     return Move.Go.WEST;
                 case KeyEvent.VK_DOWN:
+                case KeyEvent.VK_NUMPAD2:
                     return Move.Go.SOUTH;
                 case KeyEvent.VK_RIGHT:
+                case KeyEvent.VK_NUMPAD6:
                     return Move.Go.EAST;
 				case KeyEvent.VK_Q:
 					return Move.Rotate.COUNTERCLOCKWISE;
