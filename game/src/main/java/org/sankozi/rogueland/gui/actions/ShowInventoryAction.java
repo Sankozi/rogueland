@@ -1,4 +1,4 @@
-package org.sankozi.rogueland.gui;
+package org.sankozi.rogueland.gui.actions;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -8,8 +8,8 @@ import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import org.sankozi.rogueland.gui.ComponentSwitcher;
 
 /**
  *

@@ -2,12 +2,17 @@ package org.sankozi.rogueland.gui;
 
 import com.google.common.base.Throwables;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
@@ -32,9 +37,10 @@ import org.sankozi.rogueland.resources.ResourceProvider;
  *
  * @author sankozi
  */
-public class InventoryPanel extends JPanel implements AncestorListener, ListSelectionListener{
+public class InventoryPanel extends JPanel implements AncestorListener, ListSelectionListener, KeyListener{
     private final static Logger LOG = Logger.getLogger(InventoryPanel.class);
     transient GameSupport gameSupport;
+    transient private Action returnToGame;
 
     private final JSplitPane contents = new JSplitPane();
 
@@ -46,6 +52,11 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
 	void setGameSupport(GameSupport support){
         this.gameSupport = support;
 	}
+
+    @Inject
+    public void setReturnToGame(@Named("return-to-game") Action returnToGame) {
+        this.returnToGame = returnToGame;
+    }
 
     {
         itemList.addListSelectionListener(this);
@@ -61,6 +72,9 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
         add(contents, BorderLayout.CENTER);
 
         addAncestorListener(this);
+        itemList.addKeyListener(this);
+        itemDescription.addKeyListener(this);
+        addKeyListener(this);
     }
 
     MutableAttributeSet attrs;
@@ -70,6 +84,22 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
         itemDescription.setEditable(false);
         itemDescription.setContentType("text/html");
         itemDescription.setDocument(new CustomFontStyledDocument());
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        LOG.info("keyReleased");
+        if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
+            returnToGame.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
+        }
     }
 
     private class CustomFontStyledDocument extends HTMLDocument{

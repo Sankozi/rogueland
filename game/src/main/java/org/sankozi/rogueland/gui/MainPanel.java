@@ -23,5 +23,6 @@ public class MainPanel extends JPanel implements ComponentSwitcher {
         add(component, BorderLayout.CENTER);
         component.requestFocusInWindow();
         revalidate();
+        this.repaint();
     }
 }

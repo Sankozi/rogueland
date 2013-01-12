@@ -1,11 +1,13 @@
 package org.sankozi.rogueland.gui;
 
+import org.sankozi.rogueland.gui.actions.ShowInventoryAction;
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JMenuBar;
 import org.apache.log4j.Logger;
+import org.sankozi.rogueland.gui.actions.ReturnToGameAction;
 
 /**
  * TODO - make it possible to call guice outside Event Dispatch Thread
@@ -49,5 +51,9 @@ public class GuiModule extends AbstractModule{
         bind(Action.class)
 				.annotatedWith(Names.named("show-inventory"))
 				.to(ShowInventoryAction.class);
+
+        bind(Action.class)
+				.annotatedWith(Names.named("return-to-game"))
+				.to(ReturnToGameAction.class);
 	}
 }
