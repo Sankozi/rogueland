@@ -4,6 +4,9 @@ import java.util.Random;
 import org.apache.log4j.Logger;
 
 import static org.sankozi.rogueland.MathUtils.*;
+import org.sankozi.rogueland.model.effect.DamageEffect;
+import org.sankozi.rogueland.model.effect.Effect;
+import org.sankozi.rogueland.model.effect.EffectManager;
 
 /**
  *
@@ -12,9 +15,11 @@ import static org.sankozi.rogueland.MathUtils.*;
 public class AiActor extends AbstractActor{
 	private final static Logger LOG = Logger.getLogger(AiActor.class);
     private final static Damage damage = new Damage(Damage.Type.BLUNT, 5);
-
+    private final EffectManager manager = EffectManager.forActor(this);
+    
     Coords location;
     Random rand = new Random();
+    
 
     public AiActor() {
         super(10);
@@ -75,11 +80,6 @@ public class AiActor extends AbstractActor{
 	}
 
 	@Override
-	public Damage getWeaponPower() {
-		return null;
-	}
-
-	@Override
 	public Coords getWeaponLocation() {
 		return null;
 	}
@@ -100,7 +100,17 @@ public class AiActor extends AbstractActor{
     }
 
     @Override
-    public Damage getPower() {
-        return damage;
+    public Effect getBumpEffect() {
+        return DamageEffect.simpleDamageEffect(Damage.Type.BLUNT, 5);
+    }
+
+    @Override
+    public Effect getWeaponEffect() {
+        return Effect.NULL;
+    }
+
+    @Override
+    public EffectManager getEffectManager() {
+        return manager;
     }
 }

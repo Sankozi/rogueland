@@ -103,7 +103,7 @@ public class Game {
                 tiles[actorLocation.x][actorLocation.y].actor = null;
 				Tile tile = tiles[targetLocation.x][targetLocation.y];
 				if(tile.actor != null){
-					interact(actor, tile.actor, actor.getPower());
+					attack(actor, tile.actor);
 				} else {
 					actorLocation = targetLocation;
 				}
@@ -121,7 +121,7 @@ public class Game {
 					tiles[prevWeaponLocation.x][prevWeaponLocation.y].weapon = false;
 					tiles[nextWeaponLocation.x][nextWeaponLocation.y].weapon = true;
 					if(tile.actor != null){
-						interact(actor, tile.actor, actor.getWeaponPower());
+						attackWithWeapon(actor, tile.actor);
 					}
 				}
 			}
@@ -152,16 +152,24 @@ public class Game {
      * @param actor
      * @param target
      */
-    private void interact(Actor actor, Actor target, Damage dam){
-        float res = target.protection(dam.type);
+    private void attack(Actor actor, Actor target){
+        target.getEffectManager().registerEffect(actor.getBumpEffect());
         
-        if(res < dam.value){
-            GameLog.info(actor.getObjectName() + " attacked " + target.getObjectName() + " for " + dam + "[" + res + " resisted]");
-            target.damage(dam.value - (int) res);
-            if(target.isDestroyed()){
-                GameLog.info(target.getObjectName() + " is destroyed!");
-                removeActor(target);
-            }
+        if(target.isDestroyed()){
+            removeActor(target);
+        }
+    }
+
+    /**
+     * Default attack handle
+     * @param actor
+     * @param target
+     */
+    private void attackWithWeapon(Actor actor, Actor target){
+        target.getEffectManager().registerEffect(actor.getWeaponEffect());
+
+        if(target.isDestroyed()){
+            removeActor(target);
         }
     }
 

@@ -1,10 +1,10 @@
 package org.sankozi.rogueland.model.effect;
 
-import org.sankozi.rogueland.model.effect.Effect;
-import com.google.common.collect.TreeMultimap;
 import java.util.*;
 import javax.annotation.Nullable;
 import org.sankozi.rogueland.model.Actor;
+import org.sankozi.rogueland.model.AiActor;
+import org.sankozi.rogueland.model.Damagable;
 import org.sankozi.rogueland.model.Destroyable;
 import org.sankozi.rogueland.model.Destroyable.Param;
 import org.sankozi.rogueland.model.Player;
@@ -18,7 +18,7 @@ import org.sankozi.rogueland.model.Player;
  */
 public class EffectManager implements AccessManager {
 	private final static ResourceBundle paramsBundle = ResourceBundle.getBundle("org/sankozi/rogueland/resources/params");
-	
+
     //EffectManager might work for different kinds of objects
 	private final @Nullable Player player;
 	private final @Nullable Actor actor;
@@ -32,16 +32,19 @@ public class EffectManager implements AccessManager {
 	private @Nullable EffectContext currentContext;
 	private boolean contextStored;
 
-	public EffectManager(Player p) {
-		this.destroyable = p;
-		this.actor = p;
+	private EffectManager(Destroyable d, @Nullable Actor a, @Nullable Player p) {
+		this.destroyable = d;
+		this.actor = a;
 		this.player = p;
 	}
 
 	public static EffectManager forPlayer(Player p){
-		EffectManager ret = new EffectManager(p);
-		return ret;
+		return new EffectManager(p, p, p);
 	}
+
+    public static EffectManager forActor(AiActor a) {
+        return new EffectManager(a, a, null);
+    }
 
 	/**
 	 * Puts effect inside registeredEffects
@@ -126,6 +129,11 @@ public class EffectManager implements AccessManager {
     @Override
     public ParamAccess accessActorParam(Actor.Param param) {
         return new ActorParamAccess(param);
+    }
+
+    @Override
+    public Damagable getDamagable() {
+        return destroyable;
     }
 
 	private static class EffectContext {

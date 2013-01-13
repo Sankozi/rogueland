@@ -11,13 +11,7 @@ package org.sankozi.rogueland.model;
  * 
  * @author sankozi
  */
-public interface Destroyable extends GameObject{
-
-	/**
-	 * Reduces durability by passed value
-	 * @param value 
-	 */
-    void damage(int value);
+public interface Destroyable extends GameObject, Damagable{
 
 	/**
 	 * current 'health' of an object/monster, when it is not higher than one pointGameObject 
@@ -25,16 +19,6 @@ public interface Destroyable extends GameObject{
 	 * @return int
 	 */
     int getDurability();
-
-    /**
-     * Increases durability by passed fraction, Durability never increases over
-	 * MAX_DURABILITY Param
-     * @param value
-     */
-    void heal(float value);
-
-    int protection(Damage.Type type);
-
     boolean isDestroyed();
 
     float destroyableParam(Param param);

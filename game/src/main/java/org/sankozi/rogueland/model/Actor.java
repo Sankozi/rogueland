@@ -1,5 +1,8 @@
 package org.sankozi.rogueland.model;
 
+import org.sankozi.rogueland.model.effect.Effect;
+import org.sankozi.rogueland.model.effect.EffectManager;
+
 /**
  * Object that acts, on each tile there can be only one actor
  * @author sankozi
@@ -11,10 +14,10 @@ public interface Actor extends Destroyable{
     void setLocation(Coords point);
 
 	/** returns power of close attacks */
-    Damage getPower();
+    Effect getBumpEffect();
 
 	/** returns power of weapon attacks */
-	Damage getWeaponPower();
+	Effect getWeaponEffect();
 
     /** Returns actor param value */
     float actorParam(Param param);
@@ -24,6 +27,8 @@ public interface Actor extends Destroyable{
 	boolean isArmed();
 
 	Coords getWeaponLocation();
+
+    EffectManager getEffectManager();
 
     enum Param {
         DAMAGE,

@@ -96,7 +96,6 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
 
     @Override
     public void keyReleased(KeyEvent e) {
-        LOG.info("keyReleased");
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
             returnToGame.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
         }

@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Set;
 import org.apache.log4j.Logger;
+import org.sankozi.rogueland.model.effect.DamageEffect;
+import org.sankozi.rogueland.model.effect.Effect;
+import org.sankozi.rogueland.model.effect.EffectManager;
 
 /**
  * Human Player
@@ -13,9 +16,7 @@ import org.apache.log4j.Logger;
  */
 public class Player extends AbstractActor {
     private final static Logger LOG = Logger.getLogger(Player.class);
-
-    private final static Damage bumpDamage = new Damage(Damage.Type.BLUNT, 1);
-    private final static Damage damage = new Damage(Damage.Type.SLASHING, 10);
+    private final EffectManager manager = EffectManager.forPlayer(this);
 
 	private final static Set<Param> STATS = Sets.newEnumSet(Arrays.asList(
 				Param.AGILITY, 
@@ -58,6 +59,21 @@ public class Player extends AbstractActor {
         } catch (InterruptedException ex) {
 			throw new IllegalStateException(ex);
         }
+    }
+
+    @Override
+    public Effect getBumpEffect() {
+        return DamageEffect.simpleDamageEffect(Damage.Type.BLUNT, 3);
+    }
+
+    @Override
+    public Effect getWeaponEffect() {
+        return DamageEffect.simpleDamageEffect(Damage.Type.SLASHING, 10);
+    }
+
+    @Override
+    public EffectManager getEffectManager() {
+        return manager;
     }
 
 	public enum Param {
@@ -107,16 +123,6 @@ public class Player extends AbstractActor {
     public String getObjectName() {
         return "actor/player";
     }
-
-    @Override
-    public Damage getPower() {
-        return bumpDamage;
-    }
-
-	@Override
-	public Damage getWeaponPower() {
-		return damage;
-	}
 
 	@Override
 	public boolean isArmed() {
