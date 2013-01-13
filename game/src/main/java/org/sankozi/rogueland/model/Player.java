@@ -16,7 +16,6 @@ import org.sankozi.rogueland.model.effect.EffectManager;
  */
 public class Player extends AbstractActor {
     private final static Logger LOG = Logger.getLogger(Player.class);
-    private final EffectManager manager = EffectManager.forPlayer(this);
 
 	private final static Set<Param> STATS = Sets.newEnumSet(Arrays.asList(
 				Param.AGILITY, 
@@ -30,6 +29,8 @@ public class Player extends AbstractActor {
 			Param.class);
 
     private final Inventory equipment;
+    private final EffectManager manager ;
+    private final EquippedItems equippedItems;
     
     private final EnumMap<Param, Float> params = new EnumMap<>(Param.class);
     
@@ -50,6 +51,8 @@ public class Player extends AbstractActor {
         setDestroyableParam(Destroyable.Param.DURABILITY_REGEN, 0.25f);
         setDestroyableParam(Destroyable.Param.MAX_DURABILITY, 20);
         this.equipment = new Inventory(startingEquipment);
+        this.manager = EffectManager.forPlayer(this);
+        this.equippedItems = new EquippedItems(manager, equipment);
     }
 
     @Override
