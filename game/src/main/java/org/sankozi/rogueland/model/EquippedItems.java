@@ -1,7 +1,11 @@
 package org.sankozi.rogueland.model;
 
+import com.google.common.collect.Sets;
 import com.google.inject.internal.ImmutableMap;
 import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import org.sankozi.rogueland.model.effect.EffectManager;
 
 /**
@@ -20,6 +24,8 @@ public final class EquippedItems {
                 .put(ItemType.WORN_LEGS, 1)
                 .build());
 
+    private final Set<Item> equippedItems = Sets.newHashSetWithExpectedSize(slots.size());
+
     private final EffectManager manager;
     private final Inventory equipment;
 
@@ -33,15 +39,33 @@ public final class EquippedItems {
      * @param item to be equipped
      * @return true if item is successfully equipped
      */
-    public boolean tryEquip(Item item){
+    public boolean equip(Item item){
         for(ItemType it : item.getTypes()){
             Integer freeSlots = slots.get(it);
             if(freeSlots != null && freeSlots > 0){
                 freeSlots -= 1;
                 slots.put(it, freeSlots);
+                equippedItems.add(item);
+                manager.registerEffect(item.getEffect());
                 return true;
             }
         }
         return false;
     }
+
+    public boolean remove(Item item){
+        if(equippedItems.contains(item)){
+            for(ItemType it : item.getTypes()){
+                if(slots.containsKey(it)){
+                    Integer freeSlots = slots.get(it);
+                    slots.put(it, freeSlots + 1);
+                }
+            }
+            equippedItems.remove(item);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
