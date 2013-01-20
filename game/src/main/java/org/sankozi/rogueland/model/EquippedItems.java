@@ -3,9 +3,8 @@ package org.sankozi.rogueland.model;
 import com.google.common.collect.Sets;
 import com.google.inject.internal.ImmutableMap;
 import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+import org.apache.log4j.Logger;
 import org.sankozi.rogueland.model.effect.EffectManager;
 
 /**
@@ -13,6 +12,7 @@ import org.sankozi.rogueland.model.effect.EffectManager;
  * @author sankozi
  */
 public final class EquippedItems {
+    private final static Logger LOG = Logger.getLogger(EquippedItems.class);
     /** number of items that can be equipped */
     private final EnumMap<ItemType, Integer> slots = new EnumMap(ImmutableMap.<ItemType, Integer>builder()
                 .put(ItemType.HELD, 1)
@@ -68,4 +68,21 @@ public final class EquippedItems {
         }
     }
 
+    /**
+     * Return all items that are equipped
+     * @return 
+     */
+    public Set<Item> getEquippedItems(){
+        return equippedItems;
+    }
+
+    /**
+     * Return all items that are not equpped
+     * @return 
+     */
+    public Set<Item> getUnequippedItems(){
+        Set<Item> ret = Sets.newHashSet(equipment.getItems());
+        ret.removeAll(equippedItems);
+        return ret;
+    }
 }

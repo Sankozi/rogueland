@@ -23,8 +23,11 @@ public class ConstantItemGenerator implements ItemGenerator{
 
     @Override
     public Iterable<Item> apply(Float luck) {
-        LOG.info("generatingItems");
-        return Arrays.asList(simpleItem("simple-staff"), simpleItem("leather-armor"));
+        LOG.info("generating items");
+        return Arrays.asList(
+                simpleItem("simple-staff"), 
+                simpleItem("simple-staff"),
+                simpleItem("leather-armor"));
     }
 
     private Item simpleItem(String templateName){

@@ -136,6 +136,10 @@ public class Player extends AbstractActor {
         return equipment;
     }
 
+    public EquippedItems getEquippedItems(){
+        return equippedItems;
+    }
+
     public void setControls(Controls controls) {
         this.controls = controls;
     }

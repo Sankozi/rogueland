@@ -11,6 +11,8 @@ import java.awt.FontFormatException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -30,6 +32,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTMLDocument;
 import org.apache.log4j.Logger;
+import org.sankozi.rogueland.model.EquippedItems;
 import org.sankozi.rogueland.model.Item;
 import org.sankozi.rogueland.resources.ResourceProvider;
 
@@ -44,9 +47,13 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
 
     private final JSplitPane contents = new JSplitPane();
 
-    private final DefaultListModel itemsDataModel = new DefaultListModel();
+    private final DefaultListModel<ItemDto> itemsDataModel = new DefaultListModel<>();
     private final JList itemList = new JList(itemsDataModel);
+
+    /** panel with stats and item description */
+    private final JPanel statsPanel = new JPanel();
     private final JTextPane itemDescription = new JTextPane();
+    private final JPanel playerDescription = new JPanel();
 
     @Inject 
 	void setGameSupport(GameSupport support){
@@ -63,16 +70,36 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
         itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         itemList.setCellRenderer(new ItemListRenderer());
         
+        initStatsPanel();
         initItemDescription();
         
         setLayout(new BorderLayout());
         contents.setLeftComponent(itemList);
-        contents.setRightComponent(itemDescription);
+        contents.setRightComponent(statsPanel);
         contents.setDividerLocation(150);
         add(contents, BorderLayout.CENTER);
 
         addAncestorListener(this);
         itemList.addKeyListener(this);
+        itemList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                JList list = (JList)evt.getSource();
+                if (evt.getClickCount() == 2) {
+                    int index = list.locationToIndex(evt.getPoint());
+                    ItemDto item = itemsDataModel.get(index);
+                    if(item.equipped){
+                        if(gameSupport.getGame().getPlayer().getEquippedItems().remove(item.item)){
+                            item.equipped = false;
+                        }
+                    } else {
+                        if(gameSupport.getGame().getPlayer().getEquippedItems().equip(item.item)){
+                            item.equipped = true;
+                        }
+                    }
+                    list.repaint();
+                } 
+            }
+        });
         itemDescription.addKeyListener(this);
         addKeyListener(this);
     }
@@ -101,6 +128,12 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
         }
     }
 
+    private void initStatsPanel() {
+        statsPanel.setLayout(new BorderLayout());
+        statsPanel.add(itemDescription, BorderLayout.NORTH);
+        statsPanel.add(playerDescription, BorderLayout.CENTER);
+    }
+
     private class CustomFontStyledDocument extends HTMLDocument{
 
         @Override
@@ -110,17 +143,34 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
     }
 
     private class ItemListRenderer implements ListCellRenderer {
-
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            JLabel ret = new JLabel(((Item)value).getName()); 
+            ItemDto item = (ItemDto) value;
+            JLabel ret = new JLabel(item.item.getName());
             ret.setFont(font);
             if(isSelected){
                 ret.setOpaque(true);
-                ret.setBackground(Constants.BACKGROUND_TEXT_COLOR);
+                if(item.equipped){
+                    ret.setBackground(Constants.BACKGROUND_EMPH_TEXT_COLOR);
+                } else {
+                    ret.setBackground(Constants.BACKGROUND_TEXT_COLOR);
+                }
                 ret.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2, false));
+            } else if(item.equipped){
+                ret.setOpaque(true);
+                ret.setBackground(Constants.BACKGROUND_EMPH_TEXT_COLOR);
             }
             return ret;
+        }
+    }
+
+    private final static class ItemDto {
+        private final Item item;
+        private boolean equipped;
+
+        ItemDto(Item item, boolean wasEquipped) {
+            this.item = item;
+            this.equipped = wasEquipped;
         }
     }
 
@@ -129,8 +179,12 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
     public void ancestorAdded(AncestorEvent event) {
         LOG.info("ancestorListener");
         itemsDataModel.clear();
-        for(Item item : gameSupport.getGame().getPlayer().getEquipment().getItems()){
-            itemsDataModel.addElement(item);
+        EquippedItems equippedItems = gameSupport.getGame().getPlayer().getEquippedItems();
+        for(Item item : equippedItems.getEquippedItems()){
+            itemsDataModel.addElement(new ItemDto(item, true));
+        }
+        for(Item item : equippedItems.getUnequippedItems()){
+            itemsDataModel.addElement(new ItemDto(item, false));
         }
         repaint();
     }
@@ -145,9 +199,9 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        Item item = (Item) itemList.getSelectedValue();
+        ItemDto item = (ItemDto) itemList.getSelectedValue();
         if(item != null){
-            itemDescription.setText(item.getDescription().replace("\n", "<br/>"));
+            itemDescription.setText(item.item.getDescription().replace("\n", "<br/>"));
         }
     }
 }

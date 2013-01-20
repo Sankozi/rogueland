@@ -87,19 +87,12 @@ public final class Item implements Destroyable{
     }
 
     @Override
-    public int hashCode() {
-        return hashCode;
+    public boolean equals(Object obj) {
+        return this == obj;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Item other = (Item) obj;
-        return true;
+    public int hashCode() {
+        return super.hashCode();
     }
 }
