@@ -20,7 +20,6 @@ public class DescriptionTextArea extends JTextPane {
     }
 
     private class CustomFontStyledDocument extends HTMLDocument{
-
         @Override
         public Font getFont(AttributeSet attr) {
             return font;
