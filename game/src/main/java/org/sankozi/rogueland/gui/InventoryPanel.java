@@ -31,9 +31,11 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.html.HTMLDocument;
+import net.miginfocom.swing.MigLayout;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.model.EquippedItems;
 import org.sankozi.rogueland.model.Item;
+import org.sankozi.rogueland.model.Player;
 import org.sankozi.rogueland.resources.ResourceProvider;
 
 /**
@@ -54,6 +56,7 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
     private final JPanel statsPanel = new JPanel();
     private final JTextPane itemDescription = new JTextPane();
     private final JPanel playerDescription = new JPanel();
+    private final PlayerStatsRenderer playerRenderer = new PlayerStatsRenderer();
 
     @Inject 
 	void setGameSupport(GameSupport support){
@@ -87,13 +90,18 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
                 if (evt.getClickCount() == 2) {
                     int index = list.locationToIndex(evt.getPoint());
                     ItemDto item = itemsDataModel.get(index);
+                    Player player = gameSupport.getGame().getPlayer();
                     if(item.equipped){
-                        if(gameSupport.getGame().getPlayer().getEquippedItems().remove(item.item)){
+                        if(player.getEquippedItems().remove(item.item)){
                             item.equipped = false;
+                            playerDescription.removeAll();
+                            playerDescription.add(playerRenderer.renderPlayerStats(player), BorderLayout.CENTER);
                         }
                     } else {
-                        if(gameSupport.getGame().getPlayer().getEquippedItems().equip(item.item)){
+                        if(player.getEquippedItems().equip(item.item)){
                             item.equipped = true;
+                            playerDescription.removeAll();
+                            playerDescription.add(playerRenderer.renderPlayerStats(player), BorderLayout.CENTER);
                         }
                     }
                     list.repaint();
@@ -129,9 +137,10 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
     }
 
     private void initStatsPanel() {
-        statsPanel.setLayout(new BorderLayout());
-        statsPanel.add(itemDescription, BorderLayout.NORTH);
-        statsPanel.add(playerDescription, BorderLayout.CENTER);
+        statsPanel.setLayout(new MigLayout("fill, wrap 1", "[left, fill]","[50%, top][50%, top]"));
+        statsPanel.add(itemDescription, "grow");
+        statsPanel.add(playerDescription, "grow");
+        playerDescription.setLayout(new BorderLayout());
     }
 
     private class CustomFontStyledDocument extends HTMLDocument{
