@@ -54,7 +54,7 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
 
     /** panel with stats and item description */
     private final JPanel statsPanel = new JPanel();
-    private final JTextPane itemDescription = new JTextPane();
+    private final JTextPane itemDescription = new DescriptionTextArea();
     private final JPanel playerDescription = new JPanel();
     private final PlayerStatsRenderer playerRenderer = new PlayerStatsRenderer();
 
@@ -116,9 +116,6 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
     Font font = ResourceProvider.getFont(Constants.STANDARD_FONT_NAME, 14f);
 
     private void initItemDescription() {
-        itemDescription.setEditable(false);
-        itemDescription.setContentType("text/html");
-        itemDescription.setDocument(new CustomFontStyledDocument());
     }
 
     @Override
@@ -141,14 +138,6 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
         statsPanel.add(itemDescription, "grow");
         statsPanel.add(playerDescription, "grow");
         playerDescription.setLayout(new BorderLayout());
-    }
-
-    private class CustomFontStyledDocument extends HTMLDocument{
-
-        @Override
-        public Font getFont(AttributeSet attr) {
-            return font;
-        }
     }
 
     private class ItemListRenderer implements ListCellRenderer {
@@ -188,13 +177,15 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
     public void ancestorAdded(AncestorEvent event) {
         LOG.info("ancestorListener");
         itemsDataModel.clear();
-        EquippedItems equippedItems = gameSupport.getGame().getPlayer().getEquippedItems();
+        Player player = gameSupport.getGame().getPlayer();
+        EquippedItems equippedItems = player.getEquippedItems();
         for(Item item : equippedItems.getEquippedItems()){
             itemsDataModel.addElement(new ItemDto(item, true));
         }
         for(Item item : equippedItems.getUnequippedItems()){
             itemsDataModel.addElement(new ItemDto(item, false));
         }
+        playerDescription.add(playerRenderer.renderPlayerStats(player), BorderLayout.CENTER);
         repaint();
     }
 
