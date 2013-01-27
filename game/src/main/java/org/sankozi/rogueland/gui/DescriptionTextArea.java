@@ -3,6 +3,7 @@ package org.sankozi.rogueland.gui;
 import java.awt.Font;
 import javax.swing.JTextPane;
 import javax.swing.text.AttributeSet;
+import javax.swing.text.StyleConstants;
 import javax.swing.text.html.HTMLDocument;
 import org.sankozi.rogueland.resources.ResourceProvider;
 
@@ -22,7 +23,7 @@ public class DescriptionTextArea extends JTextPane {
     private class CustomFontStyledDocument extends HTMLDocument{
         @Override
         public Font getFont(AttributeSet attr) {
-            return font;
+            return ResourceProvider.getFont(Constants.STANDARD_FONT_NAME, StyleConstants.getFontSize(attr));
         }
     }
 }

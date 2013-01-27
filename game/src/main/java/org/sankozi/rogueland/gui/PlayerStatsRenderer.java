@@ -5,6 +5,7 @@ import java.text.NumberFormat;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import org.sankozi.rogueland.model.Actor;
 import org.sankozi.rogueland.model.Destroyable;
 import org.sankozi.rogueland.model.Player;
 
@@ -17,14 +18,24 @@ public final class PlayerStatsRenderer {
 
     public JComponent renderPlayerStats(Player player){
         StringBuilder sb = new StringBuilder(50);
-        sb.append("<html><h1>Player stats</h1>");
+        sb.append("<html><font size='6'>Player stats</font>");
 
-        sb.append("<table>");
+        sb.append("<table><tr valign='top'><td><table>");
+        for(Player.Param param : Player.Param.values()){
+            sb.append("<tr><td>").append(param.toString()).append("</td><td>")
+              .append(player.playerParam(param)).append("</td></tr>");
+        }
+        sb.append("</table></td><td><table>");
         for(Destroyable.Param param : Destroyable.Param.values()){
             sb.append("<tr><td>").append(param.toString()).append("</td><td>")
               .append(player.destroyableParam(param)).append("</td></tr>");
         }
-        sb.append("</table>");
+        sb.append("</table></td><td><table>");
+        for(Actor.Param param : Actor.Param.values()){
+            sb.append("<tr><td>").append(param.toString()).append("</td><td>")
+              .append(player.actorParam(param)).append("</td></tr>");
+        }
+        sb.append("</table></td></tr></table>");
         sb.append("</html>");
         playerStats.setText(sb.toString());
         return playerStats;

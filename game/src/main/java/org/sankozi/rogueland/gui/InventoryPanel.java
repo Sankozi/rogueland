@@ -112,7 +112,6 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
         addKeyListener(this);
     }
 
-    MutableAttributeSet attrs;
     Font font = ResourceProvider.getFont(Constants.STANDARD_FONT_NAME, 14f);
 
     private void initItemDescription() {
