@@ -62,10 +62,14 @@ public class EffectManager implements AccessManager {
 	public void registerEffect(Effect effect){
 		putEffect(effect);
 		startEffect(effect);
-		if(effect.getFinishTime() == 0f){
+		if(effect.getFinishTime() <= 0f){
 			endEffect(effect);
 		}
 	}
+
+    public void removeEffect(Effect effect) {
+        endEffect(effect);
+    }
 
 	/**
 	 * Starts effect with proper context
@@ -135,6 +139,7 @@ public class EffectManager implements AccessManager {
     public Damagable getDamagable() {
         return destroyable;
     }
+
 
 	private static class EffectContext {
 		final Effect effect;

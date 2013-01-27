@@ -29,6 +29,7 @@ import org.sankozi.rogueland.model.ItemTemplate;
 import org.sankozi.rogueland.model.ItemType;
 
 import static org.sankozi.rogueland.data.LoaderUtils.*;
+import org.sankozi.rogueland.model.effect.ParamChangeEffect;
 
 /**
  * Object that loads games resources - strings, game data, and others
@@ -98,9 +99,13 @@ public final class DataLoader {
         types = ItemType.expand(types);
 
         Map effects = (Map) map.get("effects");
+        Effect effect = Effect.NULL;
         if(effects != null){
+            if(effects.size() > 1) {
+                throw new UnsupportedOperationException("multiple effects not supported");
+            }
             for(Map.Entry entry : (Set<Map.Entry>)effects.entrySet()){
-    //            Effect effect = 
+                effect = parseEffect(entry.getKey().toString(), (Map) entry.getValue());
             }
         }
 
@@ -108,8 +113,17 @@ public final class DataLoader {
                 map.get("name").toString(),
                 Objects.toString(map.get("desc"), ""),
                 toFloatMap((Map)map.get("protection"), Destroyable.Param.class),
-                Effect.NULL,
+                effect,
                 types
                 );
 	}
+
+    private static Effect parseEffect(String name, Map<String, ?> params){
+        switch(name) {
+            case "protection":
+                return new ParamChangeEffect(name, toFloatMap(params, Destroyable.Param.class));
+            default:
+                throw new RuntimeException("unknown effect " + name);
+        }
+    }
 }

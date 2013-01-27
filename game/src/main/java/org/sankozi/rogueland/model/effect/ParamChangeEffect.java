@@ -14,6 +14,7 @@ public final class ParamChangeEffect extends Effect {
     private final String name;
     private final Map<Destroyable.Param, Float> changes;
 
+    /** creates infinite version of effect (usually for items) */
     public ParamChangeEffect(String name, Map<Destroyable.Param, Float> changes) {
 		super(Float.POSITIVE_INFINITY);
         this.name = name;

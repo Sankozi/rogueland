@@ -61,6 +61,7 @@ public final class EquippedItems {
                     slots.put(it, freeSlots + 1);
                 }
             }
+            manager.removeEffect(item.getEffect());
             equippedItems.remove(item);
             return true;
         } else {

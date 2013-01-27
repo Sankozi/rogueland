@@ -1,9 +1,20 @@
 (defn protection-value [prots] 
     (into {} (map (fn [entry] 
-            (let [[ikey ivalue] entry] [(name ikey) ivalue]))        
-        (merge {:max-durability 1} prots))))
+                    (let [[ikey ivalue] entry] [(name ikey) ivalue]))        
+                (merge {:max-durability 1} prots))))
+(defn effect-value [effect]
+    (into {} (map (fn [entry] 
+                    (let [[ikey ivalue] entry] [(name ikey) ivalue])) 
+                effect)))     
+(defn effects-value [effects]
+    (into {} (map (fn [entry] 
+                    (let [[ikey ivalue] entry] [(name ikey) (effect-value ivalue)]))        
+                effects)))               
 (defn item-entry [entry] (let [[ikey ivalue] entry] 
-        [(name ikey) (if (= ikey :protection) (protection-value ivalue) ivalue)]))
+        [(name ikey) 
+            (if (= ikey :protection) (protection-value ivalue)
+            (if (= ikey :effects) (effects-value ivalue)
+             ivalue))]))
 (defn item [code-name params] ;keywords to string (for java interop)
     {(name code-name) 
      (into {} 
