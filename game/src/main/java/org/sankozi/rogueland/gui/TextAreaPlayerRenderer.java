@@ -1,9 +1,7 @@
 package org.sankozi.rogueland.gui;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import javax.swing.JComponent;
-import javax.swing.JTextField;
+import java.awt.Component;
+import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import org.sankozi.rogueland.model.Actor;
 import org.sankozi.rogueland.model.Destroyable;
@@ -13,10 +11,10 @@ import org.sankozi.rogueland.model.Player;
  *
  * @author sankozi
  */
-public final class PlayerStatsRenderer {
+public final class TextAreaPlayerRenderer extends TextAreaRenderer<Player> {
     JTextPane playerStats = new DescriptionTextArea();
 
-    public JComponent renderPlayerStats(Player player){
+    protected final String getHtml(Player player){
         StringBuilder sb = new StringBuilder(50);
         sb.append("<html><font size='6'>Player stats</font>");
 
@@ -37,7 +35,6 @@ public final class PlayerStatsRenderer {
         }
         sb.append("</table></td></tr></table>");
         sb.append("</html>");
-        playerStats.setText(sb.toString());
-        return playerStats;
+        return sb.toString();
     }
 }

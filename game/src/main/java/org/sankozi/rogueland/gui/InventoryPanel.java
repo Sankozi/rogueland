@@ -56,7 +56,7 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
     private final JPanel statsPanel = new JPanel();
     private final JTextPane itemDescription = new DescriptionTextArea();
     private final JPanel playerDescription = new JPanel();
-    private final PlayerStatsRenderer playerRenderer = new PlayerStatsRenderer();
+    private final GuiRenderer<Player> playerRenderer = new TextAreaPlayerRenderer();
 
     @Inject 
 	void setGameSupport(GameSupport support){
@@ -94,14 +94,12 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
                     if(item.equipped){
                         if(player.getEquippedItems().remove(item.item)){
                             item.equipped = false;
-                            playerDescription.removeAll();
-                            playerDescription.add(playerRenderer.renderPlayerStats(player), BorderLayout.CENTER);
+                            playerRenderer.render(player, playerDescription);
                         }
                     } else {
                         if(player.getEquippedItems().equip(item.item)){
                             item.equipped = true;
-                            playerDescription.removeAll();
-                            playerDescription.add(playerRenderer.renderPlayerStats(player), BorderLayout.CENTER);
+                            playerRenderer.render(player, playerDescription);
                         }
                     }
                     list.repaint();
@@ -184,7 +182,7 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
         for(Item item : equippedItems.getUnequippedItems()){
             itemsDataModel.addElement(new ItemDto(item, false));
         }
-        playerDescription.add(playerRenderer.renderPlayerStats(player), BorderLayout.CENTER);
+        playerRenderer.render(player, playerDescription);
         repaint();
     }
 
