@@ -18,13 +18,13 @@ public final class ParamChangeEffect extends Effect {
     public ParamChangeEffect(String name, Map<Destroyable.Param, Float> changes) {
 		super(Float.POSITIVE_INFINITY);
         this.name = name;
-        this.changes = new EnumMap(changes);
+        this.changes = new EnumMap<>(changes);
 	}
 
 	public ParamChangeEffect(String name, float finishTime, Map<Destroyable.Param, Float> changes) {
 		super(finishTime);
         this.name = name;
-        this.changes = new EnumMap(changes);
+        this.changes = new EnumMap<>(changes);
 	}
 	
 	@Override
