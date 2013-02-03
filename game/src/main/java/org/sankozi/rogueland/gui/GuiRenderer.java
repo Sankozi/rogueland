@@ -10,7 +10,8 @@ import javax.swing.JPanel;
  */
 public interface GuiRenderer<T>  {
     /**
-     * Renders object on targetPanel, this method must be called in EDT
+     * Renders object on targetPanel, this method must be called in EDT,
+     * This method can change contents of passed JPanel in any way
      * @param object object to render
      * @param targetPanel panel used for rendering
      */
