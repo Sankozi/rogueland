@@ -14,7 +14,7 @@ import org.sankozi.rogueland.model.effect.EffectManager;
 public final class EquippedItems {
     private final static Logger LOG = Logger.getLogger(EquippedItems.class);
     /** number of items that can be equipped */
-    private final EnumMap<ItemType, Integer> slots = new EnumMap(ImmutableMap.<ItemType, Integer>builder()
+    private final EnumMap<ItemType, Integer> slots = new EnumMap<>(ImmutableMap.<ItemType, Integer>builder()
                 .put(ItemType.HELD, 1)
                 .put(ItemType.WORN_AROUND_NECK, 1)
                 .put(ItemType.WORN_AROUND_WAIST, 1)

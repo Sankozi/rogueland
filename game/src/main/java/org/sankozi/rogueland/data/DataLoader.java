@@ -35,6 +35,7 @@ import org.sankozi.rogueland.model.effect.ParamChangeEffect;
  * Object that loads games resources - strings, game data, and others
  * @author sankozi
  */
+@SuppressWarnings("unchecked")
 public final class DataLoader {
 
     private final LoadingCache<String, Object> evaluatedClResources = 

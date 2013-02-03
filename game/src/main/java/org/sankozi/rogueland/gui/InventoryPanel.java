@@ -1,42 +1,21 @@
 package org.sankozi.rogueland.gui;
 
-import com.google.common.base.Throwables;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.IOException;
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.JTextPane;
-import javax.swing.ListCellRenderer;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.MutableAttributeSet;
-import javax.swing.text.html.HTMLDocument;
 import net.miginfocom.swing.MigLayout;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.model.EquippedItems;
 import org.sankozi.rogueland.model.Item;
 import org.sankozi.rogueland.model.Player;
 import org.sankozi.rogueland.resources.ResourceProvider;
+
+import javax.swing.*;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.*;
 
 /**
  *
@@ -50,7 +29,7 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
     private final JSplitPane contents = new JSplitPane();
 
     private final DefaultListModel<ItemDto> itemsDataModel = new DefaultListModel<>();
-    private final JList itemList = new JList(itemsDataModel);
+    private final JList<ItemDto> itemList = new JList<>(itemsDataModel);
 
     /** panel with stats and item description */
     private final JPanel statsPanel = new JPanel();
@@ -137,10 +116,9 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
         playerDescription.setLayout(new BorderLayout());
     }
 
-    private class ItemListRenderer implements ListCellRenderer {
+    private class ItemListRenderer implements ListCellRenderer<ItemDto> {
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            ItemDto item = (ItemDto) value;
+        public Component getListCellRendererComponent(JList list, ItemDto item, int index, boolean isSelected, boolean cellHasFocus) {
             JLabel ret = new JLabel(item.item.getName());
             ret.setFont(font);
             if(isSelected){
