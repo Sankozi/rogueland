@@ -24,7 +24,7 @@ public interface Destroyable extends GameObject, Damagable{
     float destroyableParam(Param param);
     void setDestroyableParam(Param param, float value);
 
-    public enum Param {
+    public enum Param implements org.sankozi.rogueland.model.Param{
 		/**  maximum value of Durability for object */
         MAX_DURABILITY,
 		/** number of durability poins regained each turn */

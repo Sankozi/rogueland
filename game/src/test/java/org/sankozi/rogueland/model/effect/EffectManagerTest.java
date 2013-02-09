@@ -1,12 +1,13 @@
 package org.sankozi.rogueland.model.effect;
 
 import org.junit.Test;
-import org.sankozi.rogueland.model.Controls;
-import org.sankozi.rogueland.model.Destroyable;
-import org.sankozi.rogueland.model.Player;
+import org.sankozi.rogueland.model.*;
+
+import java.util.Collections;
+import java.util.Map;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-import org.sankozi.rogueland.model.Actor;
 
 /**
  *
@@ -69,7 +70,12 @@ public class EffectManagerTest {
 		public String getObjectName() {
 			return "effect/mocked";
 		}
-	}
+
+        @Override
+        public Map<? extends Param, Float> getDescriptionParameters() {
+            return Collections.emptyMap();
+        }
+    }
 
 	@Test 
 	public void accessDestroyableParamTest(){

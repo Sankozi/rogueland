@@ -1,9 +1,12 @@
 package org.sankozi.rogueland.model.effect;
 
 import java.util.Collections;
+import java.util.Map;
+
 import org.sankozi.rogueland.control.GameLog;
 import org.sankozi.rogueland.model.Damagable;
 import org.sankozi.rogueland.model.Damage;
+import org.sankozi.rogueland.model.Param;
 
 /**
  *
@@ -28,9 +31,14 @@ public class DamageEffect extends InstantEffect {
             int res = damagable.protection(dam.type);
             if(res < dam.value){
                 damagable.damage(dam.value - (int) res);
-                
             }
         }
+    }
+
+    @Override
+    public Map<? extends Param, Float> getDescriptionParameters() {
+        //TODO implement
+        throw new UnsupportedOperationException("Not supported yet");
     }
 
     @Override

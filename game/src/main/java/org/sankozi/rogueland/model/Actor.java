@@ -30,7 +30,7 @@ public interface Actor extends Destroyable{
 
     EffectManager getEffectManager();
 
-    enum Param {
+    enum Param implements org.sankozi.rogueland.model.Param{
         DAMAGE,
         DAMAGE_TYPE,
 

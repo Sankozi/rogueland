@@ -9,7 +9,7 @@ import org.sankozi.rogueland.model.Destroyable.Param;
  */
 public final class Damage {
 
-    public enum Type {
+    public enum Type implements org.sankozi.rogueland.model.Param{
         PIERCING(Param.PIERCING_PROT),
         SLASHING(Param.SLASHING_PROT),
         BLUNT(Param.BLUNT_PROT);

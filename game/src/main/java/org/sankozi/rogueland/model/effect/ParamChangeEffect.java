@@ -1,5 +1,6 @@
 package org.sankozi.rogueland.model.effect;
 
+import org.sankozi.rogueland.model.Param;
 import org.sankozi.rogueland.model.effect.AccessManager;
 import org.sankozi.rogueland.model.effect.Effect;
 import java.util.EnumMap;
@@ -41,7 +42,12 @@ public final class ParamChangeEffect extends Effect {
         }
 	}
 
-	@Override
+    @Override
+    public Map<Destroyable.Param, Float> getDescriptionParameters() {
+        return changes;
+    }
+
+    @Override
 	public String getObjectName() {
 		return name;
 	}

@@ -1,6 +1,10 @@
 package org.sankozi.rogueland.model.effect;
 
 import org.sankozi.rogueland.model.GameObject;
+import org.sankozi.rogueland.model.Param;
+
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * Base class of effects. Effect is an GameObject that changes parametrized 
@@ -14,6 +18,7 @@ public abstract class Effect implements GameObject{
 		@Override public void start(AccessManager manager) {}
 		@Override public void end(AccessManager manager) {}
 		@Override public String getObjectName() { return "none"; }
+        @Override public Map<Param, Float> getDescriptionParameters(){ return Collections.emptyMap(); }
 	};
 			
 	protected final float finishTime;
@@ -43,6 +48,12 @@ public abstract class Effect implements GameObject{
 	 * @param manager 
 	 */
 	public abstract void end(AccessManager manager);
+
+    /**
+     * Return parameters that can be used to describe an effect
+     * @return Map containing values of certain parameters, can be empty, never null
+     */
+    public abstract Map<? extends Param, Float> getDescriptionParameters();
 
 	/**
 	 * If this Effect is based on parameters of attached GameObject this method 
