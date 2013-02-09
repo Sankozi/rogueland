@@ -33,9 +33,10 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
 
     /** panel with stats and item description */
     private final JPanel statsPanel = new JPanel();
-    private final JTextPane itemDescription = new DescriptionTextArea();
+    private final JPanel itemDescription = new JPanel();
     private final JPanel playerDescription = new JPanel();
     private final GuiRenderer<Player> playerRenderer = new TextAreaPlayerRenderer();
+    private final GuiRenderer<Item> itemRenderer = new TextAreaItemRenderer();
 
     @Inject 
 	void setGameSupport(GameSupport support){
@@ -174,9 +175,7 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        ItemDto item = (ItemDto) itemList.getSelectedValue();
-        if(item != null){
-            itemDescription.setText(item.item.getDescription().replace("\n", "<br/>"));
-        }
+        ItemDto item = itemList.getSelectedValue();
+        itemRenderer.render(item.item, itemDescription);
     }
 }

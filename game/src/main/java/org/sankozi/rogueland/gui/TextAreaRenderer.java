@@ -1,6 +1,6 @@
 package org.sankozi.rogueland.gui;
 
-import java.awt.Component;
+import java.awt.*;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 
@@ -21,11 +21,12 @@ public abstract class TextAreaRenderer<T> implements GuiRenderer<T>{
 
     @Override
     public final void render(T object, JPanel targetPanel) {
-        playerStats.setText(getHtml(object));
+        playerStats.setText(object == null ? "" : getHtml(object));
         Component[] components = targetPanel.getComponents();
         if(!(components.length == 1 && components[0] == playerStats)) {
             targetPanel.removeAll();
-            targetPanel.add(playerStats);
+            targetPanel.setLayout(new BorderLayout());
+            targetPanel.add(playerStats, BorderLayout.CENTER);
         }
     }
 }

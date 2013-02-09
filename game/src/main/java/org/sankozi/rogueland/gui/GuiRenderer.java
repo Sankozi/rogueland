@@ -1,5 +1,6 @@
 package org.sankozi.rogueland.gui;
 
+import javax.annotation.Nullable;
 import javax.swing.JPanel;
 
 /**
@@ -15,5 +16,5 @@ public interface GuiRenderer<T>  {
      * @param object object to render
      * @param targetPanel panel used for rendering
      */
-    void render(T object, JPanel targetPanel);
+    void render(@Nullable T object, JPanel targetPanel);
 }
