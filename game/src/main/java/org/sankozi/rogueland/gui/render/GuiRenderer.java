@@ -1,4 +1,4 @@
-package org.sankozi.rogueland.gui;
+package org.sankozi.rogueland.gui.render;
 
 import javax.annotation.Nullable;
 import javax.swing.JPanel;

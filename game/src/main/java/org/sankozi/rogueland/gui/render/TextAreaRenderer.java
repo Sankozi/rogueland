@@ -1,4 +1,7 @@
-package org.sankozi.rogueland.gui;
+package org.sankozi.rogueland.gui.render;
+
+import org.sankozi.rogueland.gui.DescriptionTextArea;
+import org.sankozi.rogueland.gui.render.GuiRenderer;
 
 import java.awt.*;
 import javax.swing.JPanel;
@@ -9,7 +12,7 @@ import javax.swing.JTextPane;
  * render html description of object
  * @author sankozi
  */
-public abstract class TextAreaRenderer<T> implements GuiRenderer<T>{
+public abstract class TextAreaRenderer<T> implements GuiRenderer<T> {
     private final JTextPane playerStats = new DescriptionTextArea();
     
     /**

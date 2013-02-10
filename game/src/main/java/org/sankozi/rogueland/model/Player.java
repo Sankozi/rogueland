@@ -79,7 +79,7 @@ public class Player extends AbstractActor {
         return manager;
     }
 
-	public enum Param {
+	public enum Param implements org.sankozi.rogueland.model.Param{
 		/* === STATS === */
 		STRENGTH,
 		DEXTERITY,

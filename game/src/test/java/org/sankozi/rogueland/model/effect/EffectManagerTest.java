@@ -57,13 +57,13 @@ public class EffectManagerTest {
 		@Override
 		public void start(AccessManager manager) {
 			manager.accessDestroyableParam(Destroyable.Param.BLUNT_PROT).setChange(2f);
-            manager.accessActorParam(Actor.Param.DAMAGE).setChange(5f);
+            manager.accessActorParam(Actor.Param.MANA_REGEN).setChange(5f);
 		}
 
 		@Override
 		public void end(AccessManager manager) {
 			manager.accessDestroyableParam(Destroyable.Param.BLUNT_PROT).setChange(0f);
-            manager.accessActorParam(Actor.Param.DAMAGE).setChange(0f);
+            manager.accessActorParam(Actor.Param.MANA_REGEN).setChange(0f);
 		}
 
 		@Override
@@ -82,10 +82,10 @@ public class EffectManagerTest {
 		Player p = getPlayer();
 		EffectManager em = EffectManager.forPlayer(p);
 		float before = p.destroyableParam(Destroyable.Param.BLUNT_PROT);
-        float beforeDamage = p.actorParam(Actor.Param.DAMAGE);
+        float beforeDamage = p.actorParam(Actor.Param.MANA_REGEN);
 		em.registerEffect(new MockedAccessingEffect(2f));
 		float after = p.destroyableParam(Destroyable.Param.BLUNT_PROT);
-        float afterDamage = p.actorParam(Actor.Param.DAMAGE);
+        float afterDamage = p.actorParam(Actor.Param.MANA_REGEN);
 		assertEquals(2f, after - before, 0.01f);
 		assertEquals(5f, afterDamage - beforeDamage, 0.01f);
 	}
