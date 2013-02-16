@@ -10,14 +10,15 @@ public enum ItemType {
 	/** can be held in one or both hands */
 	HELD,
 
-	WORN_FEET,
-	WORN_LEGS,
-	WORN_CHEST,
-	WORN_HEAD,
-	WORN_HANDS,
-	WORN_FINGER,
-	WORN_AROUND_NECK,
-	WORN_AROUND_WAIST,
+    WORN,
+	WORN_FEET(WORN),
+	WORN_LEGS(WORN),
+	WORN_CHEST(WORN),
+	WORN_HEAD(WORN),
+	WORN_HANDS(WORN),
+	WORN_FINGER(WORN),
+	WORN_AROUND_NECK(WORN),
+	WORN_AROUND_WAIST(WORN),
 	/** can be used as a weapon*/	
 	WEAPON(HELD),
     

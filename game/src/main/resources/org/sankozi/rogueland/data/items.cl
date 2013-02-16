@@ -25,35 +25,39 @@
 (items {
 :simple-staff {
     :name "Simple staff"
-    :desc "2 meter high stick stripped of bark
-           5 blunt damage"
+    :desc "2 meter high stick stripped of bark"
     :types #{:staff}
-    :durability 100}
+    :durability 100
+    :effects {
+        :attack {
+            :slashing 8}}}
 :sword {
-	:name "Sword"
-	:types #{:weapon}
-    :durability 200}
+  	:name "Sword"
+	  :types #{:weapon}
+    :durability 200
+    :effects {
+        :attack {
+            :slashing 8}}}
 :leather-armor {
-	:name "Leather armor"
-	:types #{:worn-chest}
-	:effects {
-	    :protection {
-	        :piercing-prot +1
-	        :slashing-prot +2
-	        :blunt-prot +3}}
-	:protection {
-	        :piercing-prot 0
-	        :slashing-prot 0
-	        :blunt-prot 1
-	        :max-durability 200}
-    }
+	  :name "Leather armor"
+	  :types #{:worn-chest}
+	  :effects {
+	      :protection {
+	          :piercing-prot +1
+	          :slashing-prot +2
+	          :blunt-prot +3}}
+	  :protection {
+	      :piercing-prot 0
+	      :slashing-prot 0
+	      :blunt-prot 1
+	      :max-durability 200}}
 :test-item {
     :name "Test item"
     :desc "Item used for testing"
     :types #{}
     :effects {
-	    :protection {
-	        :piercing-prot +1}}
+	      :protection {
+	          :piercing-prot +1}}
     :durability 5}
 })
 		

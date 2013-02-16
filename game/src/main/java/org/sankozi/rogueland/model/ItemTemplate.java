@@ -1,8 +1,13 @@
 package org.sankozi.rogueland.model;
 
+import com.google.common.collect.ImmutableMap;
 import org.sankozi.rogueland.model.effect.Effect;
+
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.EnumSet;
+import java.util.Map;
+
 import org.sankozi.rogueland.model.Destroyable.Param;
 
 import static com.google.common.base.Preconditions.*;
@@ -15,20 +20,20 @@ public final class ItemTemplate {
     private final String description;
 	/** Destroyable parameters of an item */
     private final EnumMap<Param, Float> params;
-	/** Effect of an item when it is worn or wield; can be null if types 
-	 *  doesn't contain any of above */ 
-	private final Effect effect;
+	/** Effect of an item when it is worn or held*/
+    private final Effect usedEffect;
+    private final Effect weaponEffect;
 
 	private final EnumSet<ItemType> types;
 
-	public ItemTemplate(String name, String description, EnumMap<Param, Float> params, Effect effect, EnumSet<ItemType> types) {
-        checkArgument(params.containsKey(Param.MAX_DURABILITY), "params %s does not contain MAX_DURABILITY", params);
-		this.name = name;
-        this.description = checkNotNull(description);
-		this.params = checkNotNull(params, "params cannot be null");
-		this.effect = checkNotNull(effect, "effect cannot be null");
-		this.types = checkNotNull(types, "types cannot be null");
-	}
+    ItemTemplate(ItemTemplateBuilder builder){
+        this.name = builder.name;
+        this.description = builder.description;
+        this.params = builder.params;
+        this.usedEffect = builder.usedEffect;
+        this.weaponEffect = builder.weaponEffect;
+        this.types = builder.types;
+    }
 
 	float destroyableParam(Param param) {
 		return params.get(param);
@@ -42,8 +47,19 @@ public final class ItemTemplate {
 		return name;
 	}
 
-    Effect getEffect() {
-        return effect;
+    /**
+     * Effect when Item is used (i.e. worn or held)
+     */
+    Effect getUsedEffect() {
+        return usedEffect;
+    }
+
+    /**
+     * Effect when Item is used as a weapon (effect that is inflicted on enemies)
+     * @return
+     */
+    Effect getWeaponEffect() {
+        return weaponEffect;
     }
 
     String getDescription() {

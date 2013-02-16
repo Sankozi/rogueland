@@ -3,7 +3,6 @@ package org.sankozi.rogueland.data;
 import clojure.lang.Named;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Splitter;
-import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -16,17 +15,16 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import org.sankozi.rogueland.model.Destroyable;
+
+import org.sankozi.rogueland.model.*;
+import org.sankozi.rogueland.model.effect.DamageEffect;
 import org.sankozi.rogueland.model.effect.Effect;
-import org.sankozi.rogueland.model.ItemTemplate;
-import org.sankozi.rogueland.model.ItemType;
 
 import static org.sankozi.rogueland.data.LoaderUtils.*;
 import org.sankozi.rogueland.model.effect.ParamChangeEffect;
@@ -110,21 +108,20 @@ public final class DataLoader {
             }
         }
 
-        return new ItemTemplate(
-                map.get("name").toString(),
-                Objects.toString(map.get("desc"), ""),
-                toFloatMap((Map)map.get("protection"), Destroyable.Param.class),
-                effect,
-                types
-                );
+        return new ItemTemplateBuilder().setName(map.get("name").toString())
+                    .setDescription(Objects.toString(map.get("desc"), ""))
+                    .setParams(toFloatMap((Map) map.get("protection"), Destroyable.Param.class))
+                    .setUsedEffect(effect).setTypes(types).createItemTemplate();
 	}
 
     private static Effect parseEffect(String name, Map<String, ?> params){
         switch(name) {
             case "protection":
                 return new ParamChangeEffect(name, toFloatMap(params, Destroyable.Param.class));
+            case "attack":
+                return DamageEffect.multiDamageEffect(toIntMap(params, Damage.Type.class));
             default:
-                throw new RuntimeException("unknown effect " + name);
+                throw new RuntimeException("unknown effect '" + name + "'");
         }
     }
 }

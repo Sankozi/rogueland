@@ -70,8 +70,12 @@ public final class Item implements Destroyable{
 		return "item";
 	}
 
-    public Effect getEffect(){
-        return template.getEffect();
+    public Effect getUsedEffect(){
+        return template.getUsedEffect();
+    }
+
+    public Effect getWeaponEffect(){
+        return template.getWeaponEffect();
     }
 
 	ItemTemplate getTemplate() {

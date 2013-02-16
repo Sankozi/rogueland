@@ -13,7 +13,7 @@ public final class TestUtils {
     public static Item createItem(String name, ItemType type) {
         EnumMap<Destroyable.Param, Float> params = new EnumMap<>(Destroyable.Param.class);
         params.put(Destroyable.Param.MAX_DURABILITY, 10f);
-        ItemTemplate it = new ItemTemplate(name, name, params, Effect.NULL, ItemType.expand(EnumSet.of(type)));
+        ItemTemplate it = new ItemTemplateBuilder().setName(name).setDescription(name).setParams(params).setUsedEffect(Effect.NULL).setTypes(ItemType.expand(EnumSet.of(type))).createItemTemplate();
         return new Item(it);
     }
 

@@ -41,6 +41,6 @@ public class DataLoaderTest {
         assertThat(templates, hasKey("test-item"));
         ItemTemplate testItemTemplate = templates.get("test-item");
         Item testItem = new Item(testItemTemplate);
-        assert testItem.getEffect() != null;
+        assert testItem.getUsedEffect() != null;
     }
 }
