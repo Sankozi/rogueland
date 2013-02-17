@@ -5,6 +5,7 @@ import com.google.inject.internal.ImmutableMap;
 import java.util.EnumMap;
 import java.util.Set;
 import org.apache.log4j.Logger;
+import org.sankozi.rogueland.model.effect.Effect;
 import org.sankozi.rogueland.model.effect.EffectManager;
 
 /**
@@ -26,11 +27,11 @@ public final class EquippedItems {
 
     private final Set<Item> equippedItems = Sets.newHashSetWithExpectedSize(slots.size());
 
-    private final EffectManager manager;
+    private final Player player;
     private final Inventory equipment;
 
-    public EquippedItems(EffectManager manager, Inventory equipment) {
-        this.manager = manager;
+    public EquippedItems(Player player, Inventory equipment) {
+        this.player = player;
         this.equipment = equipment;
     }
 
@@ -46,7 +47,10 @@ public final class EquippedItems {
                 freeSlots -= 1;
                 slots.put(it, freeSlots);
                 equippedItems.add(item);
-                manager.registerEffect(item.getUsedEffect());
+                player.getEffectManager().registerEffect(item.getUsedEffect());
+                if(it == ItemType.HELD){
+                    player.setWeaponEffect(item.getWeaponEffect());
+                }
                 return true;
             }
         }
@@ -60,8 +64,11 @@ public final class EquippedItems {
                     Integer freeSlots = slots.get(it);
                     slots.put(it, freeSlots + 1);
                 }
+                if(it == ItemType.HELD){
+                    player.setWeaponEffect(Effect.NULL);
+                }
             }
-            manager.removeEffect(item.getUsedEffect());
+            player.getEffectManager().removeEffect(item.getUsedEffect());
             equippedItems.remove(item);
             return true;
         } else {

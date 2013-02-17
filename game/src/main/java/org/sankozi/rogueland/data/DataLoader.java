@@ -87,7 +87,25 @@ public final class DataLoader {
     }
 
 	private static ItemTemplate buildItemTemplate(String name, Map map) {
-		EnumSet<ItemType> types = EnumSet.noneOf(ItemType.class);
+        ItemTemplateBuilder builder = new ItemTemplateBuilder()
+                .setName(map.get("name").toString())
+                .setDescription(Objects.toString(map.get("desc"), ""))
+                .setParams(toFloatMap((Map) map.get("protection"), Destroyable.Param.class));
+
+        builder.setTypes(parseItemTypes(map));
+
+        Map effects = (Map) map.get("effects");
+        if(effects != null){
+            for(Map.Entry entry : (Set<Map.Entry>)effects.entrySet()){
+                parseEffect(entry.getKey().toString(), (Map) entry.getValue(), builder);
+            }
+        }
+
+        return builder.createItemTemplate();
+	}
+
+    private static EnumSet<ItemType> parseItemTypes(Map map) {
+        EnumSet<ItemType> types = EnumSet.noneOf(ItemType.class);
         Set<Named> namedTypes = (Set) map.get("types");
         for(Named nType : namedTypes){
             types.add(
@@ -95,31 +113,17 @@ public final class DataLoader {
                     CaseFormat.LOWER_HYPHEN.to(
                     CaseFormat.UPPER_UNDERSCORE, nType.getName())));
         }
-        types = ItemType.expand(types);
+        return types;
+    }
 
-        Map effects = (Map) map.get("effects");
-        Effect effect = Effect.NULL;
-        if(effects != null){
-            if(effects.size() > 1) {
-                throw new UnsupportedOperationException("multiple effects not supported");
-            }
-            for(Map.Entry entry : (Set<Map.Entry>)effects.entrySet()){
-                effect = parseEffect(entry.getKey().toString(), (Map) entry.getValue());
-            }
-        }
-
-        return new ItemTemplateBuilder().setName(map.get("name").toString())
-                    .setDescription(Objects.toString(map.get("desc"), ""))
-                    .setParams(toFloatMap((Map) map.get("protection"), Destroyable.Param.class))
-                    .setUsedEffect(effect).setTypes(types).createItemTemplate();
-	}
-
-    private static Effect parseEffect(String name, Map<String, ?> params){
+    private static void parseEffect(String name, Map<String, ?> params, ItemTemplateBuilder builder){
         switch(name) {
             case "protection":
-                return new ParamChangeEffect(name, toFloatMap(params, Destroyable.Param.class));
+                builder.setUsedEffect(new ParamChangeEffect(name, toFloatMap(params, Destroyable.Param.class)));
+                break;
             case "attack":
-                return DamageEffect.multiDamageEffect(toIntMap(params, Damage.Type.class));
+                builder.setWeaponEffect(DamageEffect.multiDamageEffect(toIntMap(params, Damage.Type.class)));
+                break;
             default:
                 throw new RuntimeException("unknown effect '" + name + "'");
         }

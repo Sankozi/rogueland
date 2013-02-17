@@ -38,6 +38,7 @@ public class Player extends AbstractActor {
     
     private Coords location;
 	private Direction weaponDirection = Direction.N;
+    private Effect weaponEffect = Effect.NULL;
 
     public Player(){
         this(Collections.<Item>emptySet());
@@ -52,7 +53,7 @@ public class Player extends AbstractActor {
         setDestroyableParam(Destroyable.Param.MAX_DURABILITY, 20);
         this.equipment = new Inventory(startingEquipment);
         this.manager = EffectManager.forPlayer(this);
-        this.equippedItems = new EquippedItems(manager, equipment);
+        this.equippedItems = new EquippedItems(this, equipment);
     }
 
     @Override
@@ -64,6 +65,18 @@ public class Player extends AbstractActor {
         }
     }
 
+    public enum Param implements org.sankozi.rogueland.model.Param{
+        /* === STATS === */
+        STRENGTH,
+        DEXTERITY,
+        AGILITY,
+        ENDURANCE,
+        INTELLIGENCE,
+        WILLPOWER,
+        CHARISMA,
+        LUCK
+    }
+
     @Override
     public Effect getBumpEffect() {
         return DamageEffect.simpleDamageEffect(Damage.Type.BLUNT, 3);
@@ -71,7 +84,7 @@ public class Player extends AbstractActor {
 
     @Override
     public Effect getWeaponEffect() {
-        return DamageEffect.simpleDamageEffect(Damage.Type.SLASHING, 10);
+        return weaponEffect;
     }
 
     @Override
@@ -79,17 +92,9 @@ public class Player extends AbstractActor {
         return manager;
     }
 
-	public enum Param implements org.sankozi.rogueland.model.Param{
-		/* === STATS === */
-		STRENGTH,
-		DEXTERITY,
-		AGILITY,
-		ENDURANCE,
-		INTELLIGENCE,
-		WILLPOWER,
-		CHARISMA,
-		LUCK
-	}
+    public void setWeaponEffect(Effect weaponEffect) {
+        this.weaponEffect = weaponEffect;
+    }
 
 	public final void setPlayerParam(Param param, float value){
 		params.put(param, value);
@@ -105,7 +110,11 @@ public class Player extends AbstractActor {
 
 	@Override
 	public Coords getWeaponLocation(){
-		return new Coords(location.x + weaponDirection.dx, location.y + weaponDirection.dy);
+        if(isArmed()){
+		    return new Coords(location.x + weaponDirection.dx, location.y + weaponDirection.dy);
+        } else {
+            return null;
+        }
 	}
 
 	public void setWeaponDirection(Direction weaponDirection) {
@@ -129,7 +138,7 @@ public class Player extends AbstractActor {
 
 	@Override
 	public boolean isArmed() {
-		return true;
+		return weaponEffect != Effect.NULL;
 	}
 
     public Inventory getEquipment(){

@@ -82,13 +82,15 @@ public class FontPainter implements TilePainter{
     }
 
 	private void drawSword(Game game, Graphics g, int startingPixelX, int startingX, int startingPixelY, int startingY) {
-		g.setColor(Color.WHITE);
-		Player p = game.getPlayer();
-		Coords location = p.getLocation();
-		Direction dir = p.getWeaponDirection();
-		g.drawString(directionChars.get(dir).toString(), 
-				startingPixelX + tileWidth * (location.x - startingX + dir.dx), 
-				startingPixelY + tileHeight * (location.y - startingY + dir.dy));
+        Player p = game.getPlayer();
+        if(p.isArmed()){
+            g.setColor(Color.WHITE);
+            Coords location = p.getLocation();
+            Direction dir = p.getWeaponDirection();
+            g.drawString(directionChars.get(dir).toString(),
+                    startingPixelX + tileWidth * (location.x - startingX + dir.dx),
+                    startingPixelY + tileHeight * (location.y - startingY + dir.dy));
+        }
 //		LOG.info("paint end");
 	}
 

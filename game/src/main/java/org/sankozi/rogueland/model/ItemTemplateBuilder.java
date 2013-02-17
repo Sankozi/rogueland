@@ -34,7 +34,7 @@ public class ItemTemplateBuilder {
     }
 
     public ItemTemplateBuilder setTypes(EnumSet<ItemType> types) {
-        this.types = types;
+        this.types = ItemType.expand(types);
         return this;
     }
 
