@@ -1,6 +1,7 @@
 package org.sankozi.rogueland.resources;
 
 import com.google.common.base.Throwables;
+import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -12,6 +13,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 import javax.imageio.ImageIO;
 
 /**
@@ -19,14 +21,8 @@ import javax.imageio.ImageIO;
  * @author sankozi
  */
 public class ResourceProvider {
-    private final static LoadingCache<String, Font> FONT_CACHE = CacheBuilder.newBuilder()
-            .concurrencyLevel(1)
-            .build(new CacheLoader<String,Font>(){
-                public Font load(String name) throws Exception {
-                    return Font.createFont(Font.TRUETYPE_FONT, 
-                        ResourceProvider.class.getResourceAsStream("fonts/" + name));
-                }
-            });
+    private final static Cache<String, Font> FONT_CACHE = CacheBuilder.newBuilder()
+            .concurrencyLevel(1).build();
 
     public static URL getLog4jProperties() {
         return ResourceProvider.class.getResource("log4j.properties");
@@ -41,8 +37,14 @@ public class ResourceProvider {
 		}
 	}
 
-    public static Font getFont(String name, float size){
-        return FONT_CACHE.getUnchecked(name).deriveFont(size);
+    public static Font getFont(String name, float size) {
+        try {
+            return FONT_CACHE.get(name, ()
+                    -> Font.createFont(Font.TRUETYPE_FONT, ResourceProvider.class.getResourceAsStream("fonts/" + name)))
+                .deriveFont(size);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 	public static Cursor getCursor(String name, Point center){
