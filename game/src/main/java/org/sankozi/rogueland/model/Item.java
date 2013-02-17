@@ -18,13 +18,11 @@ public final class Item implements Destroyable{
 	private final ItemTemplate template;
 
 	private float durability;
-    private final int hashCode;
 
 	public Item(ItemTemplate template) {
 		this.template = template;
 		this.durability = template.destroyableParam(Param.MAX_DURABILITY);
-        this.hashCode = template.hashCode();
-	}
+    }
 
 	public Iterable<ItemType> getTypes(){
 		return template.getTypes();
