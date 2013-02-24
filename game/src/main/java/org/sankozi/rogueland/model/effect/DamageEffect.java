@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 
+import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import org.sankozi.rogueland.control.GameLog;
 import org.sankozi.rogueland.model.Damagable;
 import org.sankozi.rogueland.model.Damage;
+import org.sankozi.rogueland.model.Description;
 import org.sankozi.rogueland.model.Param;
 
 /**
@@ -38,14 +40,28 @@ public class DamageEffect extends InstantEffect {
     }
     
     @Override
-    protected void apply(AccessManager manager) {
+    protected Description apply(AccessManager manager) {
         Damagable damagable = manager.getDamagable();
         for(Damage dam : damages){
             int res = damagable.protection(dam.type);
             if(res < dam.value){
-                damagable.damage(dam.value - (int) res);
+                damagable.damage(dam.value - res);
             }
         }
+        return Description.stringDescription(Suppliers.memoize( ()-> {
+            StringBuilder sb = new StringBuilder();
+            for(Damage dam : damages){
+                int res = damagable.protection(dam.type);
+                if(res == 0) {
+                    sb.append(dam.value).append(' ').append(dam.type.toString()).append(" damage\n");
+                } else if(res < dam.value) {
+                    sb.append(dam.value - res)
+                            .append('(').append(dam.value).append(" - ").append(res).append(')')
+                            .append(dam.type.toString()).append(" damage\n");
+                }
+            }
+            return sb.toString();
+        }));
     }
 
     @Override

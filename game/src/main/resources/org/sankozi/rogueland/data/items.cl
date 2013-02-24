@@ -30,10 +30,18 @@
     :durability 100
     :effects {
         :attack {
-            :slashing 8}}}
+            :blunt 8}}}
+:quarterstaff {
+    :name "Quarterstaff"
+    :desc "Staff made from hardwood cut into quarters."
+    :types #{:staff}
+    :durability 100
+    :effects {
+        :attack {
+            :blunt 10}}}
 :sword {
   	:name "Sword"
-	  :types #{:weapon}
+	  :types #{:sword}
     :durability 200
     :effects {
         :attack {

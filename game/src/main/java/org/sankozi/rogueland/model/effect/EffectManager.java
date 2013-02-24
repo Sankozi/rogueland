@@ -2,12 +2,9 @@ package org.sankozi.rogueland.model.effect;
 
 import java.util.*;
 import javax.annotation.Nullable;
-import org.sankozi.rogueland.model.Actor;
-import org.sankozi.rogueland.model.AiActor;
-import org.sankozi.rogueland.model.Damagable;
-import org.sankozi.rogueland.model.Destroyable;
+
+import org.sankozi.rogueland.model.*;
 import org.sankozi.rogueland.model.Destroyable.Param;
-import org.sankozi.rogueland.model.Player;
 
 /**
  * Object that manages active Effects, it is responsible for:
@@ -59,12 +56,13 @@ public class EffectManager implements AccessManager {
 		col.add(effect);
 	}
 
-	public void registerEffect(Effect effect){
+	public Description registerEffect(Effect effect){
 		putEffect(effect);
-		startEffect(effect);
+        Description ret = startEffect(effect);
 		if(effect.getFinishTime() <= 0f){
 			endEffect(effect);
 		}
+        return ret;
 	}
 
     public void removeEffect(Effect effect) {
@@ -75,10 +73,11 @@ public class EffectManager implements AccessManager {
 	 * Starts effect with proper context
 	 * @param effect 
 	 */
-	private void startEffect(Effect effect) {
+	private Description startEffect(Effect effect) {
 		currentContext = getEffectContext(effect);
-		effect.start(this);
+		Description ret = effect.start(this);
 		currentContext = null;
+        return ret;
 	}
 
 	private void endEffect(Effect effect) {

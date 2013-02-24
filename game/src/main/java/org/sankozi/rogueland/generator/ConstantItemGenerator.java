@@ -26,7 +26,7 @@ public class ConstantItemGenerator implements ItemGenerator{
         LOG.info("generating items");
         return Arrays.asList(
                 simpleItem("simple-staff"), 
-                simpleItem("simple-staff"),
+                simpleItem("quarterstaff"),
                 simpleItem("leather-armor"));
     }
 

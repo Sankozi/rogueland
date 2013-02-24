@@ -1,5 +1,8 @@
 package org.sankozi.rogueland.model.effect;
 
+import com.google.common.base.Suppliers;
+import org.sankozi.rogueland.model.Damage;
+import org.sankozi.rogueland.model.Description;
 import org.sankozi.rogueland.model.Param;
 import org.sankozi.rogueland.model.effect.AccessManager;
 import org.sankozi.rogueland.model.effect.Effect;
@@ -29,10 +32,17 @@ public final class ParamChangeEffect extends Effect {
 	}
 	
 	@Override
-	public void start(AccessManager manager) {
+	public Description start(AccessManager manager) {
         for(Map.Entry<Destroyable.Param, Float> entry : changes.entrySet()){
             manager.accessDestroyableParam(entry.getKey()).setChange(entry.getValue());
         }
+        return Description.stringDescription(Suppliers.memoize(() -> {
+            StringBuilder sb = new StringBuilder();
+            for(Param param : changes.keySet()){
+                sb.append(param.toString()).append(" - ").append(changes.get(param)).append('\n');
+            }
+            return sb.toString();
+        }));
 	}
 
 	@Override

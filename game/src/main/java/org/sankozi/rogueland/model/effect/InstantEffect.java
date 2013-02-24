@@ -1,20 +1,22 @@
 package org.sankozi.rogueland.model.effect;
 
+import org.sankozi.rogueland.model.Description;
+
 /**
  * Effect that immediately ends. Used to create effects that doesn't need to
  * end, for example inflicting damage
  * @author sankozi
  */
-public abstract class InstantEffect extends Effect{
+public abstract class InstantEffect extends Effect {
     public InstantEffect() {
         super(0f);
     }
 
-    protected abstract void apply(AccessManager manager);
+    protected abstract Description apply(AccessManager manager);
 
     @Override
-    public final void start(AccessManager manager) {
-        apply(manager);
+    public final Description start(AccessManager manager) {
+        return apply(manager);
     }
 
     @Override

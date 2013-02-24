@@ -28,6 +28,10 @@ public class ResourceProvider {
         return ResourceProvider.class.getResource("log4j.properties");
     }
 
+    public static URL getImageUrl(String name){
+        return ResourceProvider.class.getResource(name);
+    }
+
 	public static Image getImage(String name){
 		try {
 			Image ret = ImageIO.read(ResourceProvider.class.getResource(name));

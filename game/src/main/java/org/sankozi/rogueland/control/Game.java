@@ -122,7 +122,7 @@ public class Game {
                         attackWithWeapon(actor, tile.actor);
                     }
                 } else if(!prevWeaponLocation.equals(nextWeaponLocation)){
-					LOG.info("new weapon location : " + nextWeaponLocation.x + "," + nextWeaponLocation.y);
+					LOG.debug("new weapon location : " + nextWeaponLocation.x + "," + nextWeaponLocation.y);
                     Tile tile = tiles[nextWeaponLocation.x][nextWeaponLocation.y];
 					tiles[prevWeaponLocation.x][prevWeaponLocation.y].weapon = false;
 					tiles[nextWeaponLocation.x][nextWeaponLocation.y].weapon = true;
@@ -172,8 +172,8 @@ public class Game {
      * @param target
      */
     private void attackWithWeapon(Actor actor, Actor target){
-        target.getEffectManager().registerEffect(actor.getWeaponEffect());
-
+        Description desc = target.getEffectManager().registerEffect(actor.getWeaponEffect());
+        GameLog.info(desc.getAsString());
         if(target.isDestroyed()){
             removeActor(target);
         }
@@ -229,7 +229,6 @@ public class Game {
 			}
 			return location;
 		} else if(m == Move.WAIT) {
-            GameLog.info("Waiting");
 			return location;
         } else {
             LOG.error("unhandled move : " + m);

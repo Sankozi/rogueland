@@ -6,6 +6,7 @@ import org.sankozi.rogueland.gui.DescriptionTextArea;
 import org.sankozi.rogueland.model.Actor;
 import org.sankozi.rogueland.model.Destroyable;
 import org.sankozi.rogueland.model.Player;
+import org.sankozi.rogueland.resources.ResourceProvider;
 
 /**
  *
@@ -41,6 +42,7 @@ public final class TextAreaPlayerRenderer extends TextAreaRenderer<Player> {
         sb.append("<tr><td colspan='2'>Hand to hand combat</td></tr>");
         Utils.renderEffect(player.getBumpEffect(), sb);
         sb.append("</table></td></tr></table>");
+        sb.append("<img src='").append(ResourceProvider.getImageUrl("icons/protection.gif").toString()).append("'/>");
         sb.append("</html>");
         return sb.toString();
     }

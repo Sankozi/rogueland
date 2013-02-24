@@ -55,9 +55,10 @@ public class EffectManagerTest {
 		public MockedAccessingEffect(float finishTime) {super(finishTime);}
 		
 		@Override
-		public void start(AccessManager manager) {
+		public Description start(AccessManager manager) {
 			manager.accessDestroyableParam(Destroyable.Param.BLUNT_PROT).setChange(2f);
             manager.accessActorParam(Actor.Param.MANA_REGEN).setChange(5f);
+            return Description.EMPTY;
 		}
 
 		@Override

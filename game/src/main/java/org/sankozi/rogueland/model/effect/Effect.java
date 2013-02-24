@@ -1,5 +1,6 @@
 package org.sankozi.rogueland.model.effect;
 
+import org.sankozi.rogueland.model.Description;
 import org.sankozi.rogueland.model.GameObject;
 import org.sankozi.rogueland.model.Param;
 
@@ -15,7 +16,7 @@ import java.util.Map;
 public abstract class Effect implements GameObject{
 	/** Null effect */
 	public static final Effect NULL = new Effect(-1f){
-		@Override public void start(AccessManager manager) {}
+		@Override public Description start(AccessManager manager) { return Description.EMPTY; }
 		@Override public void end(AccessManager manager) {}
 		@Override public String getObjectName() { return "none"; }
         @Override public Map<Param, Float> getDescriptionParameters(){ return Collections.emptyMap(); }
@@ -40,8 +41,9 @@ public abstract class Effect implements GameObject{
 	/**
 	 * Makes changes to attached object
 	 * @param manager, not null
+     * @return
 	 */
-	public abstract void start(AccessManager manager);
+	public abstract Description start(AccessManager manager);
 	
 	/**
 	 * Ends this Effect, implementing classes may undo changes made in start method
