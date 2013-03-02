@@ -159,8 +159,9 @@ public class Game {
      * @param target
      */
     private void attack(Actor actor, Actor target){
-        target.getEffectManager().registerEffect(actor.getBumpEffect());
-        
+        Description desc = target.getEffectManager().registerEffect(actor.getBumpEffect());
+        GameLog.info(actor.getObjectName() + " is attacking " + target.getObjectName() + ":");
+        GameLog.info(" " + desc.getAsString());
         if(target.isDestroyed()){
             removeActor(target);
         }
@@ -173,7 +174,8 @@ public class Game {
      */
     private void attackWithWeapon(Actor actor, Actor target){
         Description desc = target.getEffectManager().registerEffect(actor.getWeaponEffect());
-        GameLog.info(desc.getAsString());
+        GameLog.info(actor.getObjectName() + " is attacking " + target.getObjectName() + ":");
+        GameLog.info(" " + desc.getAsString());
         if(target.isDestroyed()){
             removeActor(target);
         }
