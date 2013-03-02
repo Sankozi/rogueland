@@ -3,7 +3,7 @@ package org.sankozi.rogueland.model;
 /**
  * @author sankozi
  */
-public interface Damagable {
+public interface Damageable {
     /**
 	 * Reduces durability by passed value
 	 * @param value 
