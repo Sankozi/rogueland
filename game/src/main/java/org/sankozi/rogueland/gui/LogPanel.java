@@ -2,6 +2,7 @@ package org.sankozi.rogueland.gui;
 
 import javax.swing.*;
 
+import com.google.inject.Inject;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.control.LogListener;
 import org.sankozi.rogueland.control.MessageType;
@@ -26,4 +27,9 @@ public abstract class LogPanel extends JPanel implements LogListener{
     }
 
     protected abstract void onMessageEDT(String message, MessageType type);
+
+    @Inject
+    void setGameSupport(GameSupport gs){
+        gs.addLogListener(this);
+    }
 }

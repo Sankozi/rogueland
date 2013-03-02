@@ -1,5 +1,6 @@
 package org.sankozi.rogueland.gui;
 
+import org.sankozi.rogueland.gui.actions.ExitAction;
 import org.sankozi.rogueland.gui.actions.ShowInventoryAction;
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
@@ -24,7 +25,7 @@ public class GuiModule extends AbstractModule{
                 .toProvider(MainMenuProvider.class);
 
         bind(LogPanel.class)
-                .to(JListLogPanel.class);
+                .to(DescriptionTextAreaLogPanel.class);
 
         bind(ComponentSwitcher.class)
                 .to(MainPanel.class);
@@ -44,6 +45,10 @@ public class GuiModule extends AbstractModule{
                 .toInstance(new InventoryPanel());
 
         // ---------------- NAMED ACTIONS ------------------
+        bind(Action.class)
+                .annotatedWith(Names.named("exit"))
+                .to(ExitAction.class);
+
 		bind(Action.class)
 				.annotatedWith(Names.named("new-game"))
 				.to(NewGameAction.class);

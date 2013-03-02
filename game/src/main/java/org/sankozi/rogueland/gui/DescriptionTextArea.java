@@ -13,6 +13,7 @@ import org.sankozi.rogueland.resources.ResourceProvider;
  */
 public class DescriptionTextArea extends JTextPane {
     {
+        setFocusable(false);
         setEditable(false);
         setContentType("text/html");
         setDocument(new CustomFontStyledDocument());

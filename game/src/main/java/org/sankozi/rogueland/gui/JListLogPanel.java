@@ -27,8 +27,7 @@ public final class JListLogPanel extends LogPanel{
         jlist.setFocusable(false);
         jlist.setModel(list);
         jlist.setFont(ResourceProvider.getFont(STANDARD_FONT_NAME, 12f));
-        jlist.setOpaque(true);
-        jlist.setBackground(BACKGROUND_TEXT_COLOR);
+
         this.setLayout(new BorderLayout());
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         this.add(jlist, BorderLayout.CENTER);
@@ -42,8 +41,5 @@ public final class JListLogPanel extends LogPanel{
 		this.repaint();
     }
 
-	@Inject 
-	void setGameSupport(GameSupport gs){
-		gs.addLogListener(this);
-	}
+
 }

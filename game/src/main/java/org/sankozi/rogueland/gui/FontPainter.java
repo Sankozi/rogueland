@@ -102,9 +102,9 @@ public class FontPainter implements TilePainter{
 
     @Override
     public void paint(Game game, Graphics g, int width, int height) {
+        LOG.info("filling with color " + g.getColor());
+        g.fillRect(0,0, width, height);
 		if(!game.isInitialized()){
-			g.setColor(Color.BLACK);
-			g.fillRect(0,0, width, height);
 			return;
 		}
 //		LOG.info("paint start : size ->" + width + " " + height);

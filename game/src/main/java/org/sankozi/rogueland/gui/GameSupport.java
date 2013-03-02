@@ -5,11 +5,8 @@ import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Rectangle;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.List;
@@ -54,6 +51,7 @@ class GameSupport {
     private Dimension paintedLevelFragment;
     private Rectangle levelSize;
     private BufferedImage levelImage = new BufferedImage(1,1, BufferedImage.TYPE_4BYTE_ABGR);
+    private Color backgroundColor = Color.BLACK;
 
 	@Inject
     public GameSupport(Provider<Game> gameProvider) {
@@ -90,15 +88,17 @@ class GameSupport {
 		this.gameControls = controls;
 	}
 
-    public void resize(Dimension newDim) {
+    public void resize(Component toComponent) {
 //        LOG.info("component resized : new size : " + newDim);
-        BufferedImage newImage = new BufferedImage(newDim.width, newDim.height, BufferedImage.TYPE_4BYTE_ABGR);
+        backgroundColor = toComponent.getBackground();
+        BufferedImage newImage = new BufferedImage(toComponent.getWidth(), toComponent.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g = null;
         try {
             g = newImage.createGraphics();
             if(readWriteLock.readLock().tryLock()){
                 try {
-                    painter.paint(game, g, newDim.width, newDim.height);
+                    g.setColor(backgroundColor);
+                    painter.paint(game, g, toComponent.getWidth(), toComponent.getHeight());
                 } finally {
                     readWriteLock.readLock().unlock();
                 }
@@ -167,6 +167,7 @@ class GameSupport {
 	void paintLevelImage(Graphics g, JComponent comp) {
 		try {
 			readWriteLock.readLock().lock();
+            g.setColor(comp.getBackground());
         	g.drawImage(levelImage, 0, 0, comp.getWidth(), comp.getHeight(), comp);
 		} finally {
 			readWriteLock.readLock().unlock();
@@ -221,6 +222,7 @@ class GameSupport {
             try {
 				readWriteLock.writeLock().lock();
                 g = levelImage.createGraphics();
+                g.setColor(backgroundColor);
                 painter.paint(game, g, levelImage.getWidth(), levelImage.getHeight());
             } finally {
 				readWriteLock.writeLock().unlock();

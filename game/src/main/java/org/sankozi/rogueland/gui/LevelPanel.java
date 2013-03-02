@@ -1,9 +1,8 @@
 package org.sankozi.rogueland.gui;
 
 import com.google.inject.Inject;
-import java.awt.Cursor;
-import java.awt.Graphics;
-import java.awt.Rectangle;
+
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -50,8 +49,8 @@ public class LevelPanel extends JComponent{
         this.addMouseMotionListener(new MoveCursor());
         this.addMouseListener(gc);
 		componentListener = new ComponentAdapter() {
-			@Override public void componentResized(ComponentEvent e) { gameSupport.resize(getSize()); repaint();}
-			@Override public void componentShown  (ComponentEvent e) { gameSupport.resize(getSize()); repaint();}
+			@Override public void componentResized(ComponentEvent e) { gameSupport.resize(e.getComponent()); repaint();}
+			@Override public void componentShown  (ComponentEvent e) { gameSupport.resize(e.getComponent()); repaint();}
 		};
         this.addComponentListener(componentListener);
     }
@@ -62,9 +61,9 @@ public class LevelPanel extends JComponent{
 
     @Override
     public void paint(Graphics g) {
-//		LOG.info("copy start");
+        g.setColor(Color.RED);
+        g.fillRect(0,0, g.getClipBounds().width, g.getClipBounds().height);
 		gameSupport.paintLevelImage(g, this);
-//		LOG.info("copy end");
     }
 
 	/**

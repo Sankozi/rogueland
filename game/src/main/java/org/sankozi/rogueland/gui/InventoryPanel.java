@@ -128,14 +128,14 @@ public class InventoryPanel extends JPanel implements AncestorListener, ListSele
             if(isSelected){
                 ret.setOpaque(true);
                 if(item.equipped){
-                    ret.setBackground(Constants.BACKGROUND_EMPH_TEXT_COLOR);
+//                    ret.setBackground(Constants.BACKGROUND_EMPH_TEXT_COLOR);
                 } else {
-                    ret.setBackground(Constants.BACKGROUND_TEXT_COLOR);
+//                    ret.setBackground(Constants.BACKGROUND_TEXT_COLOR);
                 }
                 ret.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2, false));
             } else if(item.equipped){
                 ret.setOpaque(true);
-                ret.setBackground(Constants.BACKGROUND_EMPH_TEXT_COLOR);
+//                ret.setBackground(Constants.BACKGROUND_EMPH_TEXT_COLOR);
             }
             return ret;
         }
