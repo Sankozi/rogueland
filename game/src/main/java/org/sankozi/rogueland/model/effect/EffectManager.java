@@ -135,7 +135,7 @@ public class EffectManager implements AccessManager {
     }
 
     @Override
-    public Damagable getDamagable() {
+    public Damageable getDamagable() {
         return destroyable;
     }
 

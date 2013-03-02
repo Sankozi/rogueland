@@ -11,7 +11,7 @@ package org.sankozi.rogueland.model;
  * 
  * @author sankozi
  */
-public interface Destroyable extends GameObject, Damagable{
+public interface Destroyable extends GameObject, Damageable {
 
 	/**
 	 * current 'health' of an object/monster, when it is not higher than one pointGameObject 
