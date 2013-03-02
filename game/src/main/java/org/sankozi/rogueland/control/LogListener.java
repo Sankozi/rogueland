@@ -7,10 +7,9 @@ package org.sankozi.rogueland.control;
 public interface LogListener {
 
     /**
-     * Method that is called when message arrives
+     * Method that is called when message arrives, must be thread safe
      * @param message content of the message, never null
      * @param type type of the message, nevel null
      */
     void onMessage(String message, MessageType type);
-
 }

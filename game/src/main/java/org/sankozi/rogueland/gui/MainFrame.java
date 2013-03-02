@@ -35,9 +35,9 @@ public class MainFrame extends FrameView {
         this.setMenuBar(menu);
         this.setComponent(contentPane);
 
-        contentPane.setLayout(new MigLayout("","[grow][200!]","[grow][50!]"));
+        contentPane.setLayout(new MigLayout("fill, wrap 2","[grow][200!]","[grow][50!]"));
         contentPane.add(mainPanel, "span 1 2, grow");
-        contentPane.add(logPanel, "growy, wrap");
+        contentPane.add(logPanel, "grow");
         contentPane.add(bar, "");
         LOG.info("created MainFrame");
     }

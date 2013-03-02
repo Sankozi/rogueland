@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 
+import javax.swing.*;
+
 /**
  * Logging mechanism for Game events
  * @author sankozi
@@ -28,7 +30,6 @@ public class GameLog {
     }
 
     public void log(String message, MessageType type){
-//        LOG.info(type + " : " + message);
         for(LogListener listener: listeners){
             listener.onMessage(message, type);
         }
