@@ -96,7 +96,12 @@ public class AiActor extends AbstractActor{
 
     @Override
     public String getObjectName() {
-        return "actor/ai";
+        return "actor.ai";
+    }
+
+    @Override
+    public String getName() {
+        return "Enemy";
     }
 
     @Override

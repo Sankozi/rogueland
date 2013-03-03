@@ -7,13 +7,12 @@ import org.sankozi.rogueland.model.Item;
  * Generates loot
  * @author sankozi
  */
-public interface ItemGenerator extends Function<Float, Iterable<Item>> {
+public interface ItemGenerator {
 
     /**
      * Creates new batch of items
-     * @param luck luck bonus - may affect quality of generated items
-     * @return new batch of items
+     * @param value value of items to be created
+     * @return new batch of items (ItemGenerator cannot return Item that already exists)
      */
-    @Override
-    public Iterable<Item> apply(Float luck);
+    public Iterable<Item> generate(float value);
 }

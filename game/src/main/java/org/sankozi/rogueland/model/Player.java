@@ -133,10 +133,15 @@ public class Player extends AbstractActor {
 
     @Override
     public String getObjectName() {
-        return "actor/player";
+        return "actor.player";
     }
 
-	@Override
+    @Override
+    public String getName() {
+        return "Player";
+    }
+
+    @Override
 	public boolean isArmed() {
 		return weaponEffect != Effect.NULL;
 	}

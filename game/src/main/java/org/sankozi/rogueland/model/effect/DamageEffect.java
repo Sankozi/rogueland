@@ -55,7 +55,7 @@ public class DamageEffect extends InstantEffect {
                     sb.append(dam.value).append(' ').append(dam.type.toString()).append(" damage\n");
                 } else if(res < dam.value) {
                     sb.append(dam.value - res)
-                            .append('(').append(dam.value).append(" - ").append(res).append(')')
+                            .append(" (").append(dam.value).append(" - ").append(res).append(") ")
                             .append(dam.type.toString()).append(" damage\n");
                 }
             }

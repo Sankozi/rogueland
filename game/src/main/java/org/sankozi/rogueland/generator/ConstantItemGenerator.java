@@ -22,7 +22,7 @@ public class ConstantItemGenerator implements ItemGenerator{
     }
 
     @Override
-    public Iterable<Item> apply(Float luck) {
+    public Iterable<Item> generate(float luck) {
         LOG.info("generating items");
         return Arrays.asList(
                 simpleItem("simple-staff"), 

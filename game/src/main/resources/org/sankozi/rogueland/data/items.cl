@@ -28,6 +28,7 @@
     :desc "2 meter high stick stripped of bark"
     :types #{:staff}
     :durability 100
+    :value 80
     :effects {
         :attack {
             :blunt 8}}}
@@ -36,16 +37,17 @@
     :desc "Staff made from hardwood cut into quarters."
     :types #{:staff}
     :durability 100
+    :value 100
     :effects {
         :attack {
             :blunt 10}}}
-:sword {
-  	:name "Sword"
+:crude-short-sword {
+  	:name "Crude short sword"
 	  :types #{:sword}
     :durability 200
     :effects {
         :attack {
-            :slashing 8}}}
+            :slashing 6}}}
 :leather-armor {
 	  :name "Leather armor"
 	  :types #{:worn-chest}

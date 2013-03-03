@@ -70,7 +70,12 @@ public class AbstractDestroyableTest {
 
         @Override
         public String getObjectName() {
-            return "destroyable/test";
+            return "destroyable.test";
+        }
+
+        @Override
+        public String getName() {
+            return "Test destroyable";
         }
     }
 }

@@ -6,6 +6,7 @@
     `(merge ~@(for [entry# (seq items-map)]
             (generator (nth entry# 0) (nth entry# 1)))))
 (generators {
-    :war-starter-pack {
-        :items (:simple-quarterstaff)}
+    :brawler {
+        :items [:quarterstaff]}
 })
+

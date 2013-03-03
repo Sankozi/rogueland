@@ -21,6 +21,6 @@ public class PlayerFactory implements Provider<Player>{
 
     @Override
     public Player get() {
-        return new Player(startingEquipmentGenerator.apply(0f));
+        return new Player(startingEquipmentGenerator.generate(0f));
     }
 }
