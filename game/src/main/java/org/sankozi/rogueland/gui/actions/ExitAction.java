@@ -19,7 +19,7 @@ public class ExitAction extends AbstractAction {
     private final Provider<MainFrame> mainFrameProvider;
 
     {
-        this.putValue(Action.NAME, "New game");
+        this.putValue(Action.NAME, "Exit");
     }
 
     @Inject
