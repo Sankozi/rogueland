@@ -61,9 +61,11 @@ public class LevelPanel extends JComponent{
 
     @Override
     public void paint(Graphics g) {
-        g.setColor(Color.RED);
-        g.fillRect(0,0, g.getClipBounds().width, g.getClipBounds().height);
-		gameSupport.paintLevelImage(g, this);
+        if(gameSupport.isGameStarted()){
+		    gameSupport.paintLevelImage(g, this);
+        } else {
+            super.paint(g);
+        }
     }
 
 	/**

@@ -1,16 +1,16 @@
 package org.sankozi.rogueland.gui;
 
 import com.google.inject.Singleton;
-import java.awt.BorderLayout;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
+
+import java.awt.*;
+import javax.swing.*;
 
 /**
  * Central panel of MainFrame, switches between various view - LevelPanel, InventoryPanel etc.
  * @author sankozi
  */
 @Singleton
-public class MainPanel extends JPanel implements ComponentSwitcher {
+public final class MainPanel extends JPanel implements ComponentSwitcher {
 
     {
         this.setLayout(new BorderLayout());
