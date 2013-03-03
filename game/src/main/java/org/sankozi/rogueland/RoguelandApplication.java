@@ -24,11 +24,7 @@ public class RoguelandApplication {
      */
     protected void startup() {
         Injector injector = Guice.createInjector(module, guiModule);
-        try {
-            UIManager.setLookAndFeel(new SubstanceDustCoffeeLookAndFeel());
-        } catch (UnsupportedLookAndFeelException e) {
-            throw new RuntimeException();
-        }
+
         injector.getInstance(MainFrame.class).setVisible(true);
     }
 
@@ -37,6 +33,11 @@ public class RoguelandApplication {
      */
     public static void main(String[] args) {
         PropertyConfigurator.configure(ResourceProvider.getLog4jProperties());
+        try {
+            UIManager.setLookAndFeel(new SubstanceDustCoffeeLookAndFeel());
+        } catch (UnsupportedLookAndFeelException e) {
+            throw new RuntimeException();
+        }
         SwingUtilities.invokeLater(() -> new RoguelandApplication().startup());
     }
 }
