@@ -52,7 +52,7 @@ public class MainFrame extends JFrame {
         contentPane.setLayout(new MigLayout("fill, wrap 2","[grow][200!]","[grow][50!]"));
         contentPane.add(mainPanel, "span 1 2, grow");
         contentPane.add(logPanel, "grow");
-        contentPane.add(bar, "");
+        contentPane.add(bar, "grow");
         LOG.info("created MainFrame");
     }
 }
