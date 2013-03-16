@@ -22,9 +22,11 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import com.google.inject.Singleton;
+import org.sankozi.rogueland.generator.ConstantItemGenerator;
+import org.sankozi.rogueland.generator.ItemGenerator;
 import org.sankozi.rogueland.model.*;
 import org.sankozi.rogueland.model.effect.DamageEffect;
-import org.sankozi.rogueland.model.effect.Effect;
 
 import static org.sankozi.rogueland.data.LoaderUtils.*;
 import org.sankozi.rogueland.model.effect.ParamChangeEffect;
@@ -34,6 +36,7 @@ import org.sankozi.rogueland.model.effect.ParamChangeEffect;
  * @author sankozi
  */
 @SuppressWarnings("unchecked")
+@Singleton
 public final class DataLoader {
 
     private final LoadingCache<String, Object> evaluatedClResources = 
@@ -46,7 +49,8 @@ public final class DataLoader {
                             }
                         });
 
-    private Map<String, ItemTemplate> baseItemTemplates;
+    private volatile Map<String, ItemTemplate> baseItemTemplates;
+    private volatile Map<String, PlayerClass> playerClasses;
 
 	Collection<String> getScriptNames(){
 		List<String> ret = new ArrayList<>();
@@ -82,11 +86,41 @@ public final class DataLoader {
 		return baseItemTemplates;
 	}
 
-    public ItemTemplate getItemTemplate(String name){
-        return loadItemTemplates().get(name);
+    Map<String, PlayerClass> loadPlayerClasses(){
+        if(playerClasses == null) {
+            Map<String, ?> clMap = (Map) evaluateClResource("player-classes.cl");
+            Map<String, PlayerClass> ret = Maps.newHashMapWithExpectedSize(clMap.size());
+            for(Map.Entry<String, ?> entry : clMap.entrySet()){
+                ret.put(entry.getKey(), buildPlayerClass(entry.getKey(), (Map) entry.getValue()));
+            }
+            playerClasses = ret;
+        }
+        return playerClasses;
     }
 
-	private static ItemTemplate buildItemTemplate(String name, Map map) {
+    public ItemTemplate getItemTemplate(String name){
+        ItemTemplate ret = loadItemTemplates().get(name);
+        if(ret == null){
+            throw new IllegalArgumentException("cannot find template '" + name +"'");
+        }
+        return ret;
+    }
+
+    public PlayerClass getPlayerClass(String name){
+        return loadPlayerClasses().get(name);
+    }
+
+    private PlayerClass buildPlayerClass(String id, Map map) {
+        Object items = map.get("items");
+        if(items instanceof Iterable){
+            return new PlayerClass(new ConstantItemGenerator(
+                    Iterables.<Object,ItemTemplate> transform((Iterable<Object>)items,
+                             item -> getItemTemplate(item.toString()))));
+        }
+        throw new UnsupportedOperationException("unsupported item generator : " + items);
+    }
+
+	private static ItemTemplate buildItemTemplate(String id, Map map) {
         ItemTemplateBuilder builder = new ItemTemplateBuilder()
                 .setName(map.get("name").toString())
                 .setDescription(Objects.toString(map.get("desc"), ""))

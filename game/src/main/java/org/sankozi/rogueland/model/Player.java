@@ -41,17 +41,17 @@ public class Player extends AbstractActor {
     private Effect weaponEffect = Effect.NULL;
 
     public Player(){
-        this(Collections.<Item>emptySet());
+        this(PlayerClass.NULL);
     }
 
-    public Player(Iterable<Item> startingEquipment){
+    public Player(PlayerClass playerClass){
         super(10);
 		for(Param param: STATS){
 			setPlayerParam(param, 10f);
 		}
         setDestroyableParam(Destroyable.Param.DURABILITY_REGEN, 0.25f);
         setDestroyableParam(Destroyable.Param.MAX_DURABILITY, 20);
-        this.equipment = new Inventory(startingEquipment);
+        this.equipment = new Inventory(playerClass.getItemGenerator().generate(0f));
         this.manager = EffectManager.forPlayer(this);
         this.equippedItems = new EquippedItems(this, equipment);
     }

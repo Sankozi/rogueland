@@ -1,9 +1,11 @@
 package org.sankozi.rogueland.model;
 
-import com.google.inject.internal.Lists;
+import com.google.common.collect.Lists;
+
 import java.util.HashSet;
 
-import static com.google.inject.internal.Preconditions.*;
+import static com.google.common.base.Preconditions.*;
+
 
 /**
  * Item container

@@ -1,7 +1,7 @@
 package org.sankozi.rogueland.model;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
-import com.google.inject.internal.ImmutableMap;
 import java.util.EnumMap;
 import java.util.Set;
 import org.apache.log4j.Logger;

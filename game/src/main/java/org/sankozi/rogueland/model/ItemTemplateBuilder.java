@@ -5,6 +5,8 @@ import org.sankozi.rogueland.model.effect.Effect;
 import java.util.EnumMap;
 import java.util.EnumSet;
 
+import static com.google.common.base.Preconditions.*;
+
 public class ItemTemplateBuilder {
     String name;
     String description;
@@ -14,6 +16,7 @@ public class ItemTemplateBuilder {
     Effect weaponEffect = Effect.NULL;
 
     public ItemTemplateBuilder setName(String name) {
+        checkNotNull(name, "name cannot be null");
         this.name = name;
         return this;
     }
@@ -24,6 +27,7 @@ public class ItemTemplateBuilder {
     }
 
     public ItemTemplateBuilder setParams(EnumMap<Destroyable.Param, Float> params) {
+        checkArgument(params.get(Destroyable.Param.MAX_DURABILITY) != null, "params must contain MAX_DURABILITY (name=%s)", name);
         this.params = params;
         return this;
     }

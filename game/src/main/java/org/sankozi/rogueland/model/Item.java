@@ -4,6 +4,8 @@ import org.sankozi.rogueland.model.effect.Effect;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.model.Damage.Type;
 
+import static com.google.common.base.Preconditions.*;
+
 /**
  * Destroyable game object that can be collected by Player, 
  * except durability Item object cannot be modified 
@@ -20,7 +22,7 @@ public final class Item implements Destroyable{
 	private float durability;
 
 	public Item(ItemTemplate template) {
-		this.template = template;
+		this.template = checkNotNull(template, "template cannot be null");
 		this.durability = template.destroyableParam(Param.MAX_DURABILITY);
     }
 

@@ -61,6 +61,19 @@
 	      :slashing-prot 0
 	      :blunt-prot 1
 	      :max-durability 200}}
+:jack-of-plates {
+    :name "Jack of plates"
+    :types #{:worn-chest}
+    :effects {
+        :protection {
+            :piercing-prot +2
+            :slashing-prot +3
+            :blunt-prot +4}}
+    :protection {
+        :piercing-prot 1
+        :slashing-prot 2
+        :blunt-prot 3
+        :max-durability 200}}
 :test-item {
     :name "Test item"
     :desc "Item used for testing"

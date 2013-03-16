@@ -3,11 +3,20 @@ package org.sankozi.rogueland.generator;
 import com.google.common.base.Function;
 import org.sankozi.rogueland.model.Item;
 
+import java.util.Collections;
+
 /**
  * Generates loot
  * @author sankozi
  */
 public interface ItemGenerator {
+
+    ItemGenerator NULL = new ItemGenerator() {
+        @Override
+        public Iterable<Item> generate(float value) {
+            return Collections.emptyList();
+        }
+    }; //(float value) -> Collections.emptyList();
 
     /**
      * Creates new batch of items
@@ -15,4 +24,5 @@ public interface ItemGenerator {
      * @return new batch of items (ItemGenerator cannot return Item that already exists)
      */
     public Iterable<Item> generate(float value);
+
 }

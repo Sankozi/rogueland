@@ -22,6 +22,5 @@ public class RoguelandModule extends AbstractModule {
  		//bind(Game.class).to(Game.class);
         bind(DataLoader.class).toInstance(new DataLoader());
         bind(Player.class).toProvider(PlayerFactory.class);
-        bind(ItemGenerator.class).to(ConstantItemGenerator.class);
     }
 }

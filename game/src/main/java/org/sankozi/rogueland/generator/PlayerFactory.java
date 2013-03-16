@@ -3,6 +3,7 @@ package org.sankozi.rogueland.generator;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+import org.sankozi.rogueland.data.DataLoader;
 import org.sankozi.rogueland.model.Player;
 
 /**
@@ -12,15 +13,15 @@ import org.sankozi.rogueland.model.Player;
 @Singleton
 public class PlayerFactory implements Provider<Player>{
 
-    private final ItemGenerator startingEquipmentGenerator;
+    private final DataLoader dataLoader;
 
     @Inject
-    public PlayerFactory(ItemGenerator startingEquipmentGenerator) {
-        this.startingEquipmentGenerator = startingEquipmentGenerator;
+    public PlayerFactory(DataLoader dataLoader) {
+        this.dataLoader = dataLoader;
     }
 
     @Override
     public Player get() {
-        return new Player(startingEquipmentGenerator.generate(0f));
+        return new Player(dataLoader.getPlayerClass("brawler"));
     }
 }
