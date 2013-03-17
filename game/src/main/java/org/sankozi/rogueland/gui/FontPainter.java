@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 import org.sankozi.rogueland.control.Game;
 import org.sankozi.rogueland.model.*;
 
+import javax.annotation.Nullable;
+
 /**
  * TilePainter that uses font symbols for representing various tiles
  * @author sankozi
@@ -44,19 +46,21 @@ public class FontPainter implements TilePainter{
     }
 
     @Override
-    public Rectangle getPixelLocation(Game game, int width, int height, Coords location) {
-		//pixel coordinates
-		width = width - width % tileWidth;
-		height = height - height % tileHeight;
-		
-		//tile coordinates
-		int screenWidth = width / tileWidth;
-		int screenHeight = height / tileHeight;
-		
+    public Rectangle getTileRectangle(Game game, int width, int height, Coords location) {
+		DrawingContext dc = new DrawingContext(width, height, game);
+
         return new Rectangle(
-				(screenWidth  / 2) * tileWidth,
-				(screenHeight / 2) * tileHeight,
+				location.x * tileWidth + dc.startPixelX,
+				location.y * tileHeight + dc.startPixelY,
 				tileWidth, tileHeight);
+    }
+
+    @Nullable
+    @Override
+    public Tile getTilePixelLocation(Game game, int width, int height, Coords location) {
+        DrawingContext dc = new DrawingContext(width, height, game);
+
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     private static class PainterOptions{
@@ -100,6 +104,44 @@ public class FontPainter implements TilePainter{
         tileWidth = metrics.charWidth('#') - 3;
     }
 
+    private final class DrawingContext {
+        int widthInPixels;
+        int heightInPixels;
+
+        int widthInTiles;
+        int heightInTiles;
+
+        int startTileX;
+        int startTileY;
+
+        int startPixelX;
+        int startPixelY;
+
+        DrawingContext(int width, int height, Game game){
+            widthInPixels = width - width % tileWidth;
+            heightInPixels = height - height % tileHeight;
+            startPixelX = 0;
+            startPixelY = metrics.getAscent();
+
+            //tile coordinates
+            widthInTiles = width / tileWidth;
+            heightInTiles = height / tileHeight;
+            Coords playerLocation = game.getPlayer().getLocation();
+            startTileX = playerLocation.x - widthInTiles  / 2;
+            if(startTileX < 0){
+                startPixelX -= startTileX * tileWidth;
+                widthInTiles += startTileX;
+                startTileX = 0;
+            }
+            startTileY = playerLocation.y - heightInTiles / 2;
+            if(startTileY < 0){
+                startPixelY -= startTileY * tileHeight;
+                heightInTiles += startTileY;
+                startTileY = 0;
+            }
+        }
+    }
+
     @Override
     public void paint(Game game, Graphics g, int width, int height) {
         LOG.info("filling with color " + g.getColor());
@@ -114,29 +156,31 @@ public class FontPainter implements TilePainter{
         	initMetrics(g);
 		}
 
-		//pixel coordinates
-		width = width - width % tileWidth;
-		height = height - height % tileHeight;
-		int startingPixelX = 0;
-		int startingPixelY = metrics.getAscent();
+        DrawingContext dc = new DrawingContext(width, height, game);
 
-		//tile coordinates
-		int screenWidth = width / tileWidth;
-		int screenHeight = height / tileHeight;
-		Coords playerLocation = game.getPlayer().getLocation();
-		int startingX = playerLocation.x - screenWidth  / 2;
-		if(startingX < 0){
-			startingPixelX -= startingX * tileWidth;
-			screenWidth += startingX;
-			startingX = 0;
-		}
-		int startingY = playerLocation.y - screenHeight / 2;
-		if(startingY < 0){
-			startingPixelY -= startingY * tileHeight;
-			screenHeight += startingY;
-			startingY = 0;
-		}
-		Rectangle rect = new Rectangle(startingX, startingY, screenWidth, screenHeight);
+		//pixel coordinates
+//		width = width - width % tileWidth;
+//		height = height - height % tileHeight;
+//		int startingPixelX = 0;
+//		int startingPixelY = metrics.getAscent();
+//
+//		//tile coordinates
+//		int screenWidth = width / tileWidth;
+//		int screenHeight = height / tileHeight;
+//		Coords playerLocation = game.getPlayer().getLocation();
+//		int startingX = playerLocation.x - screenWidth  / 2;
+//		if(startingX < 0){
+//			startingPixelX -= startingX * tileWidth;
+//			screenWidth += startingX;
+//			startingX = 0;
+//		}
+//		int startingY = playerLocation.y - screenHeight / 2;
+//		if(startingY < 0){
+//			startingPixelY -= startingY * tileHeight;
+//			screenHeight += startingY;
+//			startingY = 0;
+//		}
+//		Rectangle rect = new Rectangle(startingX, startingY, screenWidth, screenHeight);
 
         g.setFont(font);
         g.setColor(Color.BLACK);
@@ -144,10 +188,10 @@ public class FontPainter implements TilePainter{
         g.fillRect(0, 0, width, height);
 
 		//fill with symbols
-        int y = startingPixelY;
-        for(int iy = rect.y; iy < rect.height; ++iy){
-			int x = startingPixelX;
-			for(int ix = rect.x; ix < rect.width; ++ix){
+        int y = dc.startPixelY;
+        for(int iy = dc.startTileY; iy < dc.heightInTiles; ++iy){
+			int x = dc.startPixelX;
+			for(int ix = dc.startTileX; ix < dc.widthInTiles; ++ix){
 				Actor actor = tiles[ix][iy].actor;
 				if(actor != null){
 					drawActor(g, actor,x,y);
@@ -158,7 +202,7 @@ public class FontPainter implements TilePainter{
 			}
             y += tileHeight;
         }
-		drawSword(game, g, startingPixelX, startingX, startingPixelY, startingY);
+		drawSword(game, g, dc.startPixelX, dc.startTileX, dc.startPixelY, dc.startTileY);
 //		LOG.info("paint end");
     }
 

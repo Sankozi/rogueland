@@ -16,7 +16,8 @@ import java.io.ObjectInputStream;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
-import javax.swing.JComponent;
+import javax.swing.*;
+
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.model.Controls;
 import org.sankozi.rogueland.model.Direction;
@@ -30,7 +31,6 @@ import org.sankozi.rogueland.resources.Cursors;
 public class LevelPanel extends JComponent{
     private final static Logger LOG = Logger.getLogger(LevelPanel.class);
 	private final static long serialVersionUID = 1L;
-
 
     Rectangle playerLocation = null;
     Direction cursorDirection;
@@ -119,6 +119,7 @@ public class LevelPanel extends JComponent{
 //        LOG.info("refreshGameState");
         repaint();//submits repaint event to EDT
         playerLocation = gameSupport.getPlayerLocation();
+        LOG.info("player location : " + playerLocation);
     }
 
     private class MoveCursor implements MouseMotionListener {
@@ -258,10 +259,16 @@ public class LevelPanel extends JComponent{
 			if(!gameSupport.isGameStarted()){
 				return;
 			}
-            try {
-                keysPressed.offer(cursorDirection.toSingleMove(), 1, TimeUnit.SECONDS);
-            } catch (InterruptedException ex) {
-                LOG.error(ex.getMessage(), ex);
+            if(SwingUtilities.isLeftMouseButton(e)){
+                try {
+                    keysPressed.offer(cursorDirection.toSingleMove(), 1, TimeUnit.SECONDS);
+                } catch (InterruptedException ex) {
+                    LOG.error(ex.getMessage(), ex);
+                }
+            } else if(SwingUtilities.isRightMouseButton(e)){
+                LOG.info("showing info");
+            } else {
+                LOG.info("unsupported mouseClickedEvent");
             }
         }
 

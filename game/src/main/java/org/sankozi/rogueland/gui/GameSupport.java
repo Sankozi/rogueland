@@ -134,9 +134,9 @@ class GameSupport {
 	 */
     public Rectangle getPlayerLocation(){
 		if(game.isInitialized()){
-        	return painter.getPixelLocation(game, 
-				levelImage.getWidth(), levelImage.getHeight(),
-				game.getPlayer().getLocation());
+        	return painter.getTileRectangle(game,
+                    levelImage.getWidth(), levelImage.getHeight(),
+                    game.getPlayer().getLocation());
 		} else {
 			return null;
 		}
