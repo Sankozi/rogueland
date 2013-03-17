@@ -57,10 +57,16 @@ public class FontPainter implements TilePainter{
 
     @Nullable
     @Override
-    public Tile getTilePixelLocation(Game game, int width, int height, Coords location) {
+    public Tile getTilePixelLocation(Game game, int width, int height, Coords pixelCoords) {
         DrawingContext dc = new DrawingContext(width, height, game);
-
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        int tileX = (pixelCoords.x - dc.startPixelX) / tileWidth + dc.startTileX;
+        int tileY = (pixelCoords.y - dc.startPixelY) / tileHeight+ dc.startTileY;
+        LOG.info("getTilePixelLocation " + dc + " \n " + tileX +"," + tileY);
+        if(tileX < 0 || tileY < 0 || tileX >= game.getLevel().getWidth() || tileX >= game.getLevel().getHeight()){
+            return null;
+        } else {
+            return game.getLevel().getTiles()[tileX][tileY];
+        }
     }
 
     private static class PainterOptions{
@@ -139,6 +145,20 @@ public class FontPainter implements TilePainter{
                 heightInTiles += startTileY;
                 startTileY = 0;
             }
+        }
+
+        @Override
+        public String toString() {
+            return "DrawingContext{" +
+                    "widthInPixels=" + widthInPixels +
+                    ", heightInPixels=" + heightInPixels +
+                    ", widthInTiles=" + widthInTiles +
+                    ", heightInTiles=" + heightInTiles +
+                    ", startTileX=" + startTileX +
+                    ", startTileY=" + startTileY +
+                    ", startPixelX=" + startPixelX +
+                    ", startPixelY=" + startPixelY +
+                    '}';
         }
     }
 

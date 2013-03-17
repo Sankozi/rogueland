@@ -20,6 +20,7 @@ import javax.swing.*;
 
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.model.Controls;
+import org.sankozi.rogueland.model.Coords;
 import org.sankozi.rogueland.model.Direction;
 import org.sankozi.rogueland.model.Move;
 import org.sankozi.rogueland.resources.Cursors;
@@ -266,7 +267,7 @@ public class LevelPanel extends JComponent{
                     LOG.error(ex.getMessage(), ex);
                 }
             } else if(SwingUtilities.isRightMouseButton(e)){
-                LOG.info("showing info");
+                LOG.info("showing info = " + gameSupport.getCoordinatesDescription(new Coords(e.getX(), e.getY())).getAsString());
             } else {
                 LOG.info("unsupported mouseClickedEvent");
             }

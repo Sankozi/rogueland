@@ -18,8 +18,7 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.control.Game;
 import org.sankozi.rogueland.control.LogListener;
-import org.sankozi.rogueland.model.Controls;
-import org.sankozi.rogueland.model.Move;
+import org.sankozi.rogueland.model.*;
 
 /**
  * Class supporting interaction between GameState and GUI
@@ -140,6 +139,12 @@ class GameSupport {
 		} else {
 			return null;
 		}
+    }
+
+    public Description getCoordinatesDescription(Coords pixelCoords){
+        Tile tile = painter.getTilePixelLocation(game, levelImage.getWidth(), levelImage.getHeight(), pixelCoords);
+
+        return tile == null ? Description.EMPTY : Description.stringDescription(tile.type.name());
     }
 
     public void fireGameEvent(GameEvent ge){
