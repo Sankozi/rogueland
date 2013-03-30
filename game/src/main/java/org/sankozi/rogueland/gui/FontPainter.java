@@ -50,8 +50,8 @@ public class FontPainter implements TilePainter{
 		DrawingContext dc = new DrawingContext(width, height, game);
 
         return new Rectangle(
-				location.x * tileWidth + dc.startPixelX,
-				location.y * tileHeight + dc.startPixelY,
+				(location.x - dc.startTileX) * tileWidth + dc.startPixelX,
+				(location.y - dc.startTileY) * tileHeight + dc.startPixelY - metrics.getAscent(),
 				tileWidth, tileHeight);
     }
 
@@ -60,8 +60,9 @@ public class FontPainter implements TilePainter{
     public Tile getTilePixelLocation(Game game, int width, int height, Coords pixelCoords) {
         DrawingContext dc = new DrawingContext(width, height, game);
         int tileX = (pixelCoords.x - dc.startPixelX) / tileWidth + dc.startTileX;
-        int tileY = (pixelCoords.y - dc.startPixelY) / tileHeight+ dc.startTileY;
-        LOG.info("getTilePixelLocation " + dc + " \n " + tileX +"," + tileY);
+        int tileY = (pixelCoords.y - dc.startPixelY + metrics.getAscent()) / tileHeight+ dc.startTileY;
+//        LOG.info(dc);
+//        LOG.info("getTilePixelLocation(" + pixelCoords + ")=" + tileX + "," + tileY);
         if(tileX < 0 || tileY < 0 || tileX >= game.getLevel().getWidth() || tileX >= game.getLevel().getHeight()){
             return null;
         } else {
@@ -177,30 +178,6 @@ public class FontPainter implements TilePainter{
 		}
 
         DrawingContext dc = new DrawingContext(width, height, game);
-
-		//pixel coordinates
-//		width = width - width % tileWidth;
-//		height = height - height % tileHeight;
-//		int startingPixelX = 0;
-//		int startingPixelY = metrics.getAscent();
-//
-//		//tile coordinates
-//		int screenWidth = width / tileWidth;
-//		int screenHeight = height / tileHeight;
-//		Coords playerLocation = game.getPlayer().getLocation();
-//		int startingX = playerLocation.x - screenWidth  / 2;
-//		if(startingX < 0){
-//			startingPixelX -= startingX * tileWidth;
-//			screenWidth += startingX;
-//			startingX = 0;
-//		}
-//		int startingY = playerLocation.y - screenHeight / 2;
-//		if(startingY < 0){
-//			startingPixelY -= startingY * tileHeight;
-//			screenHeight += startingY;
-//			startingY = 0;
-//		}
-//		Rectangle rect = new Rectangle(startingX, startingY, screenWidth, screenHeight);
 
         g.setFont(font);
         g.setColor(Color.BLACK);

@@ -1,5 +1,6 @@
 package org.sankozi.rogueland.model;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import org.apache.log4j.Logger;
@@ -22,6 +23,10 @@ public final class Description {
 
     public static Description stringDescription(String description){
         return new Description(Suppliers.ofInstance(description));
+    }
+
+    public static Description stringDescription(String... description){
+        return new Description(Suppliers.ofInstance(Joiner.on("").join(description)));
     }
 
     public static Description stringDescription(Supplier<String> description){

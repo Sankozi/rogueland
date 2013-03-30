@@ -16,7 +16,8 @@ public interface ItemGenerator {
         public Iterable<Item> generate(float value) {
             return Collections.emptyList();
         }
-    }; //(float value) -> Collections.emptyList();
+    };
+//    ItemGenerator NULL = (float value) -> Collections.emptyList();
 
     /**
      * Creates new batch of items

@@ -19,6 +19,16 @@ public final class Tile {
 		return type != Type.WALL && actor == null && !weapon;
 	}
 
+    public Description getDescription(){
+        if(actor != null){
+            return Description.stringDescription(actor.getName(), " on ", type.name());
+        } else if(weapon){
+            return Description.stringDescription("weapon above ", type.name());
+        } else {
+            return Description.stringDescription(type.name());
+        }
+    }
+
     @Override
     public String toString() {
         return "Tile[" + "type=" + type + ",actor=" + actor + ']';

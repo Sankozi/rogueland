@@ -144,7 +144,7 @@ class GameSupport {
     public Description getCoordinatesDescription(Coords pixelCoords){
         Tile tile = painter.getTilePixelLocation(game, levelImage.getWidth(), levelImage.getHeight(), pixelCoords);
 
-        return tile == null ? Description.EMPTY : Description.stringDescription(tile.type.name());
+        return tile == null ? Description.EMPTY : tile.getDescription();
     }
 
     public void fireGameEvent(GameEvent ge){
