@@ -92,6 +92,11 @@ public class Player extends AbstractActor {
         return manager;
     }
 
+    @Override
+    public Description getDescription() {
+        return Description.stringDescription("You");
+    }
+
     public void setWeaponEffect(Effect weaponEffect) {
         this.weaponEffect = weaponEffect;
     }

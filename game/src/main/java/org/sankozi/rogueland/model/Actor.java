@@ -30,6 +30,8 @@ public interface Actor extends Destroyable{
 
     EffectManager getEffectManager();
 
+    Description getDescription();
+
     enum Param implements org.sankozi.rogueland.model.Param{
         MANA_REGEN,
     }

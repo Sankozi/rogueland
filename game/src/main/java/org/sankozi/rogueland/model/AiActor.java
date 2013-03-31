@@ -20,11 +20,20 @@ public class AiActor extends AbstractActor{
     Coords location;
     Random rand = new Random();
     
-
     public AiActor() {
         super(10);
         setDestroyableParam(Destroyable.Param.DURABILITY_REGEN, 0.125f);
         setDestroyableParam(Destroyable.Param.MAX_DURABILITY, 20);
+    }
+
+    @Override
+    public Description getDescription() {
+        return Description.build()
+                .header(getName())
+                .statEntry("Health", (float)getDurability())
+                .statEntry(Destroyable.Param.MAX_DURABILITY, destroyableParam(Destroyable.Param.MAX_DURABILITY))
+                .line("Damage : ", damage.getDescription().getAsString())
+                .toDescription();
     }
 
     @Override

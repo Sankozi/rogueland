@@ -21,7 +21,7 @@ public final class Tile {
 
     public Description getDescription(){
         if(actor != null){
-            return Description.stringDescription(actor.getName(), " on ", type.name());
+            return Description.stringDescription(actor.getName(), " on ", type.name(), "\n", actor.getDescription().getAsString());
         } else if(weapon){
             return Description.stringDescription("weapon above ", type.name());
         } else {

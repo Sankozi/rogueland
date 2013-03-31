@@ -37,4 +37,8 @@ public final class Damage {
     public String toString() {
         return value + " " + type + " damage";
     }
+
+    public Description getDescription(){
+        return Description.stringDescription(Integer.toString(value), " ", type.toString());
+    }
 }
