@@ -4,6 +4,8 @@ import java.util.Random;
 import org.apache.log4j.Logger;
 
 import static org.sankozi.rogueland.MathUtils.*;
+
+import org.sankozi.rogueland.control.Locator;
 import org.sankozi.rogueland.model.effect.DamageEffect;
 import org.sankozi.rogueland.model.effect.Effect;
 import org.sankozi.rogueland.model.effect.EffectManager;

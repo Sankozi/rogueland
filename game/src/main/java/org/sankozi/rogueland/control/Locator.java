@@ -1,4 +1,6 @@
-package org.sankozi.rogueland.model;
+package org.sankozi.rogueland.control;
+
+import org.sankozi.rogueland.model.Coords;
 
 /**
  * Interface for finding things on Level

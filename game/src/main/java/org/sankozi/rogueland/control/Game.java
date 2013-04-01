@@ -1,9 +1,12 @@
 package org.sankozi.rogueland.control;
 
+import com.google.common.collect.ImmutableList;
 import org.sankozi.rogueland.generator.LevelGenerator;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import java.util.Collections;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.sankozi.rogueland.model.Destroyable.Param;
@@ -24,14 +27,20 @@ public class Game {
     private List<Actor> actors = Lists.newArrayList();
 	private List<Actor> toBeRemoved = Lists.newArrayList();
 
-	private Locator locator;
+    private List<Observer> observers = Collections.emptyList();
+
+	private final Locator locator;
+    private final LevelControl control;
 
     private GameRunnable runningGame;
 
     {
 		LevelGenerator.generate(level);
-		locator = new GameLevelLocator(this, level);
-	}
+        GameLevelLocator gll = new GameLevelLocator(this, level);
+        locator = gll;
+        control = gll;
+        observers = ImmutableList.<Observer>of(new EnemySpawner());
+    }
 
     @Inject
     public Game(Provider<Player> playerProvider) {
@@ -72,8 +81,14 @@ public class Game {
             GameLog.initThreadLog(log);
             GameLog.info("Game has started");
 			try {
+                for(Observer observer: observers){
+                    observer.attach(locator, control);
+                }
 				do {
 					processActors();
+                    for(Observer observer: observers){
+                        observer.tick(locator, control);
+                    }
 				} while (!player.isDestroyed());
 			} catch (IllegalStateException ex){
 				if(ex.getCause() instanceof InterruptedException){

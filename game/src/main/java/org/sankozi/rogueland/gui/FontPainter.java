@@ -165,7 +165,7 @@ public class FontPainter implements TilePainter{
 
     @Override
     public void paint(Game game, Graphics g, int width, int height) {
-        LOG.info("filling with color " + g.getColor());
+//        LOG.debug("filling with color " + g.getColor());
         g.fillRect(0,0, width, height);
 		if(!game.isInitialized()){
 			return;

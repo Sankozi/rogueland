@@ -2,10 +2,10 @@ package org.sankozi.rogueland.model;
 
 import com.google.common.collect.Sets;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Set;
 import org.apache.log4j.Logger;
+import org.sankozi.rogueland.control.Locator;
 import org.sankozi.rogueland.model.effect.DamageEffect;
 import org.sankozi.rogueland.model.effect.Effect;
 import org.sankozi.rogueland.model.effect.EffectManager;

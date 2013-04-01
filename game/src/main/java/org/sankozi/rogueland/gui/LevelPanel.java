@@ -120,7 +120,7 @@ public class LevelPanel extends JComponent{
 //        LOG.info("refreshGameState");
         repaint();//submits repaint event to EDT
         playerLocation = gameSupport.getPlayerLocation();
-        LOG.info("player location : " + playerLocation);
+//        LOG.debug("player location : " + playerLocation);
     }
 
     private class MoveCursor implements MouseMotionListener {

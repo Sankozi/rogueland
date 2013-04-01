@@ -1,15 +1,13 @@
 package org.sankozi.rogueland.control;
 
 import org.apache.log4j.Logger;
-import org.sankozi.rogueland.model.Coords;
-import org.sankozi.rogueland.model.Level;
-import org.sankozi.rogueland.model.Locator;
+import org.sankozi.rogueland.model.*;
 
 /**
  * Locator based on Level and Game instances
  * @author sankozi
  */
-class GameLevelLocator implements Locator{
+class GameLevelLocator implements Locator, LevelControl{
 	private final static Logger LOG = Logger.getLogger(GameLevelLocator.class);
 
 	private final Level level;
@@ -24,4 +22,9 @@ class GameLevelLocator implements Locator{
 	public Coords playerLocation() {
 		return game.getPlayer().getLocation();
 	}
+
+    @Override
+    public void spawnActor(Actor actor, Coords coords) {
+
+    }
 }
