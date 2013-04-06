@@ -5,20 +5,23 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.spi.Message;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.pushingpixels.substance.api.skin.SubstanceDustCoffeeLookAndFeel;
 import org.sankozi.rogueland.gui.GuiModule;
 import org.sankozi.rogueland.gui.MainFrame;
 import org.sankozi.rogueland.resources.ResourceProvider;
 
 import javax.swing.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * The main class of the application.
  */
 public class RoguelandApplication {
-    private final static Logger LOG = Logger.getLogger(RoguelandApplication.class);
+    private final static Logger LOG = LogManager.getLogger(RoguelandApplication.class);
 
     Module module = new RoguelandModule();
 	Module guiModule = new GuiModule();
@@ -46,8 +49,10 @@ public class RoguelandApplication {
     /**
      * Main method launching the application.
      */
-    public static void main(String[] args) {
-        PropertyConfigurator.configure(ResourceProvider.getLog4jProperties());
+    public static void main(String[] args) throws URISyntaxException {
+        URI configuration = RoguelandApplication.class.getResource("/log4j2.xml").toURI();
+        Configurator.initialize("config", null, configuration);
+        LOG.info("using log4j configuration '{}'", configuration);
         try {
             UIManager.setLookAndFeel(new SubstanceDustCoffeeLookAndFeel());
         } catch (UnsupportedLookAndFeelException e) {

@@ -12,6 +12,8 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 import javax.imageio.ImageIO;
@@ -23,10 +25,6 @@ import javax.imageio.ImageIO;
 public class ResourceProvider {
     private final static Cache<String, Font> FONT_CACHE = CacheBuilder.newBuilder()
             .concurrencyLevel(1).build();
-
-    public static URL getLog4jProperties() {
-        return ResourceProvider.class.getResource("log4j.properties");
-    }
 
     public static URL getImageUrl(String name){
         return ResourceProvider.class.getResource(name);
