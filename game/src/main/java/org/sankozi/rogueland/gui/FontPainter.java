@@ -5,7 +5,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.control.Game;
 import org.sankozi.rogueland.model.*;
 
@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
  * @author sankozi
  */
 public class FontPainter implements TilePainter{
-    private final static Logger LOG = Logger.getLogger(FontPainter.class);
+    private final static Logger LOG = LogManager.getLogger(FontPainter.class);
     
     private Font font;
     private FontMetrics metrics;

@@ -5,7 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.control.MessageType;
 import org.sankozi.rogueland.resources.ResourceProvider;
 
@@ -17,7 +17,7 @@ import static org.sankozi.rogueland.gui.Constants.*;
  * @author sankozi
  */
 public final class JListLogPanel extends LogPanel{
-    private final static Logger LOG = Logger.getLogger(JListLogPanel.class);
+    private final static Logger LOG = LogManager.getLogger(JListLogPanel.class);
 	private static final long serialVersionUID = 1L;
 
     private final JList<String> jlist  = new JList<>();

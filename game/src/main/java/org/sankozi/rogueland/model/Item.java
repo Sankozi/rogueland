@@ -1,7 +1,7 @@
 package org.sankozi.rogueland.model;
 
 import org.sankozi.rogueland.model.effect.Effect;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.model.Damage.Type;
 
 import static com.google.common.base.Preconditions.*;
@@ -15,7 +15,7 @@ import static com.google.common.base.Preconditions.*;
  * @author sankozi
  */
 public final class Item implements Destroyable{
-	private final static Logger LOG = Logger.getLogger(Item.class);
+	private final static Logger LOG = LogManager.getLogger(Item.class);
 
 	private final ItemTemplate template;
 

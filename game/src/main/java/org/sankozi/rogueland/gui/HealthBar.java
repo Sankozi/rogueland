@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JComponent;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.model.Destroyable.Param;
 import org.sankozi.rogueland.model.Player;
 
@@ -15,7 +15,7 @@ import org.sankozi.rogueland.model.Player;
  */
 public class HealthBar extends JComponent implements GameListener{
 	private static final long serialVersionUID = 1L;
-	private final static Logger LOG = Logger.getLogger(HealthBar.class);
+	private final static Logger LOG = LogManager.getLogger(HealthBar.class);
 
 	boolean initialized;
 	float redPart = 0f;

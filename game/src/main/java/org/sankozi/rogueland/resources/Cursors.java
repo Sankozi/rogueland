@@ -3,7 +3,7 @@ package org.sankozi.rogueland.resources;
 import com.google.common.base.Supplier;
 import java.awt.Cursor;
 import java.awt.Point;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 /**
  *
@@ -19,7 +19,7 @@ public enum Cursors implements Supplier<Cursor> {
 	ARROW_W ("arrow_W.png",  new Point( 7,16)),
 	ARROW_E ("arrow_E.png",  new Point(24,16));
 
-	private final static Logger LOG = Logger.getLogger(Cursors.class);
+	private final static Logger LOG = LogManager.getLogger(Cursors.class);
 
 	private final Cursor cursor;
 

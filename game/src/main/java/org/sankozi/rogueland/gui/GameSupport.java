@@ -15,7 +15,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.control.Game;
 import org.sankozi.rogueland.control.LogListener;
 import org.sankozi.rogueland.model.*;
@@ -26,7 +26,7 @@ import org.sankozi.rogueland.model.*;
  */
 @Singleton
 class GameSupport {
-    private final static Logger LOG = Logger.getLogger(GameSupport.class);
+    private final static Logger LOG = LogManager.getLogger(GameSupport.class);
 
     private final List<GameListener> listeners = Lists.newArrayList();
 

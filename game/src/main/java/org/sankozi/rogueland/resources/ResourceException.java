@@ -1,6 +1,6 @@
 package org.sankozi.rogueland.resources;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 /**
  *
@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
  */
 public class ResourceException extends RuntimeException{
 
-	private final static Logger LOG = Logger.getLogger(ResourceException.class);
+	private final static Logger LOG = LogManager.getLogger(ResourceException.class);
 	private static final long serialVersionUID = 1L;
 
 	public ResourceException(String message, Throwable cause) {

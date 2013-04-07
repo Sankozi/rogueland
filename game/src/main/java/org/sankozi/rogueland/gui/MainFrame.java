@@ -7,7 +7,7 @@ import com.google.inject.name.Named;
 import javax.swing.*;
 
 import net.miginfocom.swing.MigLayout;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -20,7 +20,7 @@ import java.awt.event.WindowEvent;
  */
 @Singleton
 public class MainFrame extends JFrame {
-    private final static Logger LOG = Logger.getLogger(MainFrame.class);
+    private final static Logger LOG = LogManager.getLogger(MainFrame.class);
 
     JPanel contentPane = new JPanel();
     LogPanel logPanel;

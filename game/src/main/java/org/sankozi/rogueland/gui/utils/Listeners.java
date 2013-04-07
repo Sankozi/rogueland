@@ -4,7 +4,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 
 /**
@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
  * @author sankozi
  */
 public final class Listeners {
-    private final static Logger LOG = Logger.getLogger(Listeners.class);
+    private final static Logger LOG = LogManager.getLogger(Listeners.class);
 
     private static ComponentListener LOGGING_COMPONENT_LISTENER;
     private static AncestorListener LOGGING_ANCESTOR_LISTENER;

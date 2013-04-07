@@ -7,7 +7,7 @@ import com.google.inject.name.Names;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JMenuBar;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.gui.actions.ReturnToGameAction;
 
 /**
@@ -16,7 +16,7 @@ import org.sankozi.rogueland.gui.actions.ReturnToGameAction;
  */
 public class GuiModule extends AbstractModule{
 
-	private final static Logger LOG = Logger.getLogger(GuiModule.class);
+	private final static Logger LOG = LogManager.getLogger(GuiModule.class);
 
 	@Override
 	protected void configure() {

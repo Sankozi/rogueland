@@ -2,7 +2,7 @@ package org.sankozi.rogueland.gui.actions;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.gui.MainFrame;
 
 import javax.swing.*;
@@ -14,7 +14,7 @@ import java.awt.event.ActionEvent;
  * @author sankozi
  */
 public class ExitAction extends AbstractAction {
-    private final static Logger LOG = Logger.getLogger(ExitAction.class);
+    private final static Logger LOG = LogManager.getLogger(ExitAction.class);
 
     private final Provider<MainFrame> mainFrameProvider;
 

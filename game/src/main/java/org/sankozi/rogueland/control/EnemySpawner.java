@@ -1,6 +1,6 @@
 package org.sankozi.rogueland.control;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 /**
  * EnemySpawner
@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
  * @author sankozi
  */
 public class EnemySpawner implements Observer {
-    private final static Logger LOG = Logger.getLogger(EnemySpawner.class);
+    private final static Logger LOG = LogManager.getLogger(EnemySpawner.class);
 
     @Override
     public void attach(Locator level, LevelControl control) {

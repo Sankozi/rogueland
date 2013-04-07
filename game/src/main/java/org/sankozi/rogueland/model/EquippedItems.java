@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import java.util.EnumMap;
 import java.util.Set;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.model.effect.Effect;
 import org.sankozi.rogueland.model.effect.EffectManager;
 
@@ -13,7 +13,7 @@ import org.sankozi.rogueland.model.effect.EffectManager;
  * @author sankozi
  */
 public final class EquippedItems {
-    private final static Logger LOG = Logger.getLogger(EquippedItems.class);
+    private final static Logger LOG = LogManager.getLogger(EquippedItems.class);
     /** number of items that can be equipped */
     private final EnumMap<ItemType, Integer> slots = new EnumMap<>(ImmutableMap.<ItemType, Integer>builder()
                 .put(ItemType.HELD, 1)

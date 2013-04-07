@@ -1,6 +1,6 @@
 package org.sankozi.rogueland.model;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.generator.ItemGenerator;
 
 /**
@@ -9,7 +9,7 @@ import org.sankozi.rogueland.generator.ItemGenerator;
  * @author sankozi
  */
 public final class PlayerClass {
-    private final static Logger LOG = Logger.getLogger(PlayerClass.class);
+    private final static Logger LOG = LogManager.getLogger(PlayerClass.class);
 
     public static final PlayerClass NULL = new PlayerClass(ItemGenerator.NULL);
 

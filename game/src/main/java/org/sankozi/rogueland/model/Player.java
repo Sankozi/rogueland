@@ -4,7 +4,7 @@ import com.google.common.collect.Sets;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Set;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.control.Locator;
 import org.sankozi.rogueland.model.effect.DamageEffect;
 import org.sankozi.rogueland.model.effect.Effect;
@@ -15,7 +15,7 @@ import org.sankozi.rogueland.model.effect.EffectManager;
  * @author sankozi
  */
 public class Player extends AbstractActor {
-    private final static Logger LOG = Logger.getLogger(Player.class);
+    private final static Logger LOG = LogManager.getLogger(Player.class);
 
 	private final static Set<Param> STATS = Sets.newEnumSet(Arrays.asList(
 				Param.AGILITY, 

@@ -18,7 +18,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.model.Controls;
 import org.sankozi.rogueland.model.Coords;
 import org.sankozi.rogueland.model.Direction;
@@ -30,7 +30,7 @@ import org.sankozi.rogueland.resources.Cursors;
  * @author sankozi
  */
 public class LevelPanel extends JComponent{
-    private final static Logger LOG = Logger.getLogger(LevelPanel.class);
+    private final static Logger LOG = LogManager.getLogger(LevelPanel.class);
 	private final static long serialVersionUID = 1L;
 
     Rectangle playerLocation = null;

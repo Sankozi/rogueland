@@ -4,7 +4,7 @@ import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import java.util.Arrays;
 import java.util.Collections;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.data.DataLoader;
 import org.sankozi.rogueland.model.Item;
 import org.sankozi.rogueland.model.ItemTemplate;
@@ -16,7 +16,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author sankozi
  */
 public class ConstantItemGenerator implements ItemGenerator{
-    private final static Logger LOG = Logger.getLogger(ConstantItemGenerator.class);
+    private final static Logger LOG = LogManager.getLogger(ConstantItemGenerator.class);
     
     private final Iterable<ItemTemplate> templates;
 

@@ -1,6 +1,6 @@
 package org.sankozi.rogueland.gui.render;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.model.Param;
 import org.sankozi.rogueland.model.effect.Effect;
 
@@ -12,7 +12,7 @@ import java.util.Map;
  * @author sankozi
  */
 class Utils {
-    private final static Logger LOG = Logger.getLogger(Utils.class);
+    private final static Logger LOG = LogManager.getLogger(Utils.class);
 
     static void renderEffect(Effect effect, StringBuilder sb){
         sb.append("<table><tr valign='top'><td><table>");

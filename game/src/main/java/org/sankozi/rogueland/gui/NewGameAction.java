@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 /**
  *
@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
  */
 public class NewGameAction extends AbstractAction{
 
-	private final static Logger LOG = Logger.getLogger(NewGameAction.class);
+	private final static Logger LOG = LogManager.getLogger(NewGameAction.class);
 	private final static long serialVersionUID = 1L;
 
 	private final GameSupport gameSupport;

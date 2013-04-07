@@ -1,6 +1,7 @@
 package org.sankozi.rogueland.control;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sankozi.rogueland.model.*;
 
 /**
@@ -8,7 +9,7 @@ import org.sankozi.rogueland.model.*;
  * @author sankozi
  */
 class GameLevelLocator implements Locator, LevelControl{
-	private final static Logger LOG = Logger.getLogger(GameLevelLocator.class);
+	private final static Logger LOG = LogManager.getLogger(GameLevelLocator.class);
 
 	private final Level level;
 	private final Game game;

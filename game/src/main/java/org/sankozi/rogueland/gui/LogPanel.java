@@ -3,7 +3,7 @@ package org.sankozi.rogueland.gui;
 import javax.swing.*;
 
 import com.google.inject.Inject;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.control.LogListener;
 import org.sankozi.rogueland.control.MessageType;
 
@@ -15,7 +15,7 @@ import org.sankozi.rogueland.control.MessageType;
  * @author sankozi
  */
 public abstract class LogPanel extends JPanel implements LogListener{
-    private final static Logger LOG = Logger.getLogger(LogPanel.class);
+    private final static Logger LOG = LogManager.getLogger(LogPanel.class);
 
     {
         this.setFocusable(false);

@@ -3,7 +3,8 @@ package org.sankozi.rogueland.control;
 import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.*;
 
 import javax.swing.*;
 
@@ -12,7 +13,7 @@ import javax.swing.*;
  * @author sankozi
  */
 public class GameLog {
-    private final static Logger LOG = Logger.getLogger(GameLog.class);
+    private final static Logger LOG = LogManager.getLogger(GameLog.class);
     /** GameLog attached to this game thread */
     private final static ThreadLocal<GameLog> threadLog = new ThreadLocal<>();
 

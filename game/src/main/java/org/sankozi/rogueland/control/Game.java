@@ -1,6 +1,8 @@
 package org.sankozi.rogueland.control;
 
 import com.google.common.collect.ImmutableList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sankozi.rogueland.generator.LevelGenerator;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
@@ -8,7 +10,6 @@ import com.google.inject.Provider;
 
 import java.util.Collections;
 import java.util.List;
-import org.apache.log4j.Logger;
 import org.sankozi.rogueland.model.Destroyable.Param;
 import org.sankozi.rogueland.model.*;
 
@@ -17,7 +18,7 @@ import org.sankozi.rogueland.model.*;
  * @author sankozi
  */
 public class Game {
-    private final static Logger LOG = Logger.getLogger(Game.class);
+    private final static Logger LOG = LogManager.getLogger(Game.class);
 
     private final Provider<Player> playerProvider;
 

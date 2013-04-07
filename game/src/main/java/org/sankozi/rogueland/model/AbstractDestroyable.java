@@ -1,7 +1,7 @@
 package org.sankozi.rogueland.model;
 
 import java.util.EnumMap;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.model.Damage.Type;
 
 /**
@@ -10,7 +10,7 @@ import org.sankozi.rogueland.model.Damage.Type;
  * @author sankozi
  */
 public abstract class AbstractDestroyable implements Destroyable{
-    private final static Logger LOG = Logger.getLogger(AbstractDestroyable.class);
+    private final static Logger LOG = LogManager.getLogger(AbstractDestroyable.class);
 
     private final EnumMap<Param, Float> params = new EnumMap<>(Param.class);
     private float durability;

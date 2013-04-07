@@ -3,7 +3,7 @@ package org.sankozi.rogueland.gui;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import net.miginfocom.swing.MigLayout;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.gui.render.GuiRenderer;
 import org.sankozi.rogueland.gui.render.TextAreaItemRenderer;
 import org.sankozi.rogueland.gui.render.TextAreaPlayerRenderer;
@@ -25,7 +25,7 @@ import java.awt.event.*;
  * @author sankozi
  */
 public class InventoryPanel extends JPanel implements AncestorListener, ListSelectionListener, KeyListener{
-    private final static Logger LOG = Logger.getLogger(InventoryPanel.class);
+    private final static Logger LOG = LogManager.getLogger(InventoryPanel.class);
     transient GameSupport gameSupport;
     transient private Action returnToGame;
 

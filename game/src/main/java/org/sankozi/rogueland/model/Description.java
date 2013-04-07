@@ -3,7 +3,7 @@ package org.sankozi.rogueland.model;
 import com.google.common.base.Joiner;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import java.util.Map;
 
@@ -13,7 +13,7 @@ import java.util.Map;
  * @author sankozi
  */
 public final class Description {
-    private final static Logger LOG = Logger.getLogger(Description.class);
+    private final static Logger LOG = LogManager.getLogger(Description.class);
 
     public final static Description EMPTY = stringDescription("");
     private final Supplier<String> description;

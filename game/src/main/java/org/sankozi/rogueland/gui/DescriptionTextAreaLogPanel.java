@@ -1,6 +1,6 @@
 package org.sankozi.rogueland.gui;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.control.MessageType;
 
 import javax.swing.*;
@@ -15,7 +15,7 @@ import static com.google.common.base.Preconditions.*;
  * @author sankozi
  */
 public final class DescriptionTextAreaLogPanel extends LogPanel{
-    private final static Logger LOG = Logger.getLogger(DescriptionTextAreaLogPanel.class);
+    private final static Logger LOG = LogManager.getLogger(DescriptionTextAreaLogPanel.class);
 
     private final DescriptionTextArea log = new DescriptionTextArea();
     private final StringBuilder sb = new StringBuilder(255).append("<html>");

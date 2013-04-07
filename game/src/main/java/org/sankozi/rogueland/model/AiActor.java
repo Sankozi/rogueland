@@ -1,7 +1,7 @@
 package org.sankozi.rogueland.model;
 
 import java.util.Random;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import static org.sankozi.rogueland.MathUtils.*;
 
@@ -15,7 +15,7 @@ import org.sankozi.rogueland.model.effect.EffectManager;
  * @author sankozi
  */
 public class AiActor extends AbstractActor{
-	private final static Logger LOG = Logger.getLogger(AiActor.class);
+	private final static Logger LOG = LogManager.getLogger(AiActor.class);
     private final static Damage damage = new Damage(Damage.Type.BLUNT, 5);
     private final EffectManager manager = EffectManager.forActor(this);
     
