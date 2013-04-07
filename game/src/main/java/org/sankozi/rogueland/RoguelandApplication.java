@@ -57,6 +57,6 @@ public class RoguelandApplication {
         } catch (UnsupportedLookAndFeelException e) {
             throw new RuntimeException();
         }
-        SwingUtilities.invokeLater(() -> new RoguelandApplication().startup());
+        SwingUtilities.invokeLater(new RoguelandApplication()::startup);
     }
 }

@@ -139,12 +139,16 @@ public class Game {
                     }
                 } else if(!prevWeaponLocation.equals(nextWeaponLocation)){
 					LOG.debug("new weapon location : " + nextWeaponLocation.x + "," + nextWeaponLocation.y);
-                    Tile tile = tiles[nextWeaponLocation.x][nextWeaponLocation.y];
-					tiles[prevWeaponLocation.x][prevWeaponLocation.y].weapon = false;
-					tiles[nextWeaponLocation.x][nextWeaponLocation.y].weapon = true;
-					if(tile.actor != null){
-						attackWithWeapon(actor, tile.actor);
-					}
+                    if(level.coordsInside(nextWeaponLocation)){
+                        Tile tile = tiles[nextWeaponLocation.x][nextWeaponLocation.y];
+                        tiles[nextWeaponLocation.x][nextWeaponLocation.y].weapon = true;
+                        if(tile.actor != null){
+                            attackWithWeapon(actor, tile.actor);
+                        }
+                    }
+                    if(level.coordsInside(prevWeaponLocation)){
+					    tiles[prevWeaponLocation.x][prevWeaponLocation.y].weapon = false;
+                    }
 				}
 			}
         }
