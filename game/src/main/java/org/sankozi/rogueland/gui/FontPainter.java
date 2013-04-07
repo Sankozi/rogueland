@@ -186,9 +186,11 @@ public class FontPainter implements TilePainter{
 
 		//fill with symbols
         int y = dc.startPixelY;
-        for(int iy = dc.startTileY; iy < dc.heightInTiles; ++iy){
+        int maxIY = dc.startTileY + dc.heightInTiles;
+        for(int iy = dc.startTileY; iy < maxIY; ++iy){
 			int x = dc.startPixelX;
-			for(int ix = dc.startTileX; ix < dc.widthInTiles; ++ix){
+            int maxIX = dc.startTileX + dc.widthInTiles;
+			for(int ix = dc.startTileX; ix < maxIX; ++ix){
 				Actor actor = tiles[ix][iy].actor;
 				if(actor != null){
 					drawActor(g, actor,x,y);
