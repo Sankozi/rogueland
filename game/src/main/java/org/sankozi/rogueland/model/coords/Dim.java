@@ -1,4 +1,4 @@
-package org.sankozi.rogueland.model;
+package org.sankozi.rogueland.model.coords;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,5 +30,21 @@ public final class Dim {
 
     public boolean containsCoordinates(int x, int y){
         return 0 <= x && x < width && 0 <= y && y < height;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Dim)) return false;
+
+        Dim dim = (Dim) o;
+        return height == dim.height && width == dim.width;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = width;
+        result = 31 * result + height;
+        return result;
     }
 }

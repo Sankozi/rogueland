@@ -12,6 +12,8 @@ import java.util.Collections;
 import java.util.List;
 import org.sankozi.rogueland.model.Destroyable.Param;
 import org.sankozi.rogueland.model.*;
+import org.sankozi.rogueland.model.coords.Coords;
+import org.sankozi.rogueland.model.coords.Direction;
 
 /**
  * Object responsible for single game instance

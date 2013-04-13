@@ -1,6 +1,7 @@
 package org.sankozi.rogueland.model;
 
 import org.sankozi.rogueland.control.Locator;
+import org.sankozi.rogueland.model.coords.Coords;
 import org.sankozi.rogueland.model.effect.Effect;
 import org.sankozi.rogueland.model.effect.EffectManager;
 

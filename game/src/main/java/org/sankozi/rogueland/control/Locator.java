@@ -1,7 +1,7 @@
 package org.sankozi.rogueland.control;
 
-import org.sankozi.rogueland.model.Coords;
-import org.sankozi.rogueland.model.Dim;
+import org.sankozi.rogueland.model.coords.Coords;
+import org.sankozi.rogueland.model.coords.Dim;
 
 /**
  * Interface for finding things on Level

@@ -20,8 +20,8 @@ import javax.swing.*;
 
 import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.model.Controls;
-import org.sankozi.rogueland.model.Coords;
-import org.sankozi.rogueland.model.Direction;
+import org.sankozi.rogueland.model.coords.Coords;
+import org.sankozi.rogueland.model.coords.Direction;
 import org.sankozi.rogueland.model.Move;
 import org.sankozi.rogueland.resources.Cursors;
 

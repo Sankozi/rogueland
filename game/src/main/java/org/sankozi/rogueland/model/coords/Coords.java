@@ -1,4 +1,4 @@
-package org.sankozi.rogueland.model;
+package org.sankozi.rogueland.model.coords;
 
 /**
  * Immutable object representing coordinates in game level. 

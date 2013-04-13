@@ -1,5 +1,7 @@
 package org.sankozi.rogueland.model;
 
+import org.sankozi.rogueland.model.coords.Dim;
+
 /**
  *
  * @author sankozi

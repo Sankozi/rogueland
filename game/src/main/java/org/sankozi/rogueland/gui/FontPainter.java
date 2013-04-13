@@ -9,6 +9,8 @@ import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.control.Game;
 import org.sankozi.rogueland.model.*;
 import org.sankozi.rogueland.model.Level;
+import org.sankozi.rogueland.model.coords.Coords;
+import org.sankozi.rogueland.model.coords.Direction;
 
 import javax.annotation.Nullable;
 

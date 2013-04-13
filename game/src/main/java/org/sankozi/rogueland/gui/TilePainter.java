@@ -3,7 +3,7 @@ package org.sankozi.rogueland.gui;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import org.sankozi.rogueland.control.Game;
-import org.sankozi.rogueland.model.Coords;
+import org.sankozi.rogueland.model.coords.Coords;
 import org.sankozi.rogueland.model.Tile;
 
 import javax.annotation.Nullable;

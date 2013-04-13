@@ -19,6 +19,7 @@ import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.control.Game;
 import org.sankozi.rogueland.control.LogListener;
 import org.sankozi.rogueland.model.*;
+import org.sankozi.rogueland.model.coords.Coords;
 
 /**
  * Class supporting interaction between GameState and GUI

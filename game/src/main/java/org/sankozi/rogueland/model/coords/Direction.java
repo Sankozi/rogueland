@@ -1,4 +1,6 @@
-package org.sankozi.rogueland.model;
+package org.sankozi.rogueland.model.coords;
+
+import org.sankozi.rogueland.model.Move;
 
 /**
  * Direction in game

@@ -6,6 +6,8 @@ import org.apache.logging.log4j.*;
 import static org.sankozi.rogueland.MathUtils.*;
 
 import org.sankozi.rogueland.control.Locator;
+import org.sankozi.rogueland.model.coords.Coords;
+import org.sankozi.rogueland.model.coords.Direction;
 import org.sankozi.rogueland.model.effect.DamageEffect;
 import org.sankozi.rogueland.model.effect.Effect;
 import org.sankozi.rogueland.model.effect.EffectManager;
