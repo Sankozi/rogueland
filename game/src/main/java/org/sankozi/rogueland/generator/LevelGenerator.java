@@ -14,8 +14,8 @@ public class LevelGenerator {
 
 	public static void generate(Level level){
 		Random rand = new Random();
-		int width = level.getWidth();
-		int height = level.getHeight();
+		int width = level.getDim().width;
+		int height = level.getDim().height;
         Tile[][] tiles = level.getTiles();
 		for(int x = 0; x < width; ++x){
 			for(int y = 0; y < height; ++y){

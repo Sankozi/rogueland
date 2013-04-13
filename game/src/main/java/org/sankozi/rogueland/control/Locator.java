@@ -1,6 +1,7 @@
 package org.sankozi.rogueland.control;
 
 import org.sankozi.rogueland.model.Coords;
+import org.sankozi.rogueland.model.Dim;
 
 /**
  * Interface for finding things on Level
@@ -12,6 +13,8 @@ public interface Locator {
 	 * Returns player location
 	 * @return 
 	 */
-	Coords playerLocation();
+	Coords getPlayerLocation();
+
+    Dim getLevelDim();
 	
 }

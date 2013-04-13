@@ -10,13 +10,23 @@ import org.apache.logging.log4j.*;
 public class EnemySpawner implements Observer {
     private final static Logger LOG = LogManager.getLogger(EnemySpawner.class);
 
+    int nextTurnsToNextEnemy = 20;
+    int turnsToNextEnemy;
+
     @Override
     public void attach(Locator level, LevelControl control) {
+        turnsToNextEnemy = nextTurnsToNextEnemy;
         LOG.info("attaching");
     }
 
     @Override
     public void tick(Locator level, LevelControl control) {
-        LOG.info("tick");
+        if(turnsToNextEnemy == 0) {
+            turnsToNextEnemy = nextTurnsToNextEnemy;
+            --nextTurnsToNextEnemy;
+            LOG.info("spawning enemy, next in {} turns", turnsToNextEnemy);
+        } else {
+            --turnsToNextEnemy;
+        }
     }
 }

@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentMap;
 import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.control.Game;
 import org.sankozi.rogueland.model.*;
+import org.sankozi.rogueland.model.Level;
 
 import javax.annotation.Nullable;
 
@@ -63,10 +64,11 @@ public class FontPainter implements TilePainter{
         int tileY = (pixelCoords.y - dc.startPixelY + metrics.getAscent()) / tileHeight+ dc.startTileY;
 //        LOG.info(dc);
 //        LOG.info("getTilePixelLocation(" + pixelCoords + ")=" + tileX + "," + tileY);
-        if(tileX < 0 || tileY < 0 || tileX >= game.getLevel().getWidth() || tileX >= game.getLevel().getHeight()){
+        Level level = game.getLevel();
+        if(!level.getDim().containsCoordinates(tileX, tileY)){
             return null;
         } else {
-            return game.getLevel().getTiles()[tileX][tileY];
+            return level.getTiles()[tileX][tileY];
         }
     }
 

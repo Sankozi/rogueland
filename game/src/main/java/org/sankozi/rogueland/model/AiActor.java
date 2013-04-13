@@ -40,7 +40,7 @@ public class AiActor extends AbstractActor{
 
     @Override
     public Move act(Level level, Locator locator) {
-        return findDirectionToward(level, locator.playerLocation());
+        return findDirectionToward(level, locator.getPlayerLocation());
     }
 
 	private Move findDirectionToward(Level level, Coords destination){

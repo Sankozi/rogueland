@@ -20,9 +20,14 @@ class GameLevelLocator implements Locator, LevelControl{
 	}
 
 	@Override
-	public Coords playerLocation() {
+	public Coords getPlayerLocation() {
 		return game.getPlayer().getLocation();
 	}
+
+    @Override
+    public Dim getLevelDim() {
+        return level.getDim();
+    }
 
     @Override
     public void spawnActor(Actor actor, Coords coords) {

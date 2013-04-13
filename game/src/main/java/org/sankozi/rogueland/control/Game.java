@@ -139,14 +139,14 @@ public class Game {
                     }
                 } else if(!prevWeaponLocation.equals(nextWeaponLocation)){
 					LOG.debug("new weapon location : " + nextWeaponLocation.x + "," + nextWeaponLocation.y);
-                    if(level.coordsInside(nextWeaponLocation)){
+                    if(level.getDim().containsCoordinates(nextWeaponLocation)){
                         Tile tile = tiles[nextWeaponLocation.x][nextWeaponLocation.y];
                         tiles[nextWeaponLocation.x][nextWeaponLocation.y].weapon = true;
                         if(tile.actor != null){
                             attackWithWeapon(actor, tile.actor);
                         }
                     }
-                    if(level.coordsInside(prevWeaponLocation)){
+                    if(level.getDim().containsCoordinates(prevWeaponLocation)){
 					    tiles[prevWeaponLocation.x][prevWeaponLocation.y].weapon = false;
                     }
 				}

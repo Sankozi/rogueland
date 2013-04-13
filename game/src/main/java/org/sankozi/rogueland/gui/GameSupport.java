@@ -69,7 +69,7 @@ class GameSupport {
 		}
 		Preconditions.checkNotNull(game, "game cannot be null");
 		this.levelSize = new Rectangle(0, 0,
-				game.getLevel().getWidth(), game.getLevel().getHeight());
+				game.getLevel().getDim().width, game.getLevel().getDim().height);
 		this.gameEvent = new GameEvent(game);
 	}
 
