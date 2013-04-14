@@ -1,5 +1,6 @@
 package org.sankozi.rogueland.model;
 
+import org.sankozi.rogueland.model.coords.Coords;
 import org.sankozi.rogueland.model.coords.Dim;
 
 /**
@@ -20,6 +21,10 @@ public final class Level {
                 tiles[x][y] = new Tile();
             }
         }
+    }
+
+    public Tile getTile(Coords p){
+        return tiles[p.x][p.y];
     }
 
     public Tile[][] getTiles(){

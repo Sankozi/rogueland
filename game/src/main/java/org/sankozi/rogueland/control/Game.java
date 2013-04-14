@@ -78,6 +78,13 @@ public class Game {
         log.addListener(logListener);
     }
 
+    void addActor(Actor actor, Coords coords){
+        actors.add(actor);
+        Tile tile = level.getTile(coords);
+        tile.actor = actor;
+        actor.setLocation(coords);
+    }
+
     private class GameRunnable implements Runnable {
         @Override
         public void run() {

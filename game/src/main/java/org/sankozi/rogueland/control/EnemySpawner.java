@@ -1,6 +1,8 @@
 package org.sankozi.rogueland.control;
 
 import org.apache.logging.log4j.*;
+import org.sankozi.rogueland.model.AiActor;
+import org.sankozi.rogueland.model.coords.Direction;
 
 /**
  * EnemySpawner
@@ -24,6 +26,7 @@ public class EnemySpawner implements Observer {
         if(turnsToNextEnemy == 0) {
             turnsToNextEnemy = nextTurnsToNextEnemy;
             --nextTurnsToNextEnemy;
+            control.spawnActor(new AiActor(), Direction.N);
             LOG.info("spawning enemy, next in {} turns", turnsToNextEnemy);
         } else {
             --turnsToNextEnemy;

@@ -20,8 +20,8 @@ final class HorizontalLineCoordsSet extends AbstractSet<Coords> {
     final int x1;
     final int x2;
 
-    HorizontalLineCoordsSet(int y, int x1, int x2) {
-        checkArgument(x2 > x1);
+    HorizontalLineCoordsSet(int x1, int x2, int y) {
+        checkArgument(x2 > x1, "x2 (%s) must be larger than x1 (%s)", x2, x1);
         this.y = y;
         this.x1 = x1;
         this.x2 = x2;
