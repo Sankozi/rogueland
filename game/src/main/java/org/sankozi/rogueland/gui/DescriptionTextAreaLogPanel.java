@@ -24,7 +24,7 @@ public final class DescriptionTextAreaLogPanel extends LogPanel{
 
     {
         this.setLayout(new BorderLayout());
-        this.add(log, BorderLayout.CENTER);
+        this.add(new JScrollPane(log), BorderLayout.CENTER);
         log.setOpaque(false);
     }
 
