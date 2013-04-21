@@ -30,6 +30,9 @@ public class GuiModule extends AbstractModule{
         bind(ComponentSwitcher.class)
                 .to(MainPanel.class);
 
+        bind(TilePainter.class)
+                .to(SquareImagePainter.class);
+
         // -------------- NAMED COMPONENTS -----------------
 
         bind(JComponent.class)

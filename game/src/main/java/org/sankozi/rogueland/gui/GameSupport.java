@@ -54,9 +54,9 @@ class GameSupport {
     private Color backgroundColor = Color.BLACK;
 
 	@Inject
-    public GameSupport(Provider<Game> gameProvider) {
+    public GameSupport(Provider<Game> gameProvider, TilePainter painter) {
 		this.gameProvider = gameProvider;
-		this.painter = new FontPainter();
+		this.painter = painter;
 		newGame();
     }
 
