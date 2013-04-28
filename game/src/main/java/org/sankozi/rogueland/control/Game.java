@@ -276,7 +276,7 @@ public class Game {
         } else {
             //location inaccessible and that cannot be intercarted with
             Tile tile = tiles[playerLocation.x][playerLocation.y];
-            return tile.type != Tile.Type.WALL;
+            return tile.type != Tile.Type.ROCK;
         }
     }
 

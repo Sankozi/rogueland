@@ -211,15 +211,11 @@ public class FontPainter implements TilePainter{
 
     private void drawField(Graphics g, Tile tile, int x, int y) {
         switch (tile.type) {
-            case FLOOR:
-                g.setColor(Color.GRAY);
-                g.drawString(".", x, y);
-                break;
-            case GRASS:
+            case SAND:
                 g.setColor(Color.GREEN);
                 g.drawString("\"", x, y);
                 break;
-            case WALL:
+            case ROCK:
                 g.setColor(Color.GRAY);
                 g.drawString("#", x, y);
                 break;

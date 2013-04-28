@@ -1,22 +1,29 @@
 package org.sankozi.rogueland.model;
 
+import org.sankozi.rogueland.model.guid.Guid;
+import org.sankozi.rogueland.model.guid.GuidGenerator;
+
 /**
  *
  * @author sankozi
  */
 public final class Tile {
+    public static enum Type implements Guid{
+        ROCK,
+        SAND;
 
-    public static enum Type {
-        WALL,
-        FLOOR,
-        GRASS
+        private final int guid = GuidGenerator.getNewGuid();
+
+        public int getGuid() {
+            return guid;
+        }
     }
-    public Type type = Type.GRASS;
+    public Type type = Type.SAND;
     public Actor actor;
 	public boolean weapon;
 
 	public boolean isPassable(){
-		return type != Type.WALL && actor == null && !weapon;
+		return type != Type.ROCK && actor == null && !weapon;
 	}
 
     public Description getDescription(){

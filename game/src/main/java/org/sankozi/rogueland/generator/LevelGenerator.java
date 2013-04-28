@@ -20,7 +20,7 @@ public class LevelGenerator {
 		for(int x = 0; x < width; ++x){
 			for(int y = 0; y < height; ++y){
 				if(rand.nextInt(5) == 0){
-					tiles[x][y].type = Tile.Type.WALL;
+					tiles[x][y].type = Tile.Type.ROCK;
 				}
 			}
 		}

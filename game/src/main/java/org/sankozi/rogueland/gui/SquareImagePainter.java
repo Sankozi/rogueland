@@ -10,8 +10,10 @@ import org.sankozi.rogueland.model.Player;
 import org.sankozi.rogueland.model.Tile;
 import org.sankozi.rogueland.model.coords.Coords;
 import org.sankozi.rogueland.model.coords.Direction;
+import org.sankozi.rogueland.resources.ModelResources;
 
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 import java.awt.*;
 import java.util.EnumMap;
 import java.util.Map;
@@ -25,8 +27,10 @@ import static org.sankozi.rogueland.resources.ResourceProvider.*;
 public class SquareImagePainter implements TilePainter {
     private final static Logger LOG = LogManager.getLogger(SquareImagePainter.class);
 
-    private int tileHeight = 32;
-    private int tileWidth = 32;
+    private final ModelResources modelResources;
+
+    private final int tileHeight = 32;
+    private final int tileWidth = 32;
 
     private final Map<Direction, Image> directionImages
             = new EnumMap<>(ImmutableMap.<Direction,Image>builder()
@@ -40,10 +44,13 @@ public class SquareImagePainter implements TilePainter {
                     .put(Direction.NE, getImage("tiles/javelin-9.png"))
                     .build());
 
-    private Image dirt = getImage("tiles/dirt-1.png");
-    private Image rock = getImage("tiles/rock-1.png");
     private Image slime = getImage("tiles/slime-1.png");
     private Image hero = getImage("tiles/hero-warrior.png");
+
+    @Inject
+    public SquareImagePainter(ModelResources modelResources) {
+        this.modelResources = modelResources;
+    }
 
     @Override
     public Rectangle getTileRectangle(Game game, int width, int height, Coords location) {
@@ -187,17 +194,6 @@ public class SquareImagePainter implements TilePainter {
     }
 
     private void drawField(Graphics g, Tile tile, int x, int y) {
-        switch (tile.type) {
-            case FLOOR:
-                g.drawImage(dirt, x, y, null);
-                break;
-            case GRASS:
-                g.drawImage(dirt, x, y, null);
-                break;
-            case WALL:
-                g.drawImage(dirt, x, y, null);
-                g.drawImage(rock, x, y, null);
-                break;
-        }
+        g.drawImage(modelResources.getImageForTileType(tile.type), x, y, null);
     }
 }
