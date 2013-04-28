@@ -32,7 +32,11 @@ public class ResourceProvider {
 
 	public static Image getImage(String name){
 		try {
-			Image ret = ImageIO.read(ResourceProvider.class.getResource(name));
+            URL imageUrl = ResourceProvider.class.getResource(name);
+            if(imageUrl == null){
+                throw new IllegalArgumentException("no resource on path : " + name);
+            }
+			Image ret = ImageIO.read(imageUrl);
 			return ret;
 		} catch (IOException ex) {
 			throw new ResourceException("cannot load image : " + name, ex);

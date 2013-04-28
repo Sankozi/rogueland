@@ -1,5 +1,6 @@
 package org.sankozi.rogueland.gui;
 
+import com.google.common.collect.ImmutableMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sankozi.rogueland.control.Game;
@@ -14,9 +15,8 @@ import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
+import static org.sankozi.rogueland.resources.ResourceProvider.*;
 /**
  * SquareImagePainter
  *
@@ -25,31 +25,25 @@ import java.util.concurrent.ConcurrentMap;
 public class SquareImagePainter implements TilePainter {
     private final static Logger LOG = LogManager.getLogger(SquareImagePainter.class);
 
-    private Font font;
+    private int tileHeight = 32;
+    private int tileWidth = 32;
 
-    private int tileHeight = 24;
-    private int tileWidth = 24;
+    private final Map<Direction, Image> directionImages
+            = new EnumMap<>(ImmutableMap.<Direction,Image>builder()
+                    .put(Direction.SW, getImage("tiles/javelin-1.png"))
+                    .put(Direction.S, getImage("tiles/javelin-2.png"))
+                    .put(Direction.SE, getImage("tiles/javelin-3.png"))
+                    .put(Direction.W, getImage("tiles/javelin-4.png"))
+                    .put(Direction.E, getImage("tiles/javelin-6.png"))
+                    .put(Direction.NW, getImage("tiles/javelin-7.png"))
+                    .put(Direction.N, getImage("tiles/javelin-8.png"))
+                    .put(Direction.NE, getImage("tiles/javelin-9.png"))
+                    .build());
 
-    private final ConcurrentMap<String,PainterOptions> optionsCache = new ConcurrentHashMap<>();
-    private final Map<Direction, Character> directionChars = new EnumMap<>(Direction.class);
-
-    {
-        directionChars.put(Direction.NW, '\\');
-        directionChars.put(Direction.N, '|');
-        directionChars.put(Direction.NE, '/');
-
-        directionChars.put(Direction.W, '-');
-        directionChars.put(Direction.E, '-');
-
-        directionChars.put(Direction.SW, '/');
-        directionChars.put(Direction.S, '|');
-        directionChars.put(Direction.SE, '\\');
-        try {
-            font = new Font("Monospaced", Font.BOLD, 30);
-        } catch (Exception ex) {
-            LOG.error(ex.getMessage(), ex);
-        }
-    }
+    private Image dirt = getImage("tiles/dirt-1.png");
+    private Image rock = getImage("tiles/rock-1.png");
+    private Image slime = getImage("tiles/slime-1.png");
+    private Image hero = getImage("tiles/hero-warrior.png");
 
     @Override
     public Rectangle getTileRectangle(Game game, int width, int height, Coords location) {
@@ -83,20 +77,11 @@ public class SquareImagePainter implements TilePainter {
     }
 
     private void drawActor(Graphics g, Actor actor, int x, int y){
-        PainterOptions po = optionsCache.get(actor.getObjectName());
-        if(po == null){
-            po = new PainterOptions();
-            if(actor.getObjectName().contains("player")){
-                po.character = "@";
-                po.color = Color.WHITE;
-            } else {
-                po.character = "@";
-                po.color = Color.RED;
-            }
-            optionsCache.put(actor.getObjectName(), po);
+        if(actor.getObjectName().contains("player")){
+            g.drawImage(hero, x, y, null);
+        } else {
+            g.drawImage(slime, x, y, null);
         }
-        g.setColor(po.color);
-        g.drawString(po.character, x, y);
     }
 
     private void drawSword(Game game, Graphics g, int startingPixelX, int startingX, int startingPixelY, int startingY) {
@@ -105,9 +90,10 @@ public class SquareImagePainter implements TilePainter {
             g.setColor(Color.WHITE);
             Coords location = p.getLocation();
             Direction dir = p.getWeaponDirection();
-            g.drawString(directionChars.get(dir).toString(),
-                    startingPixelX + tileWidth * (location.x - startingX + dir.dx),
-                    startingPixelY + tileHeight * (location.y - startingY + dir.dy));
+            g.drawImage(directionImages.get(dir),
+                    startingPixelX + tileWidth * (location.x - startingX) + tileWidth / 2 * dir.dx,
+                    startingPixelY + tileHeight * (location.y - startingY) + tileHeight / 2 * dir.dy,
+                    null);
         }
 //		LOG.info("paint end");
     }
@@ -176,7 +162,6 @@ public class SquareImagePainter implements TilePainter {
 
         DrawingContext dc = new DrawingContext(width, height, game);
 
-        g.setFont(font);
         g.setColor(Color.BLACK);
         //clean part with black
         g.fillRect(0, 0, width, height);
@@ -189,10 +174,9 @@ public class SquareImagePainter implements TilePainter {
             int maxIX = dc.startTileX + dc.widthInTiles;
             for(int ix = dc.startTileX; ix < maxIX; ++ix){
                 Actor actor = tiles[ix][iy].actor;
+                drawField(g,tiles[ix][iy], x, y);
                 if(actor != null){
                     drawActor(g, actor,x,y);
-                } else {
-                    drawField(g,tiles[ix][iy], x, y);
                 }
                 x += tileWidth;
             }
@@ -205,16 +189,14 @@ public class SquareImagePainter implements TilePainter {
     private void drawField(Graphics g, Tile tile, int x, int y) {
         switch (tile.type) {
             case FLOOR:
-                g.setColor(Color.GRAY);
-                g.drawString(".", x, y);
+                g.drawImage(dirt, x, y, null);
                 break;
             case GRASS:
-                g.setColor(Color.GREEN);
-                g.drawString("\"", x, y);
+                g.drawImage(dirt, x, y, null);
                 break;
             case WALL:
-                g.setColor(Color.GRAY);
-                g.drawString("#", x, y);
+                g.drawImage(dirt, x, y, null);
+                g.drawImage(rock, x, y, null);
                 break;
         }
     }
