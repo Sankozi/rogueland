@@ -32,9 +32,7 @@ public final class ModelResources {
 
     private Image getImageOrLoad(Guid guid, Callable<String> imagePath){
         try {
-            return cachedImages.get(guid.getGuid(), () -> {
-                return getImage(imagePath.call());
-            });
+            return cachedImages.get(guid.getGuid(), () -> getImage(imagePath.call()));
         } catch (ExecutionException e) {
             throw new RuntimeException("Error while loading " + guid
                     + " " + e.getMessage(), e);
