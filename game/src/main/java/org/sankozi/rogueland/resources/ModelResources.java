@@ -6,8 +6,11 @@ import com.google.inject.Singleton;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sankozi.rogueland.model.Tile;
+import org.sankozi.rogueland.model.coords.Direction;
+import org.sankozi.rogueland.model.guid.Guid;
 
 import java.awt.*;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -27,14 +30,22 @@ public final class ModelResources {
                         .expireAfterAccess(10, TimeUnit.MINUTES)
                         .build();
 
-    public Image getImageForTileType(Tile.Type tileType){
+    private Image getImageOrLoad(Guid guid, Callable<String> imagePath){
         try {
-            return cachedImages.get(tileType.getGuid(), () -> {
-                return getImage("tiles/" + tileType.name().toLowerCase() + ".png");
+            return cachedImages.get(guid.getGuid(), () -> {
+                return getImage(imagePath.call());
             });
         } catch (ExecutionException e) {
-            throw new RuntimeException("Error while loading image for tile type " + tileType.name()
+            throw new RuntimeException("Error while loading " + guid
                     + " " + e.getMessage(), e);
         }
+    }
+
+    public Image getImageForTileType(Tile.Type tileType){
+        return getImageOrLoad(tileType, () -> "tiles/" + tileType.name().toLowerCase() + ".png" );
+    }
+
+    public Image getImageForWeaponDirection(Direction dir){
+        return getImageOrLoad(dir, () -> "tiles/javelin-" + dir.numpadNumber + ".png" );
     }
 }

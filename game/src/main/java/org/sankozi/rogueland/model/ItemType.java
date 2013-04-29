@@ -1,12 +1,15 @@
 package org.sankozi.rogueland.model;
 
+import org.sankozi.rogueland.model.guid.Guid;
+import org.sankozi.rogueland.model.guid.GuidGenerator;
+
 import java.util.EnumSet;
 
 /**
  * Type of an item - defines how item can be used
  * @author sankozi
  */
-public enum ItemType {
+public enum ItemType implements Guid{
 	/** can be held in one or both hands */
 	HELD,
 
@@ -31,6 +34,7 @@ public enum ItemType {
 	USABLE;
 
     private final ItemType[] includes;
+    private final int guid = GuidGenerator.getNewGuid();
 
     public static EnumSet<ItemType> expand(EnumSet<ItemType> set){
 		EnumSet<ItemType> ret = EnumSet.copyOf(set);
@@ -49,5 +53,10 @@ public enum ItemType {
 
     ItemType(ItemType... includes){
         this.includes = includes;
+    }
+
+    @Override
+    public int getGuid() {
+        return guid;
     }
 }

@@ -32,18 +32,6 @@ public class SquareImagePainter implements TilePainter {
     private final int tileHeight = 32;
     private final int tileWidth = 32;
 
-    private final Map<Direction, Image> directionImages
-            = new EnumMap<>(ImmutableMap.<Direction,Image>builder()
-                    .put(Direction.SW, getImage("tiles/javelin-1.png"))
-                    .put(Direction.S, getImage("tiles/javelin-2.png"))
-                    .put(Direction.SE, getImage("tiles/javelin-3.png"))
-                    .put(Direction.W, getImage("tiles/javelin-4.png"))
-                    .put(Direction.E, getImage("tiles/javelin-6.png"))
-                    .put(Direction.NW, getImage("tiles/javelin-7.png"))
-                    .put(Direction.N, getImage("tiles/javelin-8.png"))
-                    .put(Direction.NE, getImage("tiles/javelin-9.png"))
-                    .build());
-
     private Image slime = getImage("tiles/slime-1.png");
     private Image hero = getImage("tiles/hero-warrior.png");
 
@@ -97,7 +85,7 @@ public class SquareImagePainter implements TilePainter {
             g.setColor(Color.WHITE);
             Coords location = p.getLocation();
             Direction dir = p.getWeaponDirection();
-            g.drawImage(directionImages.get(dir),
+            g.drawImage(modelResources.getImageForWeaponDirection(dir),
                     startingPixelX + tileWidth * (location.x - startingX) + tileWidth / 2 * dir.dx,
                     startingPixelY + tileHeight * (location.y - startingY) + tileHeight / 2 * dir.dy,
                     null);
