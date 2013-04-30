@@ -9,7 +9,7 @@ import java.util.Iterator;
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
- * Immutable set containing coordinates creating vertical line. For example [5,5] [5,6] [5,7] -> [5,5:7]
+ * Immutable set containing coordinates on a vertical line. For example [5,5] [5,6] [5,7] -> [5,5:7]
  *
  * Set cannot be empty. Order of iteration - from lowest x to highest.
  *
@@ -23,7 +23,7 @@ public class VerticalLineCoordsSet extends AbstractSet<Coords> {
     final int y2;
 
     public VerticalLineCoordsSet(int x, int y1, int y2) {
-        checkArgument(y2 > y1);
+        checkArgument(y2 > y1, "y2 (%s) must be larger than y1 (%s)", y2, y1);
         this.x = x;
         this.y1 = y1;
         this.y2 = y2;
@@ -38,7 +38,7 @@ public class VerticalLineCoordsSet extends AbstractSet<Coords> {
     public boolean contains(Object o) {
         if(o instanceof Coords){
             Coords coords = (Coords) o;
-            return x == coords.x && y1 >= coords.y && coords.y >= y2;
+            return x == coords.x && y1 <= coords.y && coords.y <= y2;
         } else {
             return false;
         }

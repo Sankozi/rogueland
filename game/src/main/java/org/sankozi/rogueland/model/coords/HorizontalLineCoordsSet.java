@@ -9,7 +9,7 @@ import java.util.Iterator;
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
- * Immutable set containing coordinates creating horizontal line. For example [5,5] [6,5] [7,5] -> [5:7,5]
+ * Immutable set containing coordinates on horizontal line. For example [5,5] [6,5] [7,5] -> [5:7,5]
  *
  * Set cannot be empty. Order of iteration - from lowest x to highest.
  *
@@ -36,7 +36,7 @@ final class HorizontalLineCoordsSet extends AbstractSet<Coords> {
     public boolean contains(Object o) {
         if(o instanceof Coords){
             Coords coords = (Coords) o;
-            return y == coords.y && x1 >= coords.x && coords.x >= x2;
+            return y == coords.y && x1 <= coords.x && coords.x <= x2;
         } else {
             return false;
         }

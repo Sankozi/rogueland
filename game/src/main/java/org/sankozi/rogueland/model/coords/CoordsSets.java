@@ -25,6 +25,10 @@ public final class CoordsSets {
     public static Set<Coords> verticalLine(int x, int y1, int y2){
         return new VerticalLineCoordsSet(x, y1, y2);
     }
+
+    public static Set<Coords> rectangle(int xMin, int yMin, int xMax, int yMax){
+        return new RectangleCoordsSet(xMin, yMin, xMax, yMax);
+    }
 }
 
 abstract class FlatIterator implements Iterator<Coords>{
