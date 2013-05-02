@@ -107,11 +107,19 @@ public class Game {
 			}
         }
 
+        private void processRegeneration(Actor actor){
+            actor.heal(actor.destroyableParam(Param.DURABILITY_REGEN));
+            actor.setActorParam(Actor.Param.BALANCE,
+                    Math.min(actor.actorParam(Actor.Param.BALANCE) + actor.actorParam(Actor.Param.BALANCE_REGEN),
+                             actor.actorParam(Actor.Param.MAX_BALANCE)));
+        }
+
 		/**
 		 * Process actor that is moving with its weapon (on different tile)
 		 * @param actor 
 		 */
 		private void processActor(Actor actor) {
+            processRegeneration(actor);
             Move m;
             Coords targetLocation;
             Coords actorLocation = actor.getLocation();
@@ -164,8 +172,8 @@ public class Game {
 
         private void processActors() {
             for(Actor actor:actors){
-                actor.heal(actor.destroyableParam(Param.DURABILITY_REGEN));
 				if(!actor.isDestroyed()){
+
 					processActor(actor);
 				}
             }

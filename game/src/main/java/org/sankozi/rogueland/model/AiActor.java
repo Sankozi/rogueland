@@ -12,6 +12,8 @@ import org.sankozi.rogueland.model.effect.DamageEffect;
 import org.sankozi.rogueland.model.effect.Effect;
 import org.sankozi.rogueland.model.effect.EffectManager;
 
+import javax.annotation.Nullable;
+
 /**
  *
  * @author sankozi
@@ -28,6 +30,9 @@ public class AiActor extends AbstractActor{
         super(10);
         setDestroyableParam(Destroyable.Param.DURABILITY_REGEN, 0.125f);
         setDestroyableParam(Destroyable.Param.MAX_DURABILITY, 20);
+
+        setActorParam(Actor.Param.MAX_BALANCE, 10);
+        setActorParam(Actor.Param.BALANCE_REGEN, 2);
     }
 
     @Override
@@ -35,6 +40,7 @@ public class AiActor extends AbstractActor{
         return Description.build()
                 .header(getName())
                 .statEntry("Health", (float)getDurability())
+                .statEntry(Actor.Param.BALANCE, actorParam(Actor.Param.BALANCE))
                 .statEntry(Destroyable.Param.MAX_DURABILITY, destroyableParam(Destroyable.Param.MAX_DURABILITY))
                 .line("Damage : ", damage.getDescription().getAsString())
                 .toDescription();
@@ -42,10 +48,11 @@ public class AiActor extends AbstractActor{
 
     @Override
     public Move act(Level level, Locator locator) {
-        return findDirectionToward(level, locator.getPlayerLocation());
+        Direction directionToward = findDirectionToward(level, locator.getPlayerLocation());
+        return directionToward == null ? Move.WAIT : Move.Go.fromDirection(directionToward);
     }
 
-	private Move findDirectionToward(Level level, Coords destination){
+	private @Nullable Direction findDirectionToward(Level level, Coords destination){
 		int dx = clamp(destination.x - this.getLocation().x, -1, 1) ;
 		int dy = clamp(destination.y - this.getLocation().y, -1, 1) ;
 		int x = this.getLocation().x + dx;
@@ -54,35 +61,35 @@ public class AiActor extends AbstractActor{
 		//if player is nearby or tile toward it is free
 		if((destination.x == x && destination.y == y) 
 			||	level.getTiles()[x][y].isPassable()){
-			return Direction.fromDiff(dx, dy).toSingleMove();
+			return Direction.fromDiff(dx, dy);
 		} else {
 			if(dx != 0 && dy != 0){ //diagonal direction -> try move closer
 				if(level.getTiles()[x][y-dy].isPassable()){
-					return Direction.fromDiff(dx, 0).toSingleMove();
+					return Direction.fromDiff(dx, 0);
 				} else if (level.getTiles()[x-dx][y].isPassable()){
-					return Direction.fromDiff(0, dy).toSingleMove();
+					return Direction.fromDiff(0, dy);
 				} else {
-					return Move.WAIT;
+					return null;
 				}
 			} else if(dx != 0) {//dy == 0 -> lets try move diagonal
-				if(level.getTiles()[x][y-1].isPassable()){
-					return Direction.fromDiff(dx, -1).toSingleMove();
+				if(y > 0 & level.getTiles()[x][y-1].isPassable()){
+					return Direction.fromDiff(dx, -1);
 				} else if(level.getTiles()[x][y+1].isPassable()){
-					return Direction.fromDiff(dx, +1).toSingleMove();
+					return Direction.fromDiff(dx, +1);
 				} else {
-					return Move.WAIT;
+					return null;
 				}
 			} else if(dy != 0) {//dx == 0 -> lets try move diagonal
-				if(level.getTiles()[x-1][y].isPassable()){
-					return Direction.fromDiff(-1, dy).toSingleMove();
+				if(x > 0 && level.getTiles()[x-1][y].isPassable()){
+					return Direction.fromDiff(-1, dy);
 				} else if(level.getTiles()[x+1][y].isPassable()){
-					return Direction.fromDiff(+1, dy).toSingleMove();
+					return Direction.fromDiff(+1, dy);
 				} else {
-					return Move.WAIT;
+					return null;
 				}
 			} else {
 				LOG.warn("0,0 AI move -> waiting");
-				return Move.WAIT;
+				return null;
 			}
 		}
 	}

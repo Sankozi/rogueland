@@ -36,5 +36,11 @@ public interface Actor extends Destroyable{
 
     enum Param implements org.sankozi.rogueland.model.Param{
         MANA_REGEN,
+        /** maximum value of balance */
+        MAX_BALANCE,
+        /** current value of balance */
+        BALANCE,
+        /** amount of balance regenerated each turn */
+        BALANCE_REGEN
     }
 }

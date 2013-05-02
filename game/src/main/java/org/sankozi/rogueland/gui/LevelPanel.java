@@ -262,7 +262,7 @@ public class LevelPanel extends JComponent{
 			}
             if(SwingUtilities.isLeftMouseButton(e)){
                 try {
-                    keysPressed.offer(cursorDirection.toSingleMove(), 1, TimeUnit.SECONDS);
+                    keysPressed.offer(Move.Go.fromDirection(cursorDirection), 1, TimeUnit.SECONDS);
                 } catch (InterruptedException ex) {
                     LOG.error(ex.getMessage(), ex);
                 }

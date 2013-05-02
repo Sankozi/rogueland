@@ -31,11 +31,6 @@ public enum Direction implements Guid{
 	private static final Direction[] nextClockwise = {N, NE, E, NW, C, SE, W, SW, S};
 	private static final Direction[] previousClockwise = {W, NW, N, SW, C, NE, S, SE, E};
 
-    private static final Move[] moves =
-        {Move.Go.NORTHWEST, Move.Go.NORTH, Move.Go.NORTHEAST,
-         Move.Go.WEST,      Move.WAIT,     Move.Go.EAST,
-         Move.Go.SOUTHWEST, Move.Go.SOUTH, Move.Go.SOUTHEAST};
-
 	private static final Direction[][] diffDirections =
 		{ new Direction[] {NW, W, SW},
 		  new Direction[] {N,  C, S},
@@ -56,10 +51,6 @@ public enum Direction implements Guid{
 	public Direction prevClockwise(){
 		return previousClockwise[this.ordinal()];
 	}
-
-    public Move toSingleMove(){
-        return moves[this.ordinal()];
-    }
 
     @Override
     public int getGuid() {

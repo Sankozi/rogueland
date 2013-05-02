@@ -53,6 +53,9 @@ public class Player extends AbstractActor {
 		}
         setDestroyableParam(Destroyable.Param.DURABILITY_REGEN, 0.25f);
         setDestroyableParam(Destroyable.Param.MAX_DURABILITY, 20);
+        setActorParam(Actor.Param.MAX_BALANCE, 20);
+        setActorParam(Actor.Param.BALANCE, 20);
+        setActorParam(Actor.Param.BALANCE_REGEN, 5);
         this.equipment = new Inventory(playerClass.getItemGenerator().generate(0f));
         this.manager = EffectManager.forPlayer(this);
         this.equippedItems = new EquippedItems(this, equipment);
