@@ -66,7 +66,7 @@ final class RectangleCoordsSet extends AbstractSet<Coords> {
         return size;
     }
 
-    private final class HorizontalThenVerticalIterator implements Iterator{
+    private final class HorizontalThenVerticalIterator implements Iterator<Coords>{
         int x = xMin;
         int y = yMin;
 
@@ -76,7 +76,7 @@ final class RectangleCoordsSet extends AbstractSet<Coords> {
         }
 
         @Override
-        public Object next() {
+        public Coords next() {
             Coords ret = new Coords(x, y);
             if(x == xMax) {
                 x = xMin;
