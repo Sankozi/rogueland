@@ -25,8 +25,8 @@ public class DamageEffect extends InstantEffect {
         this.damages = damages;
     }
     
-    public static DamageEffect simpleDamageEffect(Damage.Type type, int value){
-        DamageEffect ret = new DamageEffect(Collections.singleton(new Damage(type, value)));
+    public static DamageEffect simpleDamageEffect(Damage damage){
+        DamageEffect ret = new DamageEffect(Collections.singleton(damage));
         return ret;
     }
 

@@ -3,6 +3,7 @@ package org.sankozi.rogueland.model.effect;
 import java.util.*;
 import javax.annotation.Nullable;
 
+import com.google.common.collect.Iterables;
 import org.sankozi.rogueland.model.*;
 import org.sankozi.rogueland.model.Destroyable.Param;
 
@@ -13,7 +14,7 @@ import org.sankozi.rogueland.model.Destroyable.Param;
  * - it properly destroys all events that should have ended
  * @author sankozi
  */
-public class EffectManager implements AccessManager {
+public final class EffectManager implements AccessManager {
 	private final static ResourceBundle paramsBundle = ResourceBundle.getBundle("org/sankozi/rogueland/resources/params");
 
     //EffectManager might work for different kinds of objects
@@ -64,6 +65,10 @@ public class EffectManager implements AccessManager {
 		}
         return ret;
 	}
+
+    public Iterable<Description> registerEffects(Iterable<Effect> effects){
+        return Iterables.transform(effects, this::registerEffect);
+    }
 
     public void removeEffect(Effect effect) {
         endEffect(effect);

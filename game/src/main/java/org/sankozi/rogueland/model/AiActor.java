@@ -1,6 +1,8 @@
 package org.sankozi.rogueland.model;
 
 import java.util.Random;
+
+import com.google.common.collect.ImmutableSet;
 import org.apache.logging.log4j.*;
 
 import static org.sankozi.rogueland.MathUtils.*;
@@ -126,12 +128,12 @@ public class AiActor extends AbstractActor{
 
     @Override
     public Effect getBumpEffect() {
-        return DamageEffect.simpleDamageEffect(Damage.Type.BLUNT, 5);
+        return DamageEffect.simpleDamageEffect(new Damage(Damage.Type.BLUNT, 5));
     }
 
     @Override
-    public Effect getWeaponEffect() {
-        return Effect.NULL;
+    public Iterable<Effect> getWeaponEffects(WeaponAttack attackType) {
+        return ImmutableSet.of();
     }
 
     @Override

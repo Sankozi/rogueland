@@ -210,9 +210,11 @@ public class Game {
      * @param target
      */
     private void attackWithWeapon(Actor actor, Actor target){
-        Description desc = target.getEffectManager().registerEffect(actor.getWeaponEffect());
-        GameLog.info(actor.getObjectName() + " is attacking " + target.getObjectName() + ":");
-        GameLog.info(" " + desc.getAsString());
+        Iterable<Description> descs = target.getEffectManager().registerEffects(actor.getWeaponEffects(null));
+        for(Description desc : descs) {
+            GameLog.info(actor.getObjectName() + " is attacking " + target.getObjectName() + ":");
+            GameLog.info(" " + desc.getAsString());
+        }
         if(target.isDestroyed()){
             removeActor(target);
         }

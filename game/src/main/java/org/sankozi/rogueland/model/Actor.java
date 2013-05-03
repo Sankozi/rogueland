@@ -19,7 +19,7 @@ public interface Actor extends Destroyable{
     Effect getBumpEffect();
 
 	/** returns power of weapon attacks */
-	Effect getWeaponEffect();
+    public Iterable<Effect> getWeaponEffects(WeaponAttack attackType);
 
     /** Returns actor param value */
     float actorParam(Param param);

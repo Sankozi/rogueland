@@ -38,7 +38,7 @@ public final class TextAreaPlayerRenderer extends TextAreaRenderer<Player> {
         }
         sb.append("</table></td><td><table>");
         sb.append("<tr><td colspan='2'>Weapon</td></tr>");
-        Utils.renderEffect(player.getWeaponEffect(), sb);
+        Utils.renderEffects(player.getWeaponEffects(null), sb);
         sb.append("<tr><td colspan='2'>Hand to hand combat</td></tr>");
         Utils.renderEffect(player.getBumpEffect(), sb);
         sb.append("</table></td></tr></table>");

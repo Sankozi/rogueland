@@ -1,5 +1,6 @@
 package org.sankozi.rogueland.model;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -84,12 +85,12 @@ public class Player extends AbstractActor {
 
     @Override
     public Effect getBumpEffect() {
-        return DamageEffect.simpleDamageEffect(Damage.Type.BLUNT, 3);
+        return DamageEffect.simpleDamageEffect(new Damage(Damage.Type.BLUNT, 3));
     }
 
     @Override
-    public Effect getWeaponEffect() {
-        return weaponEffect;
+    public Iterable<Effect> getWeaponEffects(WeaponAttack attackType) {
+        return ImmutableSet.of(weaponEffect);
     }
 
     @Override

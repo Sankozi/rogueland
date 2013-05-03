@@ -14,6 +14,12 @@ import java.util.Map;
 class Utils {
     private final static Logger LOG = LogManager.getLogger(Utils.class);
 
+    static void renderEffects(Iterable<Effect> effects, StringBuilder sb) {
+        for(Effect effect : effects) {
+            renderEffect(effect, sb);
+        }
+    }
+
     static void renderEffect(Effect effect, StringBuilder sb){
         sb.append("<table><tr valign='top'><td><table>");
         Map<? extends Param,Float> descriptionParameters = effect.getDescriptionParameters();
