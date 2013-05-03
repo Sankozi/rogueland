@@ -1,6 +1,7 @@
 package org.sankozi.rogueland.model;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import java.util.EnumMap;
 import java.util.Set;
@@ -49,7 +50,7 @@ public final class EquippedItems {
                 equippedItems.add(item);
                 player.getEffectManager().registerEffect(item.getUsedEffect());
                 if(it == ItemType.HELD){
-                    player.setWeaponEffect(item.getWeaponEffect());
+                    player.setWeaponEffects(ImmutableSet.of(item.getWeaponEffect()));
                 }
                 return true;
             }
@@ -65,7 +66,7 @@ public final class EquippedItems {
                     slots.put(it, freeSlots + 1);
                 }
                 if(it == ItemType.HELD){
-                    player.setWeaponEffect(Effect.NULL);
+                    player.setWeaponEffects(ImmutableSet.of());
                 }
             }
             player.getEffectManager().removeEffect(item.getUsedEffect());

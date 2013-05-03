@@ -1,8 +1,10 @@
 package org.sankozi.rogueland.model;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Set;
 import org.apache.logging.log4j.*;
@@ -12,6 +14,7 @@ import org.sankozi.rogueland.model.coords.Direction;
 import org.sankozi.rogueland.model.effect.DamageEffect;
 import org.sankozi.rogueland.model.effect.Effect;
 import org.sankozi.rogueland.model.effect.EffectManager;
+import org.sankozi.rogueland.model.effect.WeaponEffect;
 
 /**
  * Human Player
@@ -41,7 +44,10 @@ public class Player extends AbstractActor {
     
     private Coords location;
 	private Direction weaponDirection = Direction.N;
-    private Effect weaponEffect = Effect.NULL;
+    /** weapon effects of a weapon */
+    private Iterable<WeaponEffect> weaponWeaponEffects = ImmutableSet.of();
+    /** all effects of a weapon, including weaponWeaponEffects */
+    private Collection<Effect> weaponEffects = ImmutableSet.of();
 
     public Player(){
         this(PlayerClass.NULL);
@@ -90,7 +96,7 @@ public class Player extends AbstractActor {
 
     @Override
     public Iterable<Effect> getWeaponEffects(WeaponAttack attackType) {
-        return ImmutableSet.of(weaponEffect);
+        return weaponEffects;
     }
 
     @Override
@@ -103,8 +109,9 @@ public class Player extends AbstractActor {
         return Description.stringDescription("You");
     }
 
-    public void setWeaponEffect(Effect weaponEffect) {
-        this.weaponEffect = weaponEffect;
+    public void setWeaponEffects(Collection<Effect> weaponEffects) {
+        this.weaponEffects = weaponEffects;
+        this.weaponWeaponEffects = Iterables.filter(weaponEffects, WeaponEffect.class);
     }
 
 	public final void setPlayerParam(Param param, float value){
@@ -154,7 +161,7 @@ public class Player extends AbstractActor {
 
     @Override
 	public boolean isArmed() {
-		return weaponEffect != Effect.NULL;
+		return !weaponEffects.isEmpty();
 	}
 
     public Inventory getEquipment(){
