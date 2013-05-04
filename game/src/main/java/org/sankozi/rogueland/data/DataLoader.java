@@ -30,6 +30,7 @@ import org.sankozi.rogueland.model.effect.DamageEffect;
 
 import static org.sankozi.rogueland.data.LoaderUtils.*;
 import org.sankozi.rogueland.model.effect.ParamChangeEffect;
+import org.sankozi.rogueland.model.effect.WeaponEffect;
 
 /**
  * Object that loads games resources - strings, game data, and others
@@ -158,8 +159,37 @@ public final class DataLoader {
             case "attack":
                 builder.setWeaponEffect(DamageEffect.multiDamageEffect(toIntMap(params, Damage.Type.class)));
                 break;
+            case "weapon-attack":
+                parseWeaponAttackEffect(params, builder);
+                break;
             default:
                 throw new RuntimeException("unknown effect '" + name + "'");
         }
+    }
+
+    private static void parseWeaponAttackEffect(Map<String, ?> params, ItemTemplateBuilder builder) {
+        Damage swingDamage = parseDamage((Map<String, Number>) params.get("swing"));
+        Damage thrustDamage = parseDamage((Map<String, Number>) params.get("thrust"));
+        builder.setWeaponEffect(WeaponEffect.create(
+                (weaponAttack) -> {
+                    switch(weaponAttack.getMove()) {
+                        case SWING_CLOCKWISE:
+                        case SWING_COUNTERCLOCKWISE:
+                            return swingDamage;
+                        case THRUST:
+                            return thrustDamage;
+                        default:
+                            throw new UnsupportedOperationException("unsupported move type " + weaponAttack.getMove());
+                    }
+                }
+        ));
+    }
+
+    private static Damage parseDamage(Map<String, Number> swingDamageMap) {
+        if(swingDamageMap.size() != 1){
+            throw new UnsupportedOperationException("unsupported weapon damage map " + swingDamageMap);
+        }
+        Map.Entry<String, Number> swingDamageEntry = swingDamageMap.entrySet().iterator().next();
+        return new Damage(Damage.Type.valueOf(swingDamageEntry.getKey().toUpperCase()), swingDamageEntry.getValue().intValue());
     }
 }

@@ -4,7 +4,10 @@
                 (merge {:max-durability 1} prots))))
 (defn effect-value [effect]
     (into {} (map (fn [entry] 
-                    (let [[ikey ivalue] entry] [(name ikey) ivalue])) 
+                    (let [[ikey ivalue] entry]
+                        (if (= ikey :swing) [(name ikey) (effect-value ivalue)]
+                        (if (= ikey :thrust) [(name ikey) (effect-value ivalue)]
+                         [(name ikey) ivalue])))) 
                 effect)))     
 (defn effects-value [effects]
     (into {} (map (fn [entry] 
@@ -30,8 +33,11 @@
     :durability 100
     :value 80
     :effects {
-        :attack {
-            :blunt 8}}}
+        :weapon-attack {
+            :swing {
+                :blunt 10}
+            :thrust{
+                :blunt 7}}}}
 :quarterstaff {
     :name "Quarterstaff"
     :desc "Staff made from hardwood cut into quarters."
@@ -39,8 +45,11 @@
     :durability 100
     :value 100
     :effects {
-        :attack {
-            :blunt 10}}}
+        :weapon-attack {
+            :swing {
+                :blunt 10}
+            :thrust{
+                :blunt 7}}}}
 :crude-short-sword {
   	:name "Crude short sword"
 	  :types #{:sword}

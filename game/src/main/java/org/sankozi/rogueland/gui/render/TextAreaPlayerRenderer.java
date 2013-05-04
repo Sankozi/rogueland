@@ -6,6 +6,8 @@ import org.sankozi.rogueland.gui.DescriptionTextArea;
 import org.sankozi.rogueland.model.Actor;
 import org.sankozi.rogueland.model.Destroyable;
 import org.sankozi.rogueland.model.Player;
+import org.sankozi.rogueland.model.WeaponAttack;
+import org.sankozi.rogueland.model.coords.Direction;
 import org.sankozi.rogueland.resources.ResourceProvider;
 
 /**
@@ -38,7 +40,7 @@ public final class TextAreaPlayerRenderer extends TextAreaRenderer<Player> {
         }
         sb.append("</table></td><td><table>");
         sb.append("<tr><td colspan='2'>Weapon</td></tr>");
-        Utils.renderEffects(player.getWeaponEffects(null), sb);
+        Utils.renderEffects(player.getWeaponEffects(WeaponAttack.get(Direction.N, WeaponAttack.WeaponMove.THRUST)), sb);
         sb.append("<tr><td colspan='2'>Hand to hand combat</td></tr>");
         Utils.renderEffect(player.getBumpEffect(), sb);
         sb.append("</table></td></tr></table>");

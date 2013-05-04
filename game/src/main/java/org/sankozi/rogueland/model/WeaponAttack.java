@@ -13,7 +13,8 @@ public final class WeaponAttack {
     private final static Logger LOG = LogManager.getLogger(WeaponAttack.class);
 
     public static enum WeaponMove {
-        SWING,
+        SWING_CLOCKWISE,
+        SWING_COUNTERCLOCKWISE,
         THRUST
     }
 

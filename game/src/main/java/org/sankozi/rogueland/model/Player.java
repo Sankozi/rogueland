@@ -96,6 +96,9 @@ public class Player extends AbstractActor {
 
     @Override
     public Iterable<Effect> getWeaponEffects(WeaponAttack attackType) {
+        for(WeaponEffect effect : weaponWeaponEffects){
+            effect.setWeaponAttack(attackType);
+        }
         return weaponEffects;
     }
 

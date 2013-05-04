@@ -152,7 +152,7 @@ public class Game {
                     tiles[nextWeaponLocation.x][nextWeaponLocation.y].weapon = true;
                     Tile tile = tiles[nextWeaponLocation.x][nextWeaponLocation.y];
                     if(tile.actor != null){
-                        attackWithWeapon(actor, tile.actor);
+                        attackWithWeapon(actor, tile.actor, m);
                     }
                 } else if(!prevWeaponLocation.equals(nextWeaponLocation)){
 					LOG.debug("new weapon location : " + nextWeaponLocation.x + "," + nextWeaponLocation.y);
@@ -160,7 +160,7 @@ public class Game {
                         Tile tile = tiles[nextWeaponLocation.x][nextWeaponLocation.y];
                         tiles[nextWeaponLocation.x][nextWeaponLocation.y].weapon = true;
                         if(tile.actor != null){
-                            attackWithWeapon(actor, tile.actor);
+                            attackWithWeapon(actor, tile.actor, m);
                         }
                     }
                     if(level.getDim().containsCoordinates(prevWeaponLocation)){
@@ -209,10 +209,25 @@ public class Game {
      * @param actor
      * @param target
      */
-    private void attackWithWeapon(Actor actor, Actor target){
-        Iterable<Description> descs = target.getEffectManager().registerEffects(actor.getWeaponEffects(null));
+    private void attackWithWeapon(Actor actor, Actor target, Move move){
+        //TODO make possible to swing attack while moving
+        WeaponAttack weaponAttack = move instanceof Move.Rotate
+                                        ? WeaponAttack.get(Direction.C,
+                                                        move == Move.Rotate.CLOCKWISE
+                                                        ? WeaponAttack.WeaponMove.SWING_CLOCKWISE
+                                                        : WeaponAttack.WeaponMove.SWING_COUNTERCLOCKWISE)
+                                        : WeaponAttack.get(((Move.Go)move).direction, WeaponAttack.WeaponMove.THRUST);
+        Iterable<Description> descs = target.getEffectManager().registerEffects(actor.getWeaponEffects(weaponAttack));
+
+        switch(weaponAttack.getMove()){
+            case THRUST:
+                GameLog.info(actor.getObjectName() + " thrusts his weapon into "  + target.getObjectName() + ":");
+                break;
+            case SWING_COUNTERCLOCKWISE:
+            case SWING_CLOCKWISE:
+                GameLog.info(actor.getObjectName() + " swings his weapon at "  + target.getObjectName() + ":");
+        }
         for(Description desc : descs) {
-            GameLog.info(actor.getObjectName() + " is attacking " + target.getObjectName() + ":");
             GameLog.info(" " + desc.getAsString());
         }
         if(target.isDestroyed()){
