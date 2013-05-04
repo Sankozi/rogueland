@@ -107,6 +107,11 @@ public class AiActor extends AbstractActor{
 	}
 
     @Override
+    public Direction getWeaponDirection() {
+        return null;
+    }
+
+    @Override
     public Coords getLocation() {
         return location;
     }

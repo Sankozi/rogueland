@@ -7,6 +7,8 @@ import org.sankozi.rogueland.model.coords.Direction;
 /**
  * Object representing type of weapon attack.
  *
+ * WeaponAttack has direction (can be different than weapon direction from Actor!) and move.
+ *
  * @author sankozi
  */
 public final class WeaponAttack {
@@ -26,6 +28,12 @@ public final class WeaponAttack {
         this.move = move;
     }
 
+    /**
+     * Returns WeaponAttack
+     * @param direction direction of attack
+     * @param move type of move
+     * @return WeaponAttack, never null
+     */
     public static WeaponAttack get(Direction direction, WeaponMove move){
         return new WeaponAttack(direction, move);
     }

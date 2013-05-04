@@ -125,6 +125,7 @@ public class Player extends AbstractActor {
 		return params.get(param);
 	}
 
+    @Override
 	public Direction getWeaponDirection() {
 		return weaponDirection;
 	}

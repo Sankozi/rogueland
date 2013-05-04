@@ -9,21 +9,26 @@ import org.sankozi.rogueland.model.guid.GuidGenerator;
  * @author sankozi
  */
 public enum Direction implements Guid{
-    NW(-1,-1, 7), N( 0,-1, 8), NE(+1, -1, 9),
-	 W(-1, 0, 4), C( 0, 0, 5),  E(+1,  0, 6),
-	SW(-1,+1, 1), S( 0,+1, 2), SE(+1, +1, 3);
+    NW(-1,-1, 7, 315), N( 0,-1, 8,   0), NE(+1, -1, 9,  45),
+	 W(-1, 0, 4, 270), C( 0, 0, 5,   0),  E(+1,  0, 6,  90),
+	SW(-1,+1, 1, 225), S( 0,+1, 2, 180), SE(+1, +1, 3, 135);
 
 	public final int dx;
 	public final int dy;
 
     public final int numpadNumber;
 
+    /** angle looking from N clockwise */
+    private final int angle;
+
     private final int guid = GuidGenerator.getNewGuid();
 
-	private Direction(int dx, int dy, int numpad) {
+	private Direction(int dx, int dy, int numpad, int angle) {
 		this.dx = dx;
 		this.dy = dy;
         this.numpadNumber = numpad;
+
+        this.angle = angle;
 	}
 
     /** Directions from number keypad i.e. 1 is SW, 6 is E */
@@ -51,6 +56,17 @@ public enum Direction implements Guid{
 	public Direction prevClockwise(){
 		return previousClockwise[this.ordinal()];
 	}
+
+    public boolean isOnRightSideOf(Direction direction){
+        if(this == C || direction == C) {
+            throw new IllegalStateException("C direction cannot be compared with other direction");
+        }
+        if(this.angle < direction.angle){
+            return this.angle + 360 - direction.angle < 180;
+        } else {
+            return this.angle - direction.angle < 180;
+        }
+    }
 
     @Override
     public int getGuid() {

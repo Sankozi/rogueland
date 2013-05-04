@@ -210,13 +210,25 @@ public class Game {
      * @param target
      */
     private void attackWithWeapon(Actor actor, Actor target, Move move){
-        //TODO make possible to swing attack while moving
-        WeaponAttack weaponAttack = move instanceof Move.Rotate
-                                        ? WeaponAttack.get(Direction.C,
-                                                        move == Move.Rotate.CLOCKWISE
-                                                        ? WeaponAttack.WeaponMove.SWING_CLOCKWISE
-                                                        : WeaponAttack.WeaponMove.SWING_COUNTERCLOCKWISE)
-                                        : WeaponAttack.get(((Move.Go)move).direction, WeaponAttack.WeaponMove.THRUST);
+        WeaponAttack weaponAttack;
+        if(move instanceof Move.Rotate){ //rotation is always swing
+            weaponAttack = WeaponAttack.get(Direction.C,
+                               move == Move.Rotate.CLOCKWISE
+                                    ? WeaponAttack.WeaponMove.SWING_CLOCKWISE
+                                    : WeaponAttack.WeaponMove.SWING_COUNTERCLOCKWISE);
+        } else { //move can be swing or thrus depending on angle
+            Direction moveDirection = ((Move.Go)move).direction;
+            Direction weaponDirection = actor.getWeaponDirection();
+            if(weaponDirection == moveDirection
+                    || weaponDirection == moveDirection.prevClockwise()
+                    || weaponDirection == moveDirection.nextClockwise()) {
+                weaponAttack = WeaponAttack.get(moveDirection, WeaponAttack.WeaponMove.THRUST);
+            } else {
+                weaponAttack = WeaponAttack.get(moveDirection, weaponDirection.isOnRightSideOf(moveDirection)
+                                ? WeaponAttack.WeaponMove.SWING_COUNTERCLOCKWISE
+                                : WeaponAttack.WeaponMove.SWING_CLOCKWISE);
+            }
+        }
         Iterable<Description> descs = target.getEffectManager().registerEffects(actor.getWeaponEffects(weaponAttack));
 
         switch(weaponAttack.getMove()){
