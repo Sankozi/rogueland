@@ -30,7 +30,7 @@ public final class DescriptionTextAreaLogPanel extends LogPanel{
 
     @Override
     protected void onMessageEDT(String message, MessageType type) {
-        LOG.info("onMessageEDT");
+        LOG.trace("onMessageEDT");
         checkState(SwingUtilities.isEventDispatchThread(), "onMessage must be called in EDT");
         sb.append(message).append("<br/>").append("</html>");
         log.setText(sb.toString());

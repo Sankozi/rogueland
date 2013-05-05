@@ -43,6 +43,12 @@ public interface Actor extends Destroyable{
         /** current value of balance */
         BALANCE,
         /** amount of balance regenerated each turn */
-        BALANCE_REGEN
+        BALANCE_REGEN,
+        /** flag (>0) indicating push force */
+        OFF_BALANCE,
+        /** push force toward east (negative - abs toward west) */
+        PUSH_VERTICAL,
+        /** push force toward south (negative - abs toward north)*/
+        PUSH_HORIZONTAL,
     }
 }

@@ -13,6 +13,7 @@ import java.util.List;
 import org.sankozi.rogueland.model.Destroyable.Param;
 import org.sankozi.rogueland.model.*;
 import org.sankozi.rogueland.model.coords.Coords;
+import org.sankozi.rogueland.model.coords.Dim;
 import org.sankozi.rogueland.model.coords.Direction;
 
 /**
@@ -114,12 +115,78 @@ public class Game {
                              actor.actorParam(Actor.Param.MAX_BALANCE)));
         }
 
+        private boolean processPush(Actor actor) {
+            if(actor.actorParam(Actor.Param.OFF_BALANCE) > 0){
+                LOG.info("{} is off balance", actor.getName());
+                float hPush = actor.actorParam(Actor.Param.PUSH_HORIZONTAL);
+                float vPush = actor.actorParam(Actor.Param.PUSH_VERTICAL);
+                float balance = actor.actorParam(Actor.Param.BALANCE);
+                float maxBalance = actor.actorParam(Actor.Param.MAX_BALANCE);
+
+                float value = Math.max(Math.abs(hPush), Math.abs(vPush));
+
+                actor.setActorParam(Actor.Param.PUSH_HORIZONTAL, 0f);
+                actor.setActorParam(Actor.Param.PUSH_VERTICAL, 0f);
+                actor.setActorParam(Actor.Param.OFF_BALANCE, 0f);
+
+                LOG.info("push force = {}", value);
+
+                if(balance > value){ //some balance left
+                    balance -= value;
+                    actor.setActorParam(Actor.Param.BALANCE, balance);
+                    float ratio = value / maxBalance;
+
+                    LOG.info("{} reducing balance by {}", actor.getName(), value);
+
+                    if(ratio > 0.333) { //minimal push
+                        push(actor, Math.signum(hPush), Math.signum(vPush), 1);
+                        return ratio > 0.666; //push with stagger
+                    }
+                } else {
+                    actor.setActorParam(Actor.Param.BALANCE, 0f);
+                    LOG.info("{} balance is 0", actor.getName());
+                    float reducedHPush = Math.signum(hPush) * Math.max(Math.abs(hPush) - value, 0);
+                    float reducedVPush = Math.signum(vPush) * Math.max(Math.abs(vPush) - value, 0);
+                    push(actor, Math.signum(reducedHPush), Math.signum(reducedVPush),
+                            1 + (int)(10f * Math.max(Math.abs(reducedHPush), Math.abs(reducedVPush)) / maxBalance));
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void push(Actor actor, float dx, float dy, int length){
+            LOG.info("pushing");
+            int x = actor.getLocation().x;
+            int y = actor.getLocation().y;
+            Dim dim = getLevel().getDim();
+            for(int fieldsMoved = 1; fieldsMoved <= length; ++fieldsMoved){
+                x += dx;
+                y += dy;
+                if(!dim.containsCoordinates(x, y)){
+                    LOG.info("pushing out of playing field");
+                    break;
+                } else { //TODO check all and move
+                    Tile tile = getLevel().getTiles()[x][y];
+                    if(!tile.isPassable()){
+                        LOG.info("pushing on impassable tile");
+                    } else {
+                        LOG.info("pushing onto ({},{})", x, y);
+                    }
+                }
+            }
+        }
+
 		/**
 		 * Process actor that is moving with its weapon (on different tile)
 		 * @param actor 
 		 */
 		private void processActor(Actor actor) {
             processRegeneration(actor);
+            boolean missingTurn = processPush(actor);
+            if(missingTurn){
+                return;
+            }
             Move m;
             Coords targetLocation;
             Coords actorLocation = actor.getLocation();
@@ -210,25 +277,8 @@ public class Game {
      * @param target
      */
     private void attackWithWeapon(Actor actor, Actor target, Move move){
-        WeaponAttack weaponAttack;
-        if(move instanceof Move.Rotate){ //rotation is always swing
-            weaponAttack = WeaponAttack.get(Direction.C,
-                               move == Move.Rotate.CLOCKWISE
-                                    ? WeaponAttack.WeaponMove.SWING_CLOCKWISE
-                                    : WeaponAttack.WeaponMove.SWING_COUNTERCLOCKWISE);
-        } else { //move can be swing or thrus depending on angle
-            Direction moveDirection = ((Move.Go)move).direction;
-            Direction weaponDirection = actor.getWeaponDirection();
-            if(weaponDirection == moveDirection
-                    || weaponDirection == moveDirection.prevClockwise()
-                    || weaponDirection == moveDirection.nextClockwise()) {
-                weaponAttack = WeaponAttack.get(moveDirection, WeaponAttack.WeaponMove.THRUST);
-            } else {
-                weaponAttack = WeaponAttack.get(moveDirection, weaponDirection.isOnRightSideOf(moveDirection)
-                                ? WeaponAttack.WeaponMove.SWING_COUNTERCLOCKWISE
-                                : WeaponAttack.WeaponMove.SWING_CLOCKWISE);
-            }
-        }
+        WeaponAttack weaponAttack = getWeaponAttack(actor, move);
+
         Iterable<Description> descs = target.getEffectManager().registerEffects(actor.getWeaponEffects(weaponAttack));
 
         switch(weaponAttack.getMove()){
@@ -245,6 +295,29 @@ public class Game {
         if(target.isDestroyed()){
             removeActor(target);
         }
+    }
+
+    private static WeaponAttack getWeaponAttack(Actor actor, Move move) {
+        WeaponAttack weaponAttack;
+        if(move instanceof Move.Rotate){ //rotation is always swing
+            weaponAttack = WeaponAttack.get(Direction.C,
+                               move == Move.Rotate.CLOCKWISE
+                                    ? WeaponAttack.WeaponMove.SWING_CLOCKWISE
+                                    : WeaponAttack.WeaponMove.SWING_COUNTERCLOCKWISE);
+        } else { //move can be swing or thrust depending on angle
+            Direction moveDirection = ((Move.Go)move).direction;
+            Direction weaponDirection = actor.getWeaponDirection();
+            if(weaponDirection == moveDirection
+                    || weaponDirection == moveDirection.prevClockwise()
+                    || weaponDirection == moveDirection.nextClockwise()) {
+                weaponAttack = WeaponAttack.get(moveDirection, WeaponAttack.WeaponMove.THRUST);
+            } else {
+                weaponAttack = WeaponAttack.get(moveDirection, weaponDirection.isOnRightSideOf(moveDirection)
+                                ? WeaponAttack.WeaponMove.SWING_COUNTERCLOCKWISE
+                                : WeaponAttack.WeaponMove.SWING_CLOCKWISE);
+            }
+        }
+        return weaponAttack;
     }
 
     private static Coords getTargetLocationAndRotate(Actor a, Move m, Coords location) {

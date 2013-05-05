@@ -55,11 +55,10 @@ public abstract class AbstractDestroyable implements Destroyable{
 
     @Override
     public void heal(float value){
-//        LOG.info(this.getName() + " : healing +" + fraction);
         durability += value;
         if(durability >= destroyableParam(Param.MAX_DURABILITY)){
             durability = (int) destroyableParam(Param.MAX_DURABILITY);
-            LOG.info(this.getObjectName() + ": MAX HEALTH");
+            //LOG.trace("{} : MAX HEALTH", this.getObjectName());
         }
     }
 

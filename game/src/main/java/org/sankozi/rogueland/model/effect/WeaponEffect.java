@@ -35,6 +35,11 @@ public class WeaponEffect extends InstantEffect {
     @Override
     protected Description apply(AccessManager manager) {
         Damage damage = damages.apply(weaponAttack);
+        applyPushForce(manager, weaponAttack.getDirection(), damage.value);
+        return applyDamage(manager, damage);
+    }
+
+    private Description applyDamage(AccessManager manager, Damage damage) {
         Damageable damageable = manager.getDamagable();
         int resistance = damageable.protection(damage.type);
         if(resistance < damage.value){
@@ -51,6 +56,12 @@ public class WeaponEffect extends InstantEffect {
             }
             return sb.toString();
         }));
+    }
+
+    private void applyPushForce(AccessManager manager, Direction direction, int forceValue){
+        manager.accessActorParam(Actor.Param.OFF_BALANCE).setChange(1);
+        manager.accessActorParam(Actor.Param.PUSH_HORIZONTAL).setChange(direction.dx * forceValue);
+        manager.accessActorParam(Actor.Param.PUSH_VERTICAL).setChange(direction.dy * forceValue);
     }
 
     @Override
