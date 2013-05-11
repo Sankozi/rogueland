@@ -16,6 +16,8 @@ import org.sankozi.rogueland.model.coords.Coords;
 import org.sankozi.rogueland.model.coords.Dim;
 import org.sankozi.rogueland.model.coords.Direction;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * Object responsible for single game instance
  * @author sankozi
@@ -115,7 +117,7 @@ public class Game {
                              actor.actorParam(Actor.Param.MAX_BALANCE)));
         }
 
-        private boolean processPush(Actor actor) {
+        private void processPush(Actor actor) {
             if(actor.actorParam(Actor.Param.OFF_BALANCE) > 0){
                 LOG.info("{} is off balance", actor.getName());
                 float hPush = actor.actorParam(Actor.Param.PUSH_HORIZONTAL);
@@ -139,28 +141,30 @@ public class Game {
                     LOG.info("{} reducing balance by {}", actor.getName(), value);
 
                     if(ratio > 0.333) { //minimal push
-                        push(actor, Math.signum(hPush), Math.signum(vPush), 1);
-                        return ratio > 0.666; //push with stagger
+                        push(actor, (int) Math.signum(hPush), (int) Math.signum(vPush), 1);
+                        if(ratio > 0.666){ //push with sumble
+                            actor.changeActorParam(Actor.Param.STUMBLE, +1);
+                        }
                     }
-                } else {
+                } else { //push with big stumble
                     actor.setActorParam(Actor.Param.BALANCE, 0f);
                     LOG.info("{} balance is 0", actor.getName());
                     float reducedHPush = Math.signum(hPush) * Math.max(Math.abs(hPush) - value, 0);
                     float reducedVPush = Math.signum(vPush) * Math.max(Math.abs(vPush) - value, 0);
-                    push(actor, Math.signum(reducedHPush), Math.signum(reducedVPush),
-                            1 + (int)(10f * Math.max(Math.abs(reducedHPush), Math.abs(reducedVPush)) / maxBalance));
-                    return true;
+                    push(actor,(int) Math.signum(hPush), (int) Math.signum(vPush),
+                            1 + (int) (10f * Math.max(Math.abs(reducedHPush), Math.abs(reducedVPush)) / maxBalance));
+                    actor.changeActorParam(Actor.Param.STUMBLE, +2);
                 }
             }
-            return false;
         }
 
-        private void push(Actor actor, float dx, float dy, int length){
+        private void push(Actor actor, int dx, int dy, int length){
+            checkArgument(dx != 0 || dy != 0, "dx or dy  must other than 0");
             LOG.info("pushing");
             int x = actor.getLocation().x;
             int y = actor.getLocation().y;
             Dim dim = getLevel().getDim();
-            for(int fieldsMoved = 1; fieldsMoved <= length; ++fieldsMoved){
+            for(int fieldsMoved = 0; fieldsMoved < length; ++fieldsMoved){
                 x += dx;
                 y += dy;
                 if(!dim.containsCoordinates(x, y)){
@@ -169,12 +173,32 @@ public class Game {
                 } else { //TODO check all and move
                     Tile tile = getLevel().getTiles()[x][y];
                     if(!tile.isPassable()){
-                        LOG.info("pushing on impassable tile");
+                        LOG.info("pushing on impassable tile ({},{}: {})", x, y, tile);
                     } else {
                         LOG.info("pushing onto ({},{})", x, y);
                     }
                 }
             }
+        }
+
+        /**
+         * Processes stats that make actor miss his turn
+         * @param actor actor to be checked
+         * @return true if actor will miss his turn
+         */
+        private boolean processTurnMissStats(Actor actor){
+            float stumble = actor.actorParam(Actor.Param.STUMBLE);
+            if(LOG.isDebugEnabled()){
+                if(stumble > 0){
+                    LOG.info("actor {} stumble {}", actor, stumble);
+                }
+            }
+            if(stumble > 1){
+                actor.setActorParam(Actor.Param.STUMBLE, 1);
+            } else {
+                actor.setActorParam(Actor.Param.STUMBLE, 0);
+            }
+            return stumble >= 1;
         }
 
 		/**
@@ -183,7 +207,7 @@ public class Game {
 		 */
 		private void processActor(Actor actor) {
             processRegeneration(actor);
-            boolean missingTurn = processPush(actor);
+            boolean missingTurn = processTurnMissStats(actor);
             if(missingTurn){
                 return;
             }
@@ -218,23 +242,27 @@ public class Game {
                 if(prevWeaponLocation == null) {
                     tiles[nextWeaponLocation.x][nextWeaponLocation.y].weapon = true;
                     Tile tile = tiles[nextWeaponLocation.x][nextWeaponLocation.y];
-                    if(tile.actor != null){
-                        attackWithWeapon(actor, tile.actor, m);
-                    }
+                    checkWeaponAttackOnTile(actor, m, tile);
                 } else if(!prevWeaponLocation.equals(nextWeaponLocation)){
-					LOG.debug("new weapon location : " + nextWeaponLocation.x + "," + nextWeaponLocation.y);
+//					LOG.debug("new weapon location : " + nextWeaponLocation.x + "," + nextWeaponLocation.y);
                     if(level.getDim().containsCoordinates(nextWeaponLocation)){
                         Tile tile = tiles[nextWeaponLocation.x][nextWeaponLocation.y];
                         tiles[nextWeaponLocation.x][nextWeaponLocation.y].weapon = true;
-                        if(tile.actor != null){
-                            attackWithWeapon(actor, tile.actor, m);
-                        }
+                        checkWeaponAttackOnTile(actor, m, tile);
                     }
                     if(level.getDim().containsCoordinates(prevWeaponLocation)){
 					    tiles[prevWeaponLocation.x][prevWeaponLocation.y].weapon = false;
                     }
 				}
 			}
+        }
+
+        private void checkWeaponAttackOnTile(Actor actor, Move m, Tile tile) {
+            Actor targetActor = tile.actor;
+            if(targetActor != null){
+                attackWithWeapon(actor, targetActor, m); //this method can change tile.actor
+                processPush(targetActor);
+            }
         }
 
         private void processActors() {
@@ -299,14 +327,18 @@ public class Game {
 
     private static WeaponAttack getWeaponAttack(Actor actor, Move move) {
         WeaponAttack weaponAttack;
+        Direction weaponDirection = actor.getWeaponDirection();
         if(move instanceof Move.Rotate){ //rotation is always swing
-            weaponAttack = WeaponAttack.get(Direction.C,
-                               move == Move.Rotate.CLOCKWISE
-                                    ? WeaponAttack.WeaponMove.SWING_CLOCKWISE
-                                    : WeaponAttack.WeaponMove.SWING_COUNTERCLOCKWISE);
+            Move.Rotate rotation = (Move.Rotate) move;
+            if(move == Move.Rotate.CLOCKWISE){
+                weaponAttack = WeaponAttack.get(weaponDirection.nextClockwise().nextClockwise(),
+                                    WeaponAttack.WeaponMove.SWING_CLOCKWISE);
+            } else {
+                weaponAttack = WeaponAttack.get(weaponDirection.prevClockwise().prevClockwise(),
+                                    WeaponAttack.WeaponMove.SWING_COUNTERCLOCKWISE);
+            }
         } else { //move can be swing or thrust depending on angle
             Direction moveDirection = ((Move.Go)move).direction;
-            Direction weaponDirection = actor.getWeaponDirection();
             if(weaponDirection == moveDirection
                     || weaponDirection == moveDirection.prevClockwise()
                     || weaponDirection == moveDirection.nextClockwise()) {

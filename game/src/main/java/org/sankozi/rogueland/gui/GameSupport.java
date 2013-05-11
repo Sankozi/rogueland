@@ -187,6 +187,7 @@ class GameSupport {
 			try {
             	game.provideRunnable().run();
 			} catch (Throwable t) {
+                t.printStackTrace();
 				LOG.error(t.getMessage(), t);
 			} finally {
 				readWriteLock.writeLock().unlock();

@@ -25,6 +25,9 @@ public interface Actor extends Destroyable{
     /** Returns actor param value */
     float actorParam(Param param);
     void setActorParam(Param param, float value);
+    default void changeActorParam(Param param, float change){
+        setActorParam(param, actorParam(param) + change);
+    }
 
 	/** Returns true if Actor has weapon */
 	boolean isArmed();
@@ -50,5 +53,10 @@ public interface Actor extends Destroyable{
         PUSH_VERTICAL,
         /** push force toward south (negative - abs toward north)*/
         PUSH_HORIZONTAL,
+        /**
+         * number of turns missing due to pushing,
+         * can be 0, 1 or >1, 0 - no missing turns, 1 - missing turn and change to 0, >1 missing turn and change to 1
+         **/
+        STUMBLE,
     }
 }

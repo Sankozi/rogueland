@@ -3,6 +3,8 @@ package org.sankozi.rogueland.model;
 import org.sankozi.rogueland.model.guid.Guid;
 import org.sankozi.rogueland.model.guid.GuidGenerator;
 
+import javax.annotation.Nullable;
+
 /**
  *
  * @author sankozi
@@ -19,7 +21,7 @@ public final class Tile {
         }
     }
     public Type type = Type.SAND;
-    public Actor actor;
+    public @Nullable Actor actor;
 	public boolean weapon;
 
 	public boolean isPassable(){
@@ -38,6 +40,10 @@ public final class Tile {
 
     @Override
     public String toString() {
-        return "Tile[" + "type=" + type + ",actor=" + actor + ']';
+        if(weapon){
+            return "Tile with weapon";
+        } else {
+            return "Tile " + type + (actor == null? "" : " with " + actor);
+        }
     }
 }

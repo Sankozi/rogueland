@@ -10,6 +10,7 @@ import org.sankozi.rogueland.model.coords.Direction;
 
 import java.util.Map;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -80,6 +81,7 @@ public class WeaponEffect extends InstantEffect {
     }
 
     public void setWeaponAttack(WeaponAttack weaponAttack) {
-        this.weaponAttack = checkNotNull(weaponAttack, "weapon attack cannot be null");
+        this.weaponAttack = checkNotNull(weaponAttack, "weaponAttack cannot be null");
+        checkArgument(weaponAttack.getDirection() != Direction.C, "direction cannot be C");
     }
 }
