@@ -114,7 +114,7 @@ public class Game {
             actor.heal(actor.destroyableParam(Param.DURABILITY_REGEN));
             actor.setActorParam(Actor.Param.BALANCE,
                     Math.min(actor.actorParam(Actor.Param.BALANCE) + actor.actorParam(Actor.Param.BALANCE_REGEN),
-                             actor.actorParam(Actor.Param.MAX_BALANCE)));
+                            actor.actorParam(Actor.Param.MAX_BALANCE)));
         }
 
         private void processPush(Actor actor) {
@@ -161,24 +161,43 @@ public class Game {
         private void push(Actor actor, int dx, int dy, int length){
             checkArgument(dx != 0 || dy != 0, "dx or dy  must other than 0");
             LOG.info("pushing");
-            int x = actor.getLocation().x;
-            int y = actor.getLocation().y;
+            Coords prevLocation = actor.getLocation();
+            int x = prevLocation.x;
+            int y = prevLocation.y;
             Dim dim = getLevel().getDim();
+            boolean locationChanged = false;
             for(int fieldsMoved = 0; fieldsMoved < length; ++fieldsMoved){
                 x += dx;
                 y += dy;
                 if(!dim.containsCoordinates(x, y)){
                     LOG.info("pushing out of playing field");
                     break;
-                } else { //TODO check all and move
-                    Tile tile = getLevel().getTiles()[x][y];
-                    if(!tile.isPassable()){
-                        LOG.info("pushing on impassable tile ({},{}: {})", x, y, tile);
-                    } else {
-                        LOG.info("pushing onto ({},{})", x, y);
-                    }
+                } else if(!getLevel().getTiles()[x][y].isPassable()){
+                    LOG.info("pushing on impassable tile ({},{})", x, y);
+                    break;
                 }
+                LOG.info("pushing onto ({},{})", x, y);
+                locationChanged = true;
             }
+
+            if(locationChanged) {
+                changeActorLocation(actor, new Coords(x, y));
+            }
+        }
+
+        /**
+         * Unchecked changing location of actor
+         * @param actor
+         * @param toCoords
+         */
+        private void changeActorLocation(Actor actor, Coords toCoords){
+            Tile from = getLevel().getTile(actor.getLocation());
+            Tile to = getLevel().getTile(toCoords);
+            assert from.actor == actor : "from.actor = " + from.actor + " actor = " + actor;
+            assert to.actor == null;
+            to.actor = from.actor;
+            from.actor = null;
+            actor.setLocation(toCoords);
         }
 
         /**
@@ -261,7 +280,9 @@ public class Game {
             Actor targetActor = tile.actor;
             if(targetActor != null){
                 attackWithWeapon(actor, targetActor, m); //this method can change tile.actor
-                processPush(targetActor);
+                if(!targetActor.isDestroyed()){
+                    processPush(targetActor);
+                }
             }
         }
 
