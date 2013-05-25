@@ -87,6 +87,74 @@ public class Game {
         actor.setLocation(coords);
     }
 
+    private void processPush(Actor actor) {
+        if(actor.actorParam(Actor.Param.OFF_BALANCE) > 0){
+            LOG.info("{} is off balance", actor.getName());
+            float hPush = actor.actorParam(Actor.Param.PUSH_HORIZONTAL);
+            float vPush = actor.actorParam(Actor.Param.PUSH_VERTICAL);
+            float balance = actor.actorParam(Actor.Param.BALANCE);
+            float maxBalance = actor.actorParam(Actor.Param.MAX_BALANCE);
+
+            float value = Math.max(Math.abs(hPush), Math.abs(vPush));
+
+            actor.setActorParam(Actor.Param.PUSH_HORIZONTAL, 0f);
+            actor.setActorParam(Actor.Param.PUSH_VERTICAL, 0f);
+            actor.setActorParam(Actor.Param.OFF_BALANCE, 0f);
+
+            LOG.info("push force = {}", value);
+
+            if(balance > value){ //some balance left
+                balance -= value;
+                actor.setActorParam(Actor.Param.BALANCE, balance);
+                float ratio = value / maxBalance;
+
+                LOG.info("{} reducing balance by {}", actor.getName(), value);
+
+                if(ratio > 0.333) { //minimal push
+                    push(actor, (int) Math.signum(hPush), (int) Math.signum(vPush), 1);
+                    if(ratio > 0.666){ //push with sumble
+                        actor.changeActorParam(Actor.Param.STUMBLE, +1);
+                    }
+                }
+            } else { //push with big stumble
+                actor.setActorParam(Actor.Param.BALANCE, 0f);
+                LOG.info("{} balance is 0", actor.getName());
+                float reducedHPush = Math.signum(hPush) * Math.max(Math.abs(hPush) - value, 0);
+                float reducedVPush = Math.signum(vPush) * Math.max(Math.abs(vPush) - value, 0);
+                push(actor,(int) Math.signum(hPush), (int) Math.signum(vPush),
+                        1 + (int) (10f * Math.max(Math.abs(reducedHPush), Math.abs(reducedVPush)) / maxBalance));
+                actor.changeActorParam(Actor.Param.STUMBLE, +2);
+            }
+        }
+    }
+
+    private void push(Actor actor, int dx, int dy, int length){
+        checkArgument(dx != 0 || dy != 0, "dx or dy  must other than 0");
+        LOG.info("pushing");
+        Coords prevLocation = actor.getLocation();
+        int x = prevLocation.x;
+        int y = prevLocation.y;
+        Dim dim = getLevel().getDim();
+        boolean locationChanged = false;
+        for(int fieldsMoved = 0; fieldsMoved < length; ++fieldsMoved){
+            x += dx;
+            y += dy;
+            if(!dim.containsCoordinates(x, y)){
+                LOG.info("pushing out of playing field");
+                break;
+            } else if(!getLevel().getTiles()[x][y].isPassable()){
+                LOG.info("pushing on impassable tile ({},{})", x, y);
+                break;
+            }
+            LOG.info("pushing onto ({},{})", x, y);
+            locationChanged = true;
+        }
+
+        if(locationChanged) {
+            getLevel().changeActorLocation(actor, new Coords(x, y));
+        }
+    }
+
     private class GameRunnable implements Runnable {
         @Override
         public void run() {
@@ -107,89 +175,6 @@ public class Game {
 					LOG.info("game ended");
 				}
 			}
-        }
-
-        private void processPush(Actor actor) {
-            if(actor.actorParam(Actor.Param.OFF_BALANCE) > 0){
-                LOG.info("{} is off balance", actor.getName());
-                float hPush = actor.actorParam(Actor.Param.PUSH_HORIZONTAL);
-                float vPush = actor.actorParam(Actor.Param.PUSH_VERTICAL);
-                float balance = actor.actorParam(Actor.Param.BALANCE);
-                float maxBalance = actor.actorParam(Actor.Param.MAX_BALANCE);
-
-                float value = Math.max(Math.abs(hPush), Math.abs(vPush));
-
-                actor.setActorParam(Actor.Param.PUSH_HORIZONTAL, 0f);
-                actor.setActorParam(Actor.Param.PUSH_VERTICAL, 0f);
-                actor.setActorParam(Actor.Param.OFF_BALANCE, 0f);
-
-                LOG.info("push force = {}", value);
-
-                if(balance > value){ //some balance left
-                    balance -= value;
-                    actor.setActorParam(Actor.Param.BALANCE, balance);
-                    float ratio = value / maxBalance;
-
-                    LOG.info("{} reducing balance by {}", actor.getName(), value);
-
-                    if(ratio > 0.333) { //minimal push
-                        push(actor, (int) Math.signum(hPush), (int) Math.signum(vPush), 1);
-                        if(ratio > 0.666){ //push with sumble
-                            actor.changeActorParam(Actor.Param.STUMBLE, +1);
-                        }
-                    }
-                } else { //push with big stumble
-                    actor.setActorParam(Actor.Param.BALANCE, 0f);
-                    LOG.info("{} balance is 0", actor.getName());
-                    float reducedHPush = Math.signum(hPush) * Math.max(Math.abs(hPush) - value, 0);
-                    float reducedVPush = Math.signum(vPush) * Math.max(Math.abs(vPush) - value, 0);
-                    push(actor,(int) Math.signum(hPush), (int) Math.signum(vPush),
-                            1 + (int) (10f * Math.max(Math.abs(reducedHPush), Math.abs(reducedVPush)) / maxBalance));
-                    actor.changeActorParam(Actor.Param.STUMBLE, +2);
-                }
-            }
-        }
-
-        private void push(Actor actor, int dx, int dy, int length){
-            checkArgument(dx != 0 || dy != 0, "dx or dy  must other than 0");
-            LOG.info("pushing");
-            Coords prevLocation = actor.getLocation();
-            int x = prevLocation.x;
-            int y = prevLocation.y;
-            Dim dim = getLevel().getDim();
-            boolean locationChanged = false;
-            for(int fieldsMoved = 0; fieldsMoved < length; ++fieldsMoved){
-                x += dx;
-                y += dy;
-                if(!dim.containsCoordinates(x, y)){
-                    LOG.info("pushing out of playing field");
-                    break;
-                } else if(!getLevel().getTiles()[x][y].isPassable()){
-                    LOG.info("pushing on impassable tile ({},{})", x, y);
-                    break;
-                }
-                LOG.info("pushing onto ({},{})", x, y);
-                locationChanged = true;
-            }
-
-            if(locationChanged) {
-                changeActorLocation(actor, new Coords(x, y));
-            }
-        }
-
-        /**
-         * Unchecked changing location of actor
-         * @param actor
-         * @param toCoords
-         */
-        private void changeActorLocation(Actor actor, Coords toCoords){
-            Tile from = getLevel().getTile(actor.getLocation());
-            Tile to = getLevel().getTile(toCoords);
-            assert from.actor == actor : "from.actor = " + from.actor + " actor = " + actor;
-            assert to.actor == null;
-            to.actor = from.actor;
-            from.actor = null;
-            actor.setLocation(toCoords);
         }
 
         /**

@@ -3,6 +3,8 @@ package org.sankozi.rogueland.model;
 import org.sankozi.rogueland.model.coords.Coords;
 import org.sankozi.rogueland.model.coords.Dim;
 
+import static com.google.common.base.Preconditions.checkState;
+
 /**
  *
  * @author sankozi
@@ -21,6 +23,21 @@ public final class Level {
                 tiles[x][y] = new Tile();
             }
         }
+    }
+
+    /**
+     * Changing location of actor
+     * @param actor
+     * @param toCoords
+     */
+    public void changeActorLocation(Actor actor, Coords toCoords){
+        Tile from = getTile(actor.getLocation());
+        Tile to = getTile(toCoords);
+        checkState(from.actor == actor, "invalid actor/level state [actor=%s]", actor.getLocation());
+        checkState(to.actor == null, "target location is not empty [target=%s]", toCoords);
+        to.actor = from.actor;
+        from.actor = null;
+        actor.setLocation(toCoords);
     }
 
     public Tile getTile(Coords p){
