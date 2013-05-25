@@ -97,19 +97,6 @@ class GameUtils {
         }
     }
 
-    static boolean validLocation(Coords playerLocation, Tile[][] tiles) {
-        //location outside level
-        if(playerLocation.x < 0 || playerLocation.y < 0
-                || playerLocation.x >= tiles.length
-                || playerLocation.y >= tiles[0].length) {
-            return false;
-        } else {
-            //location inaccessible and that cannot be intercarted with
-            Tile tile = tiles[playerLocation.x][playerLocation.y];
-            return tile.type != Tile.Type.ROCK;
-        }
-    }
-
     /**
      * Default attack handle
      * @param actor

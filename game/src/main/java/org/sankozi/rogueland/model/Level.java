@@ -35,9 +35,21 @@ public final class Level {
         Tile to = getTile(toCoords);
         checkState(from.actor == actor, "invalid actor/level state [actor=%s]", actor.getLocation());
         checkState(to.actor == null, "target location is not empty [target=%s]", toCoords);
+
         to.actor = from.actor;
         from.actor = null;
         actor.setLocation(toCoords);
+    }
+
+    public boolean validActionLocation(Coords actionCoords) {
+        //location outside level
+        if(!dim.containsCoordinates(actionCoords)) {
+            return false;
+        } else {
+            //location inaccessible and that cannot be intercarted with
+            Tile tile = tiles[actionCoords.x][actionCoords.y];
+            return tile.type != Tile.Type.ROCK;
+        }
     }
 
     public Tile getTile(Coords p){

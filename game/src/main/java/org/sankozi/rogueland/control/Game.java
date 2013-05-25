@@ -152,7 +152,7 @@ public class Game {
                 m = actor.act(level, locator);
                 targetLocation = GameUtils.getTargetLocationAndRotate(actor, m, actorLocation);
 //                LOG.info("actor : " + actor + " move : " + newLocation);
-            } while (!GameUtils.validLocation(targetLocation, tiles));
+            } while (!level.validActionLocation(targetLocation));
 
 			if(!targetLocation.equals(actorLocation)){
                 tiles[actorLocation.x][actorLocation.y].actor = null;
