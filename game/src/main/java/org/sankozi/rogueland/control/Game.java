@@ -13,7 +13,6 @@ import java.util.List;
 
 import org.sankozi.rogueland.model.*;
 import org.sankozi.rogueland.model.coords.Coords;
-import org.sankozi.rogueland.model.coords.Dim;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -32,10 +31,11 @@ public class Game {
     private List<Actor> actors = Lists.newArrayList();
 	private List<Actor> toBeRemoved = Lists.newArrayList();
 
-    private List<Observer> observers = Collections.emptyList();
+    private final List<Observer> observers;
 
 	private final Locator locator;
     private final LevelControl control;
+    private final GameControl gameControl;
 
     /** ==== LogicObjects === */
     private PushLogic pushLogic = new PushLogic(level);
@@ -48,6 +48,19 @@ public class Game {
         locator = gll;
         control = gll;
         observers = ImmutableList.<Observer>of(new EnemySpawner());
+
+        gameControl = new GameControl(){
+            @Override
+            public GameState nextTurn() {
+                Game.this.nextTurn();
+
+                if(player.isDestroyed()){
+                    return GameState.END;
+                } else {
+                    return GameState.RUNNING;
+                }
+            }
+        };
     }
 
     @Inject
@@ -58,7 +71,7 @@ public class Game {
     public Runnable provideRunnable(){
         if(runningGame == null){
 			LOG.info("providing GameRunnable");
-            runningGame = new GameRunnable();
+            runningGame = new GameRunnable(() -> getThreadGameControl());
             return runningGame;
         } else {
             throw new IllegalArgumentException("game has already started");
@@ -90,125 +103,124 @@ public class Game {
         actor.setLocation(coords);
     }
 
-    private class GameRunnable implements Runnable {
-        @Override
-        public void run() {
-            GameLog.initThreadLog(log);
-            GameLog.info("Game has started");
-			try {
-                for(Observer observer: observers){
-                    observer.attach(locator, control);
-                }
-				do {
-					processActors();
-                    for(Observer observer: observers){
-                        observer.tick(locator, control);
-                    }
-				} while (!player.isDestroyed());
-			} catch (IllegalStateException ex){
-				if(ex.getCause() instanceof InterruptedException){
-					LOG.info("game ended");
-				}
-			}
+    /**
+     * Returns GameControl attached to this thread if GameControl wasn't created before
+     *
+     * @return gameControl instance
+     * @throws IllegalStateException if this GameControl is attached to different thread
+     */
+    public GameControl getThreadGameControl(){
+        GameLog.initThreadLog(log);
+        GameLog.info("Game has started");
+        for(Observer observer: observers){
+            observer.attach(locator, control);
         }
+        return gameControl;
+    }
 
-        /**
-         * Processes stats that make actor miss his turn
-         * @param actor actor to be checked
-         * @return true if actor will miss his turn
-         */
-        private boolean processTurnMissStats(Actor actor){
-            float stumble = actor.actorParam(Actor.Param.STUMBLE);
-            if(LOG.isDebugEnabled()){
-                if(stumble > 0){
-                    LOG.info("actor {} stumble {}", actor, stumble);
-                }
+    private void nextTurn(){
+        processActors();
+        for(Observer observer: observers){
+            observer.tick(locator, control);
+        }
+    }
+
+    /**
+     * Processes stats that make actor miss his turn
+     * @param actor actor to be checked
+     * @return true if actor will miss his turn
+     */
+    private boolean processTurnMissStats(Actor actor){
+        float stumble = actor.actorParam(Actor.Param.STUMBLE);
+        if(LOG.isDebugEnabled()){
+            if(stumble > 0){
+                LOG.debug("actor {} stumble {}", actor, stumble);
             }
-            if(stumble > 1){
-                actor.setActorParam(Actor.Param.STUMBLE, 1);
+        }
+        if(stumble > 1){
+            actor.setActorParam(Actor.Param.STUMBLE, 1);
+        } else {
+            actor.setActorParam(Actor.Param.STUMBLE, 0);
+        }
+        return stumble >= 1;
+    }
+
+    private void checkWeaponAttackOnTile(Actor actor, Move m, Tile tile) {
+        Actor targetActor = tile.actor;
+        if(targetActor != null){
+            GameUtils.attackWithWeapon(actor, targetActor, m); //this method can change tile.actor
+            if(targetActor.isDestroyed()){
+                removeActor(targetActor);
             } else {
-                actor.setActorParam(Actor.Param.STUMBLE, 0);
+                pushLogic.processPush(targetActor);
             }
-            return stumble >= 1;
         }
+    }
 
-		/**
-		 * Process actor that is moving with its weapon (on different tile)
-		 * @param actor 
-		 */
-		private void processActor(Actor actor) {
-            GameUtils.processRegeneration(actor);
-            boolean missingTurn = processTurnMissStats(actor);
-            if(missingTurn){
-                return;
-            }
-            Move m;
-            Coords targetLocation;
-            Coords actorLocation = actor.getLocation();
-			Coords prevWeaponLocation = actor.getWeaponLocation();
-            final Tile[][] tiles = level.getTiles();
-            do {
-                tiles[actorLocation.x][actorLocation.y].actor = actor;
-                m = actor.act(level, locator);
-                targetLocation = GameUtils.getTargetLocationAndRotate(actor, m, actorLocation);
+    /**
+     * Process actor that is moving with its weapon (on different tile)
+     * @param actor
+     */
+    private void processActor(Actor actor) {
+        GameUtils.processRegeneration(actor);
+        boolean missingTurn = processTurnMissStats(actor);
+        if(missingTurn){
+            return;
+        }
+        Move m;
+        Coords targetLocation;
+        Coords actorLocation = actor.getLocation();
+        Coords prevWeaponLocation = actor.getWeaponLocation();
+        final Tile[][] tiles = level.getTiles();
+        do {
+            tiles[actorLocation.x][actorLocation.y].actor = actor;
+            m = actor.act(level, locator);
+            targetLocation = GameUtils.getTargetLocationAndRotate(actor, m, actorLocation);
 //                LOG.info("actor : " + actor + " move : " + newLocation);
-            } while (!level.validActionLocation(targetLocation));
+        } while (!level.validActionLocation(targetLocation));
 
-			if(!targetLocation.equals(actorLocation)){
-                tiles[actorLocation.x][actorLocation.y].actor = null;
-				Tile tile = tiles[targetLocation.x][targetLocation.y];
-				if(tile.actor != null){
-					attack(actor, tile.actor);
-				} else {
-					actorLocation = targetLocation;
-				}
-				assert tiles[actorLocation.x][actorLocation.y].actor == null 
-						: tiles[actorLocation.x][actorLocation.y].actor.getObjectName() + " on point " + actorLocation;
-				tiles[actorLocation.x][actorLocation.y].actor = actor;
-				actor.setLocation(actorLocation);
-			} 
-			if(actor.isArmed()){
-				Coords nextWeaponLocation = actor.getWeaponLocation();
-
-                if(prevWeaponLocation == null) {
-                    tiles[nextWeaponLocation.x][nextWeaponLocation.y].weapon = true;
-                    Tile tile = tiles[nextWeaponLocation.x][nextWeaponLocation.y];
-                    checkWeaponAttackOnTile(actor, m, tile);
-                } else if(!prevWeaponLocation.equals(nextWeaponLocation)){
-//					LOG.debug("new weapon location : " + nextWeaponLocation.x + "," + nextWeaponLocation.y);
-                    if(level.getDim().containsCoordinates(nextWeaponLocation)){
-                        Tile tile = tiles[nextWeaponLocation.x][nextWeaponLocation.y];
-                        tiles[nextWeaponLocation.x][nextWeaponLocation.y].weapon = true;
-                        checkWeaponAttackOnTile(actor, m, tile);
-                    }
-                    if(level.getDim().containsCoordinates(prevWeaponLocation)){
-					    tiles[prevWeaponLocation.x][prevWeaponLocation.y].weapon = false;
-                    }
-				}
-			}
+        if(!targetLocation.equals(actorLocation)){
+            tiles[actorLocation.x][actorLocation.y].actor = null;
+            Tile tile = tiles[targetLocation.x][targetLocation.y];
+            if(tile.actor != null){
+                attack(actor, tile.actor);
+            } else {
+                actorLocation = targetLocation;
+            }
+            assert tiles[actorLocation.x][actorLocation.y].actor == null
+                    : tiles[actorLocation.x][actorLocation.y].actor.getObjectName() + " on point " + actorLocation;
+            tiles[actorLocation.x][actorLocation.y].actor = actor;
+            actor.setLocation(actorLocation);
         }
+        if(actor.isArmed()){
+            Coords nextWeaponLocation = actor.getWeaponLocation();
 
-        private void checkWeaponAttackOnTile(Actor actor, Move m, Tile tile) {
-            Actor targetActor = tile.actor;
-            if(targetActor != null){
-                GameUtils.attackWithWeapon(actor, targetActor, m); //this method can change tile.actor
-                if(targetActor.isDestroyed()){
-                    removeActor(targetActor);
-                } else {
-                    pushLogic.processPush(targetActor);
+            if(prevWeaponLocation == null) {
+                tiles[nextWeaponLocation.x][nextWeaponLocation.y].weapon = true;
+                Tile tile = tiles[nextWeaponLocation.x][nextWeaponLocation.y];
+                checkWeaponAttackOnTile(actor, m, tile);
+            } else if(!prevWeaponLocation.equals(nextWeaponLocation)){
+//					LOG.debug("new weapon location : " + nextWeaponLocation.x + "," + nextWeaponLocation.y);
+                if(level.getDim().containsCoordinates(nextWeaponLocation)){
+                    Tile tile = tiles[nextWeaponLocation.x][nextWeaponLocation.y];
+                    tiles[nextWeaponLocation.x][nextWeaponLocation.y].weapon = true;
+                    checkWeaponAttackOnTile(actor, m, tile);
+                }
+                if(level.getDim().containsCoordinates(prevWeaponLocation)){
+                    tiles[prevWeaponLocation.x][prevWeaponLocation.y].weapon = false;
                 }
             }
         }
+    }
 
-        private void processActors() {
-            for(Actor actor:actors){
-				if(!actor.isDestroyed()){
-					processActor(actor);
-				}
+    private void processActors() {
+        for(Actor actor:actors){
+            if(!actor.isDestroyed()){
+                processActor(actor);
             }
-			actors.removeAll(toBeRemoved);
-			toBeRemoved.clear();
         }
+        actors.removeAll(toBeRemoved);
+        toBeRemoved.clear();
     }
 
     private void removeActor(Actor actor){
