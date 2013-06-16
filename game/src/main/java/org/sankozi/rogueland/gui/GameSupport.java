@@ -45,6 +45,7 @@ class GameSupport {
 	private final Set<LogListener> logListeners = new HashSet<>();
 	
     private Game game;
+    private Player player;
 	private Controls gameControls;
     private Thread gameThread = new Thread(new GameStart());
 
@@ -84,7 +85,7 @@ class GameSupport {
 		}
 	}
 
-	public void setControls(Controls controls){
+    public void setControls(Controls controls){
 		this.gameControls = controls;
 	}
 
@@ -161,7 +162,7 @@ class GameSupport {
 
     public void startGame() {
         Preconditions.checkState(!gameThread.isAlive());
-		this.game.setControls(new SynchronizedControls(gameControls));
+		game.getPlayer().setControls(new SynchronizedControls(gameControls));
         gameThread.start();
 		LOG.info("starting game thread");
     }

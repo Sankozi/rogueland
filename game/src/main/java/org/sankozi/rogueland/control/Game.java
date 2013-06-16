@@ -15,6 +15,7 @@ import org.sankozi.rogueland.model.*;
 import org.sankozi.rogueland.model.coords.Coords;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Object responsible for single game instance
@@ -65,7 +66,15 @@ public class Game {
 
     @Inject
     public Game(Provider<Player> playerProvider) {
+        checkNotNull(playerProvider, "playerProvider cannot be null");
         this.playerProvider = playerProvider;
+        this.player = playerProvider.get();
+        this.player.setLocation(new Coords(5,5));
+        this.actors.add(player);
+
+        Actor ai = new AiActor();
+        ai.setLocation(new Coords(10,10));
+        this.actors.add(ai);
     }
 
     public Runnable provideRunnable(){
@@ -78,19 +87,15 @@ public class Game {
         }
     }
 
-    /**
-     * Sets controls for Player character
-     * @param controls
-     */
-    public void setControls(Controls controls){
-        this.player = playerProvider.get();
-        player.setControls(controls);
-        player.setLocation(new Coords(5,5));
-        actors.add(player);
-        Actor ai = new AiActor();
-        ai.setLocation(new Coords(10,10));
-        actors.add(ai);
-    }
+//    /**
+//     * Sets controls for Player character
+//     * @param controls
+//     */
+//    public void setControls(Controls controls){
+//
+//        player.setControls(controls);
+//
+//    }
 
     public void addLogListener(LogListener logListener){
         log.addListener(logListener);
