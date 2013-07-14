@@ -17,7 +17,7 @@ public final class GuidGenerator {
 
     public static int getNewGuid(){
         int ret = guidGenerator.incrementAndGet();
-        LOG.info("getting new guid {}", ret);
+//        LOG.info("getting new guid {}", ret);
         return ret;
     }
 

@@ -12,8 +12,8 @@ import org.sankozi.rogueland.model.Player;
  *
  * @author sankozi
  */
-public abstract class GameTest {
-    private final static Logger LOG = LogManager.getLogger(GameTest.class);
+public abstract class GameTestBase {
+    private final static Logger LOG = LogManager.getLogger(GameTestBase.class);
 
     private static Injector injector;
 

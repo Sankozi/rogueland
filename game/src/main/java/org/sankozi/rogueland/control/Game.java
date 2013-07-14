@@ -26,7 +26,7 @@ public class Game {
 
     private final Provider<Player> playerProvider;
 
-    private final Level level = new Level(300, 200);
+    private final Level level;
     private GameLog log = new GameLog();
     private Player player = null;
     private List<Actor> actors = Lists.newArrayList();
@@ -39,15 +39,11 @@ public class Game {
     private final GameControl gameControl;
 
     /** ==== LogicObjects === */
-    private PushLogic pushLogic = new PushLogic(level);
+    private PushLogic pushLogic;
 
     private GameRunnable runningGame;
 
     {
-		LevelGenerator.generate(level);
-        GameLevelLocator gll = new GameLevelLocator(this, level);
-        locator = gll;
-        control = gll;
         observers = ImmutableList.<Observer>of(new EnemySpawner());
 
         gameControl = new GameControl(){
@@ -65,12 +61,17 @@ public class Game {
     }
 
     @Inject
-    public Game(Provider<Player> playerProvider) {
+    public Game(Provider<Player> playerProvider, Provider<Level> levelProvider) {
         checkNotNull(playerProvider, "playerProvider cannot be null");
         this.playerProvider = playerProvider;
         this.player = playerProvider.get();
         this.player.setLocation(new Coords(5,5));
         this.actors.add(player);
+        this.level = levelProvider.get();
+        GameLevelLocator gll = new GameLevelLocator(this, level);
+        this.locator = gll;
+        this.control = gll;
+        this.pushLogic = new PushLogic(level);
 
         Actor ai = new AiActor();
         ai.setLocation(new Coords(10,10));
@@ -86,16 +87,6 @@ public class Game {
             throw new IllegalArgumentException("game has already started");
         }
     }
-
-//    /**
-//     * Sets controls for Player character
-//     * @param controls
-//     */
-//    public void setControls(Controls controls){
-//
-//        player.setControls(controls);
-//
-//    }
 
     public void addLogListener(LogListener logListener){
         log.addListener(logListener);

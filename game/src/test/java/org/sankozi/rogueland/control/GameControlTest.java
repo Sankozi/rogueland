@@ -9,7 +9,7 @@ import org.junit.*;
  *
  * @author sankozi
  */
-public class GameControlTest extends GameTest {
+public class GameControlTest extends GameTestBase {
     private final static Logger LOG = LogManager.getLogger(GameControlTest.class);
 
     @Test
