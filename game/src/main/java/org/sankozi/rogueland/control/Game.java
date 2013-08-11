@@ -24,8 +24,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class Game {
     private final static Logger LOG = LogManager.getLogger(Game.class);
 
-    private final Provider<Player> playerProvider;
-
     private final Level level;
     private GameLog log = new GameLog();
     private Player player = null;
@@ -60,22 +58,19 @@ public class Game {
         };
     }
 
-    @Inject
-    public Game(Provider<Player> playerProvider, Provider<Level> levelProvider) {
-        checkNotNull(playerProvider, "playerProvider cannot be null");
-        this.playerProvider = playerProvider;
-        this.player = playerProvider.get();
-        this.player.setLocation(new Coords(5,5));
-        this.actors.add(player);
-        this.level = levelProvider.get();
+    public Game(Player player, Level level) {
+        this.player = checkNotNull(player, "player cannot be null");
+        this.level = checkNotNull(level, "level cannot be null");
+
+        this.addActor(player, player.getLocation());
+
         GameLevelLocator gll = new GameLevelLocator(this, level);
         this.locator = gll;
         this.control = gll;
         this.pushLogic = new PushLogic(level);
 
-        Actor ai = new AiActor();
-        ai.setLocation(new Coords(10,10));
-        this.actors.add(ai);
+//        Actor ai = new AiActor();
+//        this.addActor(ai, ai.getLocation());
     }
 
     public Runnable provideRunnable(){

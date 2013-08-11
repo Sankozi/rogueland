@@ -15,6 +15,7 @@ public class GameControlTest extends GameTestBase {
     @Test
     public void testNextTurn(){
         Game game = getSimpleGame();
+
         GameControl gameControl = game.getThreadGameControl();
         gameControl.nextTurn();
         gameControl.nextTurn();
