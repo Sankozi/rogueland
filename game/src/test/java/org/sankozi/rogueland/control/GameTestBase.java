@@ -65,21 +65,6 @@ public abstract class GameTestBase {
      * @return
      */
     protected Game getSimpleGame(){
-//        try {
-            return injector.getInstance(Game.class);
-//        } catch (CreationException ex) {
-//            err.println("Trying to show all guice messages...");
-//            for(Message message : ex.getErrorMessages()){
-//                err.println(message.getMessage());
-//            }
-//            err.println("...done. Exception message:");
-//            err.println(ex.getMessage());
-////            ex.printStackTrace(err);
-//            return null;
-//        } catch (Throwable ex) {
-//            err.println("Exception --> " + ex.getMessage());
-////            ex.printStackTrace(err);
-//            return null;
-//        }
+        return injector.getInstance(Game.class);
     }
 }
