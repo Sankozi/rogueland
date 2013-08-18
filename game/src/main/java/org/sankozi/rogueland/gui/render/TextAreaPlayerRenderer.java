@@ -10,6 +10,8 @@ import org.sankozi.rogueland.model.WeaponAttack;
 import org.sankozi.rogueland.model.coords.Direction;
 import org.sankozi.rogueland.resources.ResourceProvider;
 
+import static org.sankozi.rogueland.resources.ResourceProvider.*;
+
 /**
  *
  * @author sankozi
@@ -26,7 +28,7 @@ public final class TextAreaPlayerRenderer extends TextAreaRenderer<Player> {
                 + "<td><font size='5'>Attack</font></td></tr>"
                 + "<tr valign='top'><td><table>");
         for(Player.Param param : Player.Param.values()){
-            sb.append("<tr><td>").append(param.toString()).append("</td><td>")
+            sb.append("<tr><td>").append(getLabel(param.name())).append("</td><td>")
               .append(player.playerParam(param)).append("</td></tr>");
         }
         sb.append("</table></td><td><table>");

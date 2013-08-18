@@ -5,6 +5,9 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -15,6 +18,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 import javax.imageio.ImageIO;
 
@@ -23,8 +28,20 @@ import javax.imageio.ImageIO;
  * @author sankozi
  */
 public class ResourceProvider {
+    private final static Logger LOG = LogManager.getLogger(ResourceProvider.class);
     private final static Cache<String, Font> FONT_CACHE = CacheBuilder.newBuilder()
             .concurrencyLevel(1).build();
+
+    private final static ResourceBundle LABELS = ResourceBundle.getBundle("org.sankozi.rogueland.resources.labels");
+
+    public static String getLabel(String key){
+        try {
+            return LABELS.getString(key);
+        } catch (MissingResourceException ex){
+            LOG.warn(ex.getMessage());
+            return key;
+        }
+    }
 
     public static URL getImageUrl(String name){
         return ResourceProvider.class.getResource(name);
