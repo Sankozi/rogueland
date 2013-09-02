@@ -1,7 +1,6 @@
-package org.sankozi.rogueland.gui.utils;
+package org.sankozi.rogueland.gui.util;
 
 import com.google.common.base.Throwables;
-import com.google.inject.Inject;
 import com.google.inject.Provider;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;

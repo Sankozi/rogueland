@@ -12,6 +12,8 @@ import org.sankozi.rogueland.resources.ResourceProvider;
 
 import static org.sankozi.rogueland.resources.ResourceProvider.*;
 
+import static org.sankozi.rogueland.util.Formatters.*;
+
 /**
  *
  * @author sankozi
@@ -21,24 +23,24 @@ public final class TextAreaPlayerRenderer extends TextAreaRenderer<Player> {
 
     protected final String getHtml(Player player){
         StringBuilder sb = new StringBuilder(128);
-        sb.append("<html><font size='6'>Player stats</font>");
+        sb.append("<html><font size='6'>Player</font>");
 
-        sb.append("<table><tr><td><font size='5'>Main stats</font></td>"
-                + "<td><font size='5'>?</font></td>"
+        sb.append("<table><tr><td><font size='5'>Stats</font></td>"
+                + "<td><font size='5'>Defense</font></td>"
                 + "<td><font size='5'>Attack</font></td></tr>"
                 + "<tr valign='top'><td><table>");
         for(Player.Param param : Player.Param.values()){
-            sb.append("<tr><td>").append(getLabel(param.name())).append("</td><td>")
-              .append(player.playerParam(param)).append("</td></tr>");
+            sb.append("<tr><td>").append(param.getLabel()).append("</td><td>")
+              .append(formatParam(player.playerParam(param))).append("</td></tr>");
         }
         sb.append("</table></td><td><table>");
         for(Destroyable.Param param : Destroyable.Param.values()){
-            sb.append("<tr><td>").append(param.toString()).append("</td><td>")
-              .append(player.destroyableParam(param)).append("</td></tr>");
+            sb.append("<tr><td>").append(param.getLabel()).append("</td><td>")
+              .append(formatParam(player.destroyableParam(param))).append("</td></tr>");
         }
-        for(Actor.Param param : Actor.Param.values()){
-            sb.append("<tr><td>").append(param.toString()).append("</td><td>")
-                    .append(player.actorParam(param)).append("</td></tr>");
+        for(Actor.Param param : Actor.Param.visibleParams()){
+            sb.append("<tr><td>").append(param.getLabel()).append("</td><td>")
+                    .append(formatParam(player.actorParam(param))).append("</td></tr>");
         }
         sb.append("</table></td><td><table>");
         sb.append("<tr><td colspan='2'>Weapon</td></tr>");

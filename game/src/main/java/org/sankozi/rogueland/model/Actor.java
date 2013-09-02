@@ -57,6 +57,10 @@ public interface Actor extends Destroyable{
          * number of turns missing due to pushing,
          * can be 0, 1 or >1, 0 - no missing turns, 1 - missing turn and change to 0, >1 missing turn and change to 1
          **/
-        STUMBLE,
+        STUMBLE,;
+
+        public static Param[] visibleParams(){
+            return new Param[]{BALANCE_REGEN, MAX_BALANCE};
+        }
     }
 }

@@ -7,7 +7,7 @@ import java.util.concurrent.Callable;
 import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import org.sankozi.rogueland.gui.utils.EDTProvider;
+import org.sankozi.rogueland.gui.util.EDTProvider;
 
 /**
  *
