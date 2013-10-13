@@ -1,4 +1,4 @@
-package org.sankozi.rogueland.gui;
+package org.sankozi.rogueland.gui.painter;
 
 import java.awt.*;
 import java.util.EnumMap;
@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.control.Game;
+import org.sankozi.rogueland.gui.TilePainter;
 import org.sankozi.rogueland.model.*;
 import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.coords.Coords;
@@ -18,7 +19,7 @@ import javax.annotation.Nullable;
  * TilePainter that uses font symbols for representing various tiles
  * @author sankozi
  */
-public class FontPainter implements TilePainter{
+public class FontPainter implements TilePainter {
     private final static Logger LOG = LogManager.getLogger(FontPainter.class);
     
     private Font font;

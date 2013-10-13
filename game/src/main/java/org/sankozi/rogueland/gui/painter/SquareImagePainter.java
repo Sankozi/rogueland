@@ -1,9 +1,9 @@
-package org.sankozi.rogueland.gui;
+package org.sankozi.rogueland.gui.painter;
 
-import com.google.common.collect.ImmutableMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sankozi.rogueland.control.Game;
+import org.sankozi.rogueland.gui.TilePainter;
 import org.sankozi.rogueland.model.Actor;
 import org.sankozi.rogueland.model.Level;
 import org.sankozi.rogueland.model.Player;
@@ -15,8 +15,6 @@ import org.sankozi.rogueland.resources.ModelResources;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.awt.*;
-import java.util.EnumMap;
-import java.util.Map;
 
 import static org.sankozi.rogueland.resources.ResourceProvider.*;
 /**
@@ -72,6 +70,7 @@ public class SquareImagePainter implements TilePainter {
     }
 
     private void drawActor(Graphics g, Actor actor, int x, int y){
+
         if(actor.getObjectName().contains("player")){
             g.drawImage(hero, x, y, null);
         } else {

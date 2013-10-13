@@ -9,7 +9,9 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import org.sankozi.rogueland.model.*;
 import org.sankozi.rogueland.model.coords.Coords;
@@ -35,6 +37,8 @@ public class Game {
 	private final Locator locator;
     private final LevelControl control;
     private final GameControl gameControl;
+
+    private final Queue<GraphicEffect> graphicEffects = new LinkedList<>();
 
     /** ==== LogicObjects === */
     private PushLogic pushLogic;

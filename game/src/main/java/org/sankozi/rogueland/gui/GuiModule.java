@@ -9,6 +9,7 @@ import javax.swing.JComponent;
 import javax.swing.JMenuBar;
 import org.apache.logging.log4j.*;
 import org.sankozi.rogueland.gui.actions.ReturnToGameAction;
+import org.sankozi.rogueland.gui.painter.SquareImagePainter;
 
 /**
  * TODO - make it possible to call guice outside Event Dispatch Thread
