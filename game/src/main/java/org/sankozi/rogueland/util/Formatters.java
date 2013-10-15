@@ -20,9 +20,9 @@ public final class Formatters {
     /**
      * Format for float based values
      */
-    private final static ThreadLocal<NumberFormat> PARAM_FORMAT = new ThreadLocal(){
+    private final static ThreadLocal<NumberFormat> PARAM_FORMAT = new ThreadLocal<NumberFormat>(){
         @Override
-        protected Object initialValue() {
+        protected NumberFormat initialValue() {
             DecimalFormat ret = new DecimalFormat("0.#", new DecimalFormatSymbols(Locale.US));
             ret.setRoundingMode(RoundingMode.DOWN);
             return ret;
