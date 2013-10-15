@@ -78,15 +78,15 @@ public class SquareImagePainter implements TilePainter {
         }
     }
 
-    private void drawSword(Game game, Graphics g, int startingPixelX, int startingX, int startingPixelY, int startingY) {
+    private void drawSword(Game game, Graphics g, DrawingContext dc){
         Player p = game.getPlayer();
         if(p.isArmed()){
             g.setColor(Color.WHITE);
             Coords location = p.getLocation();
             Direction dir = p.getWeaponDirection();
             g.drawImage(modelResources.getImageForWeaponDirection(dir),
-                    startingPixelX + tileWidth * (location.x - startingX) + tileWidth / 2 * dir.dx,
-                    startingPixelY + tileHeight * (location.y - startingY) + tileHeight / 2 * dir.dy,
+                    dc.startPixelX + tileWidth * (location.x - dc.startTileX) + tileWidth / 2 * dir.dx,
+                    dc.startPixelY + tileHeight * (location.y - dc.startTileY) + tileHeight / 2 * dir.dy,
                     null);
         }
 //		LOG.info("paint end");
@@ -176,7 +176,7 @@ public class SquareImagePainter implements TilePainter {
             }
             y += tileHeight;
         }
-        drawSword(game, g, dc.startPixelX, dc.startTileX, dc.startPixelY, dc.startTileY);
+        drawSword(game, g, dc);
 //		LOG.info("paint end");
     }
 
