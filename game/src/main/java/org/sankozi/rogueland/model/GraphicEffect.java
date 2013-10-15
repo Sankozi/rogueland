@@ -3,30 +3,34 @@ package org.sankozi.rogueland.model;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.sankozi.rogueland.model.coords.Coords;
+import org.sankozi.rogueland.model.coords.Rect;
 
 import javax.annotation.Nullable;
+import java.awt.*;
 
 /**
- * Object containing information of effect that can be rendered in some way but doesn't impact game in any way.
+ * Object containing information of effect that can be rendered but doesn't impact game in any way.
  *
  * @author sankozi
  */
-public final class GraphicEffect {
-    private final static Logger LOG = LogManager.getLogger(GraphicEffect.class);
+public interface GraphicEffect {
 
-    private final @Nullable Coords start;
-    private final @Nullable Coords end;
-    private final float power;
-    private final Type type;
+    /**
+     * Returns boundaries of effect in Game coords
+     * @return Rect of game coordinates, cannot be null
+     */
+    Rect getLocation();
 
-    public GraphicEffect(Coords start, Coords end, float power, Type type) {
-        this.start = start;
-        this.end = end;
-        this.power = power;
-        this.type = type;
-    }
+    /**
+     * Duration of effect, in milliseconds, values returned from this method cannot change over lifetime of object
+     * @return number of milliseconds
+     */
+    int duration();
 
-    public enum Type {
-        PUSH
-    }
+    /**
+     * Renders effect
+     * @param time number of milliseconds since effect started, never higher than duration
+     * @param graphics graphics2D object
+     */
+    void render(int time, Graphics2D graphics);
 }
