@@ -55,11 +55,11 @@
 			<artifactId>database</artifactId>
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>org.clojure</groupId>
-			<artifactId>clojure</artifactId>
-			<version>1.4.0</version>
-		</dependency>
+        <dependency>
+            <groupId>org.clojure</groupId>
+            <artifactId>clojure</artifactId>
+            <version>1.5.1</version>
+        </dependency>
 		<dependency>
           <groupId>javolution</groupId>
           <artifactId>javolution</artifactId>
@@ -94,7 +94,7 @@
         <dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>14.0.1</version>
+			<version>15.0</version>
 		</dependency>
         <dependency>
             <groupId>com.miglayout</groupId>

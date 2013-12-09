@@ -1,6 +1,8 @@
 package org.sankozi.rogueland.data;
 
 import clojure.lang.Named;
+import clojure.lang.RT;
+import clojure.lang.Var;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Splitter;
 import com.google.common.cache.CacheBuilder;
@@ -39,6 +41,10 @@ import org.sankozi.rogueland.model.effect.WeaponEffect;
 @SuppressWarnings("unchecked")
 @Singleton
 public final class DataLoader {
+
+    static {
+        Var initRtBeforeCompilerClass = RT.AGENT; //NPE if Compiler is initialized before RT
+    }
 
     private final LoadingCache<String, Object> evaluatedClResources = 
             CacheBuilder.newBuilder()
